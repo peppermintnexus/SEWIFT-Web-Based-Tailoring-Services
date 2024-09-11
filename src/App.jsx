@@ -6,6 +6,7 @@ import Contact from './MainHomepage/Contact'
 import Features from './MainHomepage/Features'
 import SignUp from './Authentication/SignUp/SignUp'
 import ClientSignUp from './Authentication/SignUp/ClientSignUp'
+import AdminSignUp from './Authentication/SignUp/AdminSignUp'
 import ClientLogin from './Authentication/Login/ClientLogin'
 import AdminLogin from './Authentication/Login/AdminLogin'
 import EmployeeLogin from './Authentication/Login/EmployeeLogin'
@@ -23,6 +24,7 @@ function App() {
 
       <Route path='/SignUp' element={<SignUp />} />
       <Route path='/ClientSignUp' element={<ClientSignUp />} />
+      <Route path='/AdminSignUp' element={<AdminSignUp />} />
 
       <Route path='/ClientLogin' element={<ClientLogin />} />
       <Route path='/AdminLogin' element={<AdminLogin />} />

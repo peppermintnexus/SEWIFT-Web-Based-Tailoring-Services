@@ -19,11 +19,6 @@ export default function SignUp() {
                         </div>
                     </div>
 
-                    <div className='col-span-2 mb-1'>
-                        <p>Complete Address:</p>
-                        <Textbox />
-                    </div>
-
                     <div className='grid grid-cols-2 mb-1'>
                         <div className='mr-6'>
                             <p>Email:</p>
