@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import ClientSignUp from './ClientSignUp.jsx'
 import AdminSignUp from './AdminSignUp.jsx'
+import EmployeeSignUp from './EmployeeSignUp.jsx'
 
 const SignUp = () => {
   const [selectCheckbox, setChecked] = useState('');
@@ -30,6 +31,13 @@ const SignUp = () => {
                    onChange={() => handleChangeCheckbox('checkedAdmin')} 
                    className='w-5 ml-2' />
             </div>
+            <div className='flex justify-center items-center bg-[#eeeeee] rounded-lg mx-2 px-2 py-1'>
+                <p>Tailor Shop Employee</p>
+            <input type='checkbox'
+                   checked={selectCheckbox === 'checkedEmployee'} 
+                   onChange={() => handleChangeCheckbox('checkedEmployee')} 
+                   className='w-5 ml-2' />
+            </div>
         </div>
 
         <div className='flex justify-center items-center'>
@@ -38,6 +46,10 @@ const SignUp = () => {
 
         <div className='flex justify-center items-center'>
             {selectCheckbox === 'checkedAdmin' ? <AdminSignUp /> : <div></div>}
+        </div>
+
+        <div className='flex justify-center items-center'>
+            {selectCheckbox === 'checkedEmployee' ? <EmployeeSignUp /> : <div></div>}
         </div>
         </div>
     </div>

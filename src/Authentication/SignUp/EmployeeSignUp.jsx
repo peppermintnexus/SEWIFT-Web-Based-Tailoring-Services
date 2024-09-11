@@ -13,14 +13,7 @@ export default function SignUp() {
                             <Textbox />
                         </div>
                         <div>
-                            <p>Tailor Shop Name:</p>
-                            <Textbox />
                         </div>
-                    </div>
-
-                    <div className='col-span-2 mb-1'>
-                        <p>Complete Address:</p>
-                        <Textbox />
                     </div>
 
                     <div className='grid grid-cols-2 mb-1'>
