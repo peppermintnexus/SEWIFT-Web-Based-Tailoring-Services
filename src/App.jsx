@@ -8,6 +8,7 @@ import SignUp from './Authentication/SignUp/SignUp'
 import ClientSignUp from './Authentication/SignUp/ClientSignUp'
 import AdminSignUp from './Authentication/SignUp/AdminSignUp'
 import EmployeeSignUp from './Authentication/SignUp/EmployeeSignUp'
+import MeasurementForm from './components/MeasurementForm'
 import ClientLogin from './Authentication/Login/ClientLogin'
 import AdminLogin from './Authentication/Login/AdminLogin'
 import EmployeeLogin from './Authentication/Login/EmployeeLogin'
@@ -27,6 +28,7 @@ function App() {
       <Route path='/ClientSignUp' element={<ClientSignUp />} />
       <Route path='/AdminSignUp' element={<AdminSignUp />} />
       <Route path='/EmployeeSignUp' element={<EmployeeSignUp />} />
+      <Route path='/MeasurementForm' element={<MeasurementForm />} />
 
       <Route path='/ClientLogin' element={<ClientLogin />} />
       <Route path='/AdminLogin' element={<AdminLogin />} />

@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import Textbox from '/src/components/Textbox.jsx'
-import ClientHomepage from '/src/Client/ClientHomepage.jsx'
+import MeasurementForm from '/src/components/MeasurementForm.jsx'
 
 export default function SignUp() {
     return (
@@ -48,9 +48,9 @@ export default function SignUp() {
                 </div>
 
                 <div className='text-center mt-7 pb-3'>
-                    <a href='/ClientHomepage'>
+                    <a href='/MeasurementForm'>
                     <button className='text-center font-semibold rounded-lg px-3 py-1 text-[#fefefe] bg-[#10aeb2] hover:text-[#fefefe] hover:shadow-md'>Sign up</button></a>
-                    <p>Already have an account? <a href='/ClientLogin' className='underline hover:text-[#6793a8]'>Log in</a></p>
+                    <p>Already have an account? <a href='/MeasurementForm' className='underline hover:text-[#6793a8]'>Log in</a></p>
                 </div>
                 </div>
         </div>
