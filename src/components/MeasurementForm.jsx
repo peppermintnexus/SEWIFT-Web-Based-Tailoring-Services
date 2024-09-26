@@ -135,10 +135,12 @@ export default function ClientLogin() {
                 </div>
                 <div>
                     <div className='mt-7 pb-4 flex justify-center items-center'>
-                        <button className='text-center font-semibold rounded-lg px-3 py-1 text-[#fefefe] bg-[#6793a8] hover:text-[#fefefe]'>
+                        <a href='/ClientHomepage'>
+                        <button className='mx-3 text-center font-semibold rounded-lg px-3 py-1 text-[#fefefe] bg-[#6793a8] hover:text-[#fefefe]'>
                             Sign up
                         </button>
-                        <button className='text-center font-semibold rounded-lg px-3 py-1 text-[#fefefe] bg-[#6793a8] hover:text-[#fefefe]'>
+                        </a>  
+                        <button className='mx-3 text-center font-semibold rounded-lg px-3 py-1 text-[#fefefe] bg-[#6793a8] hover:text-[#fefefe]'>
                             Add Later
                         </button>
                     </div>
