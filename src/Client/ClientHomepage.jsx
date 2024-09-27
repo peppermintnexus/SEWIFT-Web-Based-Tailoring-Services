@@ -1,25 +1,29 @@
 import React from 'react'
 import ClientHeader from '/src/components/ClientHeader.jsx'
+import Carousel from '/src/components/Carousel.jsx'
+
+const slides = [
+    "/src/assets/images/Slide1.png",
+    "/src/assets/images/Slide2.png",
+    "/src/assets/images/Slide3.png"
+]
 
 export default function SewiftHomepage() {
+    
     return (
         <div className='bg-[#d9edf4] min-h-screen'>
             <div>
             <ClientHeader />
             </div>
-
-            <div>
-                <div className='bg-[#fefefe] p-32'>
-                    <h1 className='text-center text-[#6793a8] font-semibold text-6xl mb-10'>
-                        Welcome to SEWIFT!
-                    </h1>
-                    <div className='flex place-content-center'>
-                    <button className='mx-5 text-center font-semibold rounded-lg px-3 py-1 text-[#fefefe] bg-[#10aeb2] hover:text-[#fefefe] hover:shadow-md'>
-                        View Order Progress</button>
-                    <button className='text-center font-semibold rounded-lg px-3 py-1 text-[#fefefe] bg-[#10aeb2] hover:text-[#fefefe] hover:shadow-md'>
-                        View Complete Order</button>
-                    </div>
-                </div>
+            
+            <div className='bg-[#fefefe] min-h-screen flex py-10 justify-center'> 
+            <div className='max-w-6xl'>
+                <Carousel autoSlide={true} autoSlideInterval={5000}>
+                    {slides.map((s) => (
+                        <img src={s} />
+                    ))}
+                </Carousel>
+            </div>
             </div>
         </div>
     )
