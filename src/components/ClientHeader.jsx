@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import SewiftLogo from '/src/assets/images/SewiftLogo.png'
 import UserProfile from '/src/assets/images/UserProfile.png'
+import ClientProfile from '/src/Client/ClientProfile.jsx'
 
 export default function ClientHeader() {
     const [isDropdownVisible, setIsDropdownVisible] = useState(false);
@@ -27,6 +28,9 @@ export default function ClientHeader() {
             {isDropdownVisible && (
             <div className='absolute right-0 mt-3 z-10 bg-white rounded-lg shadow w-36 dark:bg-gray-700 dark:divide-gray-600'>
                 <ul className='py-2 text-sm text-gray-700 dark:text-gray-200' aria-labelledby='dropdownUser'>
+                    <li>
+                        <a href='/ClientProfile' className='block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white'>My Profile</a>
+                    </li>
                     <li>
                         <a href='#' className='block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white'>Settings</a>
                     </li>

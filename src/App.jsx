@@ -13,6 +13,8 @@ import ClientLogin from './Authentication/Login/ClientLogin'
 import AdminLogin from './Authentication/Login/AdminLogin'
 import EmployeeLogin from './Authentication/Login/EmployeeLogin'
 import ClientHomepage from './Client/ClientHomepage'
+import ClientProfile from './Client/ClientProfile'
+import TailorShops from './Client/TailorShops'
 
 function App() {
 
@@ -35,6 +37,8 @@ function App() {
       <Route path='/EmployeeLogin' element={<EmployeeLogin />} />
 
       <Route path='/ClientHomepage' element={<ClientHomepage />} />
+      <Route path='/ClientProfile' element={<ClientProfile />} />
+      <Route path='/TailorShops' element={<TailorShops />} />
     </Routes>
   )
 }
