@@ -2,19 +2,19 @@ import React from 'react'
 
 export default function ClientProfile() {
     return (
-        <div className='bg-[#f5f5f5] min-h-screen'>
+        <div className='bg-[#d9edf4] min-h-screen'>
 
             <div className='pt-10 mx-32'>
-                <div className='bg-[#fefefe] shadow rounded-lg'>
+                <div className='bg-[#fefefe] shadow-lg rounded-lg'>
 
-                    <div className='grid grid-cols-4 flex'>
-                        <div className='bg-[#d9edf4] px-4 py-10'>
+                    <div className='grid grid-cols-4 flex text-[#fefefe]'>
+                        <div className='bg-[#6793a8] px-4 py-10'>
                             <a href='/ClientProfile'>
                             <h1 className='text-lg font-medium underline mb-5'>
                                 Profile
                             </h1>
                             </a>
-                            <a href='#'>
+                            <a href='/ClientSettings'>
                             <h1 className='text-lg font-medium hover:underline mb-60'>
                                 Settings
                             </h1>
@@ -25,7 +25,7 @@ export default function ClientProfile() {
                             </h1>
                             </a>
                         </div>
-                        <div className='bg-[#fefefe] col-span-3 p-4'>
+                        <div className='bg-[#fefefe] col-span-3 p-4 text-[#6f6f6f]'>
                             <h1 className='text-3xl font-semibold mb-5'>
                                 My Profile
                             </h1>
