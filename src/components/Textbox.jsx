@@ -1,12 +1,14 @@
 import React from 'react';
 
-function TextBox() {
+const TextBox = ({ name, value, onChange }) => {
   return (
-    <div className="mx-auto justify-center items-center ">
-      <input className="w-full h-7 border border-gray-300 px-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-        
+      <input 
+        className="w-full h-7 border border-gray-300 px-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+        type='text'
+        name={name}
+        value={value}
+        onChange={onChange}
       />
-    </div>
   );
 }
 
