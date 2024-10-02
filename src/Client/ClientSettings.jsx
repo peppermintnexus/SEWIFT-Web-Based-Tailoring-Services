@@ -41,7 +41,7 @@ export default function ClientProfile() {
                                 <h1 className='ml-3 text-lg mb-1'>
                                     Email
                                 </h1>
-                                <input className="ml-3 text-left w-xl h-5 border border-gray-300 px-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"/>
+                                <input className="ml-3 mb-4 text-left w-xl h-5 border border-gray-300 px-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"/>
                             </div>
                         </div>
 
@@ -54,16 +54,16 @@ export default function ClientProfile() {
                                 Current Password
                             </h1>
                             <input className="text-left w-xl h-5 border border-gray-300 px-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"/>
-                            <h1 className='text-xs mb-6 italic'>
+                            <h1 className='text-xs mb-3 italic'>
                                 *Password must be more than eight characters*
                             </h1>
                             <h1>
                                 Confirm Password
                             </h1>
-                            <input className="mb-10text-left w-xl h-5 border border-gray-300 px-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"/>
+                            <input className="mb-10 text-left w-xl h-5 border border-gray-300 px-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"/>
                         </div>
 
-                        <button className='bg-[#6793a8]'>
+                        <button className='bg-[#6793a8] font-semibold rounded-lg px-3 py-1 text-[#fefefe] hover:text-[#fefefe] hover:shadow-md'>
                             Save
                         </button>
                         </div>
