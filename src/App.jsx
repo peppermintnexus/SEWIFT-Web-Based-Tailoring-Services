@@ -16,6 +16,7 @@ import ClientHomepage from './Client/ClientHomepage'
 import ClientProfile from './Client/ClientProfile'
 import ClientSettings from './Client/ClientSettings'
 import TailorShops from './Client/TailorShops'
+import EmployeeHomepage from './Employee/EmployeeHomepage'
 
 function App() {
 
@@ -41,6 +42,8 @@ function App() {
       <Route path='/ClientProfile' element={<ClientProfile />} />
       <Route path='/ClientSettings' element={<ClientSettings />} />
       <Route path='/TailorShops' element={<TailorShops />} />
+
+      <Route path='/EmployeeHomepage' element={<EmployeeHomepage />} />
     </Routes>
   )
 }

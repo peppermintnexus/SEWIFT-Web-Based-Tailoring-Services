@@ -40,7 +40,7 @@ export default function SignUp() {
                 </div>
 
                 <div className='text-center mt-7 pb-3'>
-                    <a href='/ClientHomepage'>
+                    <a href='/EmployeeHomepage'>
                     <button className='text-center font-semibold rounded-lg px-3 py-1 text-[#fefefe] bg-[#10aeb2] hover:text-[#fefefe] hover:shadow-md'>Sign up</button></a>
                     <p>Already have an account? <a href='/ClientLogin' className='underline hover:text-[#6793a8]'>Log in</a></p>
                 </div>

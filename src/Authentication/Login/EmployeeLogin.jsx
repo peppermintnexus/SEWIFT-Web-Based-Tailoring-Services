@@ -52,7 +52,7 @@ export default function ClientLogin() {
                     <p className='text-right text-sm'>Forgot Password?</p>
 
                 <div className='text-center mt-7 pb-3'>
-                    <a href='/Login'>
+                    <a href='/EmployeeHomepage'>
                     <button className='text-center font-semibold rounded-lg px-3 py-1 text-[#fefefe] bg-[#10aeb2] hover:text-[#fefefe] hover:shadow-md'>Log in</button></a>
                     <p>Don't have an account? <a href='/SignUp' className='underline hover:text-[#6793a8]'>Sign up</a></p>
                 </div>
