@@ -31,8 +31,8 @@ export default function ClientProfile() {
                 </div>
             </div>
 
-            <div className='bg-[#F7F7F7] col-span-4 text-[#6f6f6f]'>
-                <div className='bg-[#fefefe] mb-5 m-5 rounded-lg'>
+            <div className='bg-[#F7F7F7] col-span-4 text-[#6f6f6f] min-h-screen'>
+                <div className='bg-[#fefefe] m-5 rounded-lg min-h-screen'>
                     <h1 className='p-5 text-3xl font-semibold'>
                         Welcome to your homepage!
                     </h1>
@@ -40,7 +40,7 @@ export default function ClientProfile() {
                         What will be your agenda today?
                     </p>
 
-                    <div className='mx-5 mt-10 pb-10 grid grid-cols-4 gap-5'>
+                    <div className='mx-5 mt-10 grid grid-cols-4 gap-5'>
                         <a href="#" className="flex flex-col h-full max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
                         <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
                             Order Request
