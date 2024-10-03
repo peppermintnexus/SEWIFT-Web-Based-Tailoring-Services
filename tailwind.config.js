@@ -14,6 +14,7 @@ export default {
         'light-blue': '#99dbff',
         'lime-green': '#ecf284',
         'sewifit-orange': '#ffc696'
+        
       }
     },
   },
