@@ -1,12 +1,11 @@
 import React from 'react'
 import SewiftLogo from '/src/assets/images/SewiftLogo.png'
-import ShopProfileIcon from '/src/assets/images/ShopProfileIcon.png'
-import JobOrderIcon from '/src/assets/images/JobOrderIcon.png'
-import EmployeesIcon from '/src/assets/images/EmployeesIcon.png'
-import TransactionIcon from '/src/assets/images/TransactionIcon.png'
 import UserIcon from '/src/assets/images/UserIcon.png'
 import SettingsIcon from '/src/assets/images/SettingsIcon.png'
 import LogoutIcon from '/src/assets/images/LogoutIcon.png'
+import JobOrderIcon from '/src/assets/images/JobOrderIcon.png'
+import ShopProfileIcon from '/src/assets/images/ShopProfileIcon.png'
+import TransactionIcon from '/src/assets/images/TransactionIcon.png'
 
 export default function ClientProfile() {
     return (
@@ -17,12 +16,12 @@ export default function ClientProfile() {
                     <div className='my-5 ml-7 grid grid-rows-3 gap'>
                         <div className='flex mb-8 items-center'>
                             <img className='w-5 h-5' src={UserIcon} />
-                            <h1 className='pl-5'>Name sa admin</h1>
+                            <h1 className='pl-5'>Name sa shop</h1>
                         </div>
                         <div className='flex mb-8 items-center'>
-                            <img className='w-5 h-5' src={ShopProfileIcon} />
+                            <img className='w-5 h-5' />
                             <a href='/'>
-                            <h1 className='pl-5 hover:underline font-medium'>Shop Profile</h1>
+                            <h1 className='pl-5 hover:underline font-medium'>Order Requests</h1>
                             </a>
                         </div>
                         <div className='flex mb-8 items-center'>
@@ -32,9 +31,9 @@ export default function ClientProfile() {
                             </a>
                         </div>
                         <div className='flex mb-8 items-center'>
-                            <img className='w-5 h-5' src={EmployeesIcon} />
+                            <img className='w-5 h-5' src={ShopProfileIcon} />
                             <a href='/'>
-                            <h1 className='pl-5 hover:underline font-medium'>Employees</h1>
+                            <h1 className='pl-5 hover:underline font-medium'>Shop Profile</h1>
                             </a>
                         </div>
                         <div className='flex mb-8 items-center'>
@@ -59,11 +58,13 @@ export default function ClientProfile() {
                 </div>
             </div>
 
-            <div className='bg-[#F7F7F7] col-span-4 text-[#6f6f6f] min-h-screen'>
-                <div className='m-5'>
-                    <h1 className='text-3xl font-semibold'>Welcome to your homepage!</h1>
+            <div className='bg-[#F7F7F7] col-span-4 text-[#6f6f6f]'>
+                <div className='bg-[#fefefe] m-5 rounded-lg min-h-screen'>
+                    <h1>Order Request</h1>
+                </div>
                 </div>
             </div>
-        </div>
+            
+
     )
 }

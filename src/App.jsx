@@ -17,6 +17,7 @@ import ClientProfile from './Client/ClientProfile'
 import ClientSettings from './Client/ClientSettings'
 import TailorShops from './Client/TailorShops'
 import EmployeeHomepage from './Employee/EmployeeHomepage'
+import OrderRequest from './Employee/OrderRequest'
 import AdminHomepage from './Admin/AdminHomepage'
 
 function App() {
@@ -45,6 +46,7 @@ function App() {
       <Route path='/TailorShops' element={<TailorShops />} />
 
       <Route path='/EmployeeHomepage' element={<EmployeeHomepage />} />
+      <Route path='/OrderRequest' element={<OrderRequest />} />
 
       <Route path='/AdminHomepage' element={<AdminHomepage />} />
     </Routes>
