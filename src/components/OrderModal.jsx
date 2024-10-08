@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import Textbox from '/src/components/Textbox.jsx'
 
 export default function OrderModal() {
     const [modal, setModal] = useState(false);
@@ -29,11 +30,33 @@ export default function OrderModal() {
                     <div onClick={toggleModal} className="overlay fixed inset-0 w-full h-full bg-[rgba(49,49,49,0.8)]"></div>
 
                     {/* Modal Content */}
-                    <div className="modal-content relative bg-gray-200 p-4 rounded-md max-w-xl min-w-[300px]">
-                        <h2>Measurement Profile</h2>
-                        <p className="line-height">
-                            Wowowow
-                        </p>
+                    <div className="modal-content relative bg-gray-200 p-5 rounded-md max-w-xl min-w-[300px]">
+                            <h2 className="text-2xl font-semibold">For Blouse</h2>
+                            <div className="pt-5">
+                                <h1 className="font-semibold pb-4">Measurement</h1>
+                                <div className="grid grid-cols-2">
+                                    <div className="grid grid-rows-2">
+                                        <div>
+                                        <p>Shoulder</p>
+                                        <Textbox />
+                                        </div>
+                                        <div>
+                                        <p>Circumference</p>
+                                        <Textbox />
+                                        </div>
+                                    </div>
+                                    <div className="grid grid-rows-2">
+                                        <div>
+                                        <p>Sleeve</p>
+                                        <Textbox />
+                                        </div>
+                                        <div>
+                                        <p>Figure</p>
+                                        <Textbox />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         <button className="close-modal absolute top-2.5 right-2.5 px-2 py-1" onClick={toggleModal}>
                             Cancel
                         </button>
