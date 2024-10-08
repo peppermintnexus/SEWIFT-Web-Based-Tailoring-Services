@@ -1,5 +1,6 @@
 import React from 'react'
 import ClientHeader from '/src/components/ClientHeader.jsx'
+import OrderModal from '../components/OrderModal'
 
 export default function TailorShops() {
     return (
@@ -22,11 +23,7 @@ export default function TailorShops() {
                             </div>
                         </div>
                         <div>
-                            <a href='/ViewShopProfile'>
-                            <button className='text-center font-semibold rounded-lg px-3 py-1 text-[#fefefe] bg-[#10aeb2] hover:text-[#fefefe] hover:shadow-md'>
-                                Create Order
-                            </button>
-                            </a>
+                            <OrderModal />
                         </div>
                     </div> 
                 </div>

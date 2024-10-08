@@ -33,10 +33,9 @@ export default function TailorShops() {
                             </button>
                             </a>
                         </div>
-                    </div>
-                    
+                    </div> 
+                </div>
             </div>
-        </div>
         </div>
     )
 }
