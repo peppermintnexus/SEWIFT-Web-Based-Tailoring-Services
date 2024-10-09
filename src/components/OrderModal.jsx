@@ -60,14 +60,14 @@ export default function OrderModal() {
                                         </div>
                                     </div>
                                     <div>
-                                        <p>diri tung apparel classification</p>
                                         <DropdownQuantity />
+                                        <p>diri tung remarks</p>
                                     </div>
                                 </div>
                             </div>
-                        {/* <button className="close-modal absolute top-2.5 right-2.5 px-2 py-1" onClick={toggleModal}>
+                            <button className="close-modal absolute top-2.5 right-2.5 px-2 py-1" onClick={toggleModal}>
                             Cancel
-                        </button> */}
+                        </button> 
                     </div>
                 </div>
             )}

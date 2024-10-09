@@ -27,6 +27,9 @@ export default function ClientHeader() {
 
             {isDropdownVisible && (
             <div className='absolute right-0 mt-3 z-10 bg-white rounded-lg shadow w-36 dark:bg-gray-700 dark:divide-gray-600'>
+                <div class="px-4 pt-3">
+                <span class="block text-sm text-gray-900 dark:text-white">Bonnie Green</span>
+        </div>
                 <ul className='py-2 text-sm text-gray-700 dark:text-gray-200' aria-labelledby='dropdownUser'>
                     <li>
                         <a href='/ClientProfile' className='block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white'>My Profile</a>
