@@ -20,6 +20,7 @@ import ViewShopProfile from './Client/ViewShopProfile'
 import EmployeeHomepage from './Employee/EmployeeHomepage'
 import OrderRequest from './Employee/OrderRequest'
 import AdminHomepage from './Admin/AdminHomepage'
+import AdminShopProfile from './Admin/AdminShopProfile'
 
 function App() {
 
@@ -51,6 +52,7 @@ function App() {
       <Route path='/OrderRequest' element={<OrderRequest />} />
 
       <Route path='/AdminHomepage' element={<AdminHomepage />} />
+      <Route path='/AdminShopProfile' element={<AdminShopProfile />} />
     </Routes>
   )
 }
