@@ -1,7 +1,6 @@
 import React from 'react';
 import AdminNav from '/src/components/AdminNav'
 import Upload from '/src/components/Upload'
-import Input from '/src/components/Input'
 
 export default function AdminShopProfile() {
     return (
@@ -9,25 +8,9 @@ export default function AdminShopProfile() {
             <AdminNav />
 
             <div className='col-span-3 bg-[#f0f0f0]'>
-                <div className='m-5 p-5 bg-[#fefefe] shadow'>
+                <div className='bg-[#fefefe] shadow'>
                     <div className='flex items-center justify-between'>
-                        <div className='relative flex'>
-                            <Upload />
-                        <div className='mx-3'>
-                            <h1 className='text-lg font-semibold'>Tailor Shop Name</h1>
-                            <p>Working Hours</p>
-                            <p>Open from Monday - Friday</p>
-                            <p>Complete Address</p>
-                            <Input />
-                        </div>
-                        </div>
-
-                        <div className='flex justify-end'>
-                            <button className='py-1 px-5 text-white bg-[#3f6e85] rounded-lg hover:bg-[#2b3a47] hover:shadow'>
-                                Edit
-                            </button>
-                        </div>
-                    </div>
+                    
 
                     <div className='mt-10 flex block max-w-xs p-3 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700'>
                         <div>
@@ -39,6 +22,7 @@ export default function AdminShopProfile() {
                             <p>Size</p>
                             <p>Price</p>
                         </div>
+                    </div>
                     </div>
                 </div>
             </div>

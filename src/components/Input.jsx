@@ -10,7 +10,7 @@ const App = () => (
     maxLength={100} 
     onChange={onChange} 
     placeholder="Description" 
-    className='mt-3 custom-width max-w-lg' 
+    className='mt-2 custom-width max-w-lg' 
   />
 );
 export default App;

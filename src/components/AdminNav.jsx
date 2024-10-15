@@ -27,7 +27,7 @@ export default function AdminNav() {
                         </div>
                         <div className='flex mb-8 items-center'>
                             <img className='w-5 h-5' src={JobOrderIcon} />
-                            <a href='/'>
+                            <a href='/AdminJobOrder'>
                             <h1 className='pl-5 hover:underline font-medium'>Job Orders</h1>
                             </a>
                         </div>
