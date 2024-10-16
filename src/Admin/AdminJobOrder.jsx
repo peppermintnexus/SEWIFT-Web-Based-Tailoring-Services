@@ -7,24 +7,22 @@ export default function AdminShopProfile() {
         <div className='grid grid-cols-4 bg-[#3f6e85]'>
             <AdminNav />
 
-            <div className='col-span-3 bg-[#f0f0f0]'>
-                <div className='bg-[#fefefe] shadow'>
-                    <div className='flex items-center justify-between'>
-                    
+            <div className='col-span-3 bg-[#f7f7f7] p-4'>
+                    <h1 className='font-semibold text-3xl'>Job Orders</h1>
 
-                    <div className='mt-10 flex block max-w-xs p-3 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700'>
-                        <div>
+                    <div className='bg-[#fefefe] mt-5 p-3'>
+                        <div className='flex'>
                             <Upload />
-                        </div>
-                        <div className='pl-3'>
+
+                            <div className='pl-3'>
                             <h1 className='text-lg font-semibold'>Product Name</h1>
-                            <p>Description</p>
-                            <p>Size</p>
-                            <p>Price</p>
+                            <p>Type of Order</p>
+                            <p>Status</p>
+                            <p>Delivery</p>
+                            </div>
                         </div>
+                        
                     </div>
-                    </div>
-                </div>
             </div>
         </div>
     )

@@ -33,7 +33,7 @@ export default function AdminNav() {
                         </div>
                         <div className='flex mb-8 items-center'>
                             <img className='w-5 h-5' src={EmployeesIcon} />
-                            <a href='/'>
+                            <a href='/EmployeesList'>
                             <h1 className='pl-5 hover:underline font-medium'>Employees</h1>
                             </a>
                         </div>
