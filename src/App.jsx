@@ -23,6 +23,7 @@ import AdminHomepage from './Admin/AdminHomepage'
 import AdminShopProfile from './Admin/AdminShopProfile'
 import AdminJobOrder from './Admin/AdminJobOrder'
 import EmployeesList from './Admin/EmployeesList'
+import AdminTransactionHistory from './Admin/AdminTransactionHistory'
 
 function App() {
 
@@ -57,6 +58,7 @@ function App() {
       <Route path='/AdminShopProfile' element={<AdminShopProfile />} />
       <Route path='/AdminJobOrder' element={<AdminJobOrder />} />
       <Route path='/EmployeesList' element={<EmployeesList />} />
+      <Route path='/AdminTransactionHistory' element={<AdminTransactionHistory />} />
     </Routes>
   )
 }
