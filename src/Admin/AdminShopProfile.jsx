@@ -1,46 +1,50 @@
 import React from 'react';
-import AdminNav from '/src/components/AdminNav'
+import AdminSidebar from '/src/components/AdminSidebar'
 import Upload from '/src/components/Upload'
 import Input from '/src/components/Input'
+import Ratings from '/src/components/Ratings'
 
 export default function AdminShopProfile() {
     return (
-        <div className='grid grid-cols-4 bg-[#3f6e85]'>
-            <AdminNav />
+        <div className='grid grid-cols-5 bg-[#fefefe] min-h-screen'>
+            <AdminSidebar />
+            
+            <div className='col-span-4 pt-5 px-5 relative'>
+                <button className="absolute top-5 right-5 bg-[#3f6e85] text-white px-4 py-2 rounded">Edit</button>
 
-            <div className='col-span-3 bg-[#f0f0f0]'>
-                <div className='m-5 p-5 bg-[#fefefe] shadow'>
-                    <div className='flex items-center justify-between'>
-                        <div className='relative flex'>
-                            <Upload />
-                        <div className='mx-3'>
+                <div className='flex'>
+                    <Upload className="w-48 h-48" />
+                    <div className='pl-3'>
+                        <div className='flex items-center'>
                             <h1 className='text-lg font-semibold'>Tailor Shop Name</h1>
-                            <p>Working Hours</p>
-                            <p>Open from Monday - Friday</p>
-                            <p>Complete Address</p>
-                            <Input />
+                            <span className='ml-2'><Ratings /></span>
                         </div>
-                        </div>
-
-                        <div className='flex justify-end'>
-                            <button className='py-1 px-5 text-white bg-[#3f6e85] rounded-lg hover:bg-[#2b3a47] hover:shadow'>
-                                Edit
-                            </button>
-                        </div>
+                    <div>
+                        <p>Working Hours</p>
+                        <p>Working Days</p>
+                        <p>Complete Address</p>
                     </div>
-
-                    <div className='mt-10 flex block max-w-xs p-3 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700'>
-                        <div>
-                            <Upload />
-                        </div>
-                        <div className='pl-3'>
-                            <h1 className='text-lg font-semibold'>Product Name</h1>
-                            <p>Description</p>
-                            <p>Size</p>
-                            <p>Price</p>
-                        </div>
+                    <Input />
                     </div>
                 </div>
+                    <hr className="border-t border-gray-200 mt-10" />
+
+                    <div class="mt-4 max-w-xs bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
+                        <a href="#">
+                            <img class="rounded-t-lg h-32 w-full object-cover" src="/docs/images/blog/image-1.jpg" alt="" /> 
+                        </a>
+                        <div class="p-3">
+                            <a href="#">
+                                <h5 class="mb-1 text-xl font-bold tracking-tight text-gray-900 dark:text-white">Product Name</h5> 
+                            </a>
+                            <ol class="mb-5 font-normal text-gray-700 dark:text-gray-400">
+                                <p>Size</p>
+                                <p>Description</p>
+                            </ol> 
+                            <a className='py-1 px-3 bg-[#3f6e85] rounded-lg text-white'>Price</a>
+                        </div>
+                    </div>
+
             </div>
         </div>
     )

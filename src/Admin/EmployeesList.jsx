@@ -1,17 +1,28 @@
-import React from 'react'
-import AdminNav from '/src/components/AdminNav'
+import React from 'react';
+import AdminSidebar from '/src/components/AdminSidebar'
+import Upload from '/src/components/Upload'
 
-export default function ClientProfile() {
+export default function AdminShopProfile() {
     return (
-        <div className='grid grid-cols-5 bg-[#3f6e85]'>
-                <AdminNav />
+        <div className='grid grid-cols-4 bg-[#3f6e85]'>
+            <AdminSidebar />
 
-            <div className='col-span-4 bg-[#f7f7f7]'>
-                <div className='m-5 p-3 bg-[#fefefe] rounded-lg'>
-                    <h1 className='text-2xl font-semibold'>Employees</h1>
+            <div className='col-span-3 bg-[#f7f7f7] p-4'>
+                    <h1 className='font-semibold text-3xl'>Employees</h1>
 
-                    
-                </div>
+                    <div className='bg-[#fefefe] mt-5 p-3'>
+                        <div className='flex'>
+                            <Upload />
+
+                            <div className='pl-3'>
+                            <h1 className='text-lg font-semibold'>Product Name</h1>
+                            <p>Type of Order</p>
+                            <p>Status</p>
+                            <p>Delivery</p>
+                            </div>
+                        </div>
+                        
+                    </div>
             </div>
         </div>
     )

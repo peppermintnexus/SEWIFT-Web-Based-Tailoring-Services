@@ -1,11 +1,11 @@
 import React from 'react';
-import AdminNav from '/src/components/AdminNav'
+import AdminSidebar from '/src/components/AdminSidebar'
 import Upload from '/src/components/Upload'
 
 export default function AdminShopProfile() {
     return (
         <div className='grid grid-cols-4 bg-[#3f6e85]'>
-            <AdminNav />
+            <AdminSidebar />
 
             <div className='col-span-3 bg-[#f7f7f7] p-4'>
                     <h1 className='font-semibold text-3xl'>Job Orders</h1>
