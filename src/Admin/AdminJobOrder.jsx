@@ -4,7 +4,7 @@ import Upload from '/src/components/Upload'
 
 export default function AdminShopProfile() {
     return (
-        <div className='grid grid-cols-5 bg-[#3f6e85]'>
+        <div className='grid grid-cols-5 bg-[##f7f7f7]'>
             <AdminSidebar />
 
             <div className='col-span-4 bg-[#f7f7f7] p-4'>
