@@ -34,9 +34,7 @@ export default function AdminShopProfile() {
                             <img class="rounded-t-lg h-32 w-full object-cover" src="/docs/images/blog/image-1.jpg" alt="" /> 
                         </a>
                         <div class="p-3">
-                            <a href="#">
                                 <h5 class="mb-1 text-xl font-bold tracking-tight text-gray-900 dark:text-white">Product Name</h5> 
-                            </a>
                             <ol class="mb-5 font-normal text-gray-700 dark:text-gray-400">
                                 <p>Size</p>
                                 <p>Description</p>

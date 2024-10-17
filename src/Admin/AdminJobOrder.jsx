@@ -4,10 +4,10 @@ import Upload from '/src/components/Upload'
 
 export default function AdminShopProfile() {
     return (
-        <div className='grid grid-cols-4 bg-[#3f6e85]'>
+        <div className='grid grid-cols-5 bg-[#3f6e85]'>
             <AdminSidebar />
 
-            <div className='col-span-3 bg-[#f7f7f7] p-4'>
+            <div className='col-span-4 bg-[#f7f7f7] p-4'>
                     <h1 className='font-semibold text-3xl'>Job Orders</h1>
 
                     <div className='bg-[#fefefe] mt-5 p-3'>
