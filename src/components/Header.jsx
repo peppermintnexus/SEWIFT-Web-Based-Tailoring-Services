@@ -9,7 +9,7 @@ export default function Header() {
                 <a href='/' className='p-4 hover:text-[#6793a8]'>Home</a>
                 <a href='/About' className='p-4 hover:text-[#6793a8]'>About</a>
                 <a href='/Features' className='p-4 hover:text-[#6793a8]'>Features</a>
-                <a href='/ClientLogin' className='p-4 hover:text-[#6793a8]'>Login</a>
+                <a href='/MainLogin' className='p-4 hover:text-[#6793a8]'>Login</a>
             </nav>
 
         </div>

@@ -12,6 +12,7 @@ import MeasurementForm from './components/MeasurementForm'
 import ClientLogin from './Authentication/Login/ClientLogin'
 import AdminLogin from './Authentication/Login/AdminLogin'
 import EmployeeLogin from './Authentication/Login/EmployeeLogin'
+import MainLogin from './Authentication/Login/MainLogin'
 import ClientHomepage from './Client/ClientHomepage'
 import ClientProfile from './Client/ClientProfile'
 import ClientSettings from './Client/ClientSettings'
@@ -19,11 +20,15 @@ import TailorShops from './Client/TailorShops'
 import ViewShopProfile from './Client/ViewShopProfile'
 import EmployeeHomepage from './Employee/EmployeeHomepage'
 import OrderRequest from './Employee/OrderRequest'
+import EmployeeJobOrder from './Employee/EmployeeJobOrder'
+import EmployeeTransactionHistory from './Employee/EmployeeTransactionHistory'
+import EmployeeShopProfile from './Employee/EmployeeShopProfile'
 import AdminHomepage from './Admin/AdminHomepage'
 import AdminShopProfile from './Admin/AdminShopProfile'
 import AdminJobOrder from './Admin/AdminJobOrder'
 import EmployeesList from './Admin/EmployeesList'
 import AdminTransactionHistory from './Admin/AdminTransactionHistory'
+import AdminSettings from './Admin/AdminSettings'
 
 function App() {
 
@@ -44,6 +49,7 @@ function App() {
       <Route path='/ClientLogin' element={<ClientLogin />} />
       <Route path='/AdminLogin' element={<AdminLogin />} />
       <Route path='/EmployeeLogin' element={<EmployeeLogin />} />
+      <Route path='/MainLogin' element={<MainLogin />} />
 
       <Route path='/ClientHomepage' element={<ClientHomepage />} />
       <Route path='/ClientProfile' element={<ClientProfile />} />
@@ -53,12 +59,16 @@ function App() {
 
       <Route path='/EmployeeHomepage' element={<EmployeeHomepage />} />
       <Route path='/OrderRequest' element={<OrderRequest />} />
+      <Route path='/EmployeeJobOrder' element={<EmployeeJobOrder />} />
+      <Route path='/EmployeeTransactionHistory' element={<EmployeeTransactionHistory />} />
+      <Route path='/EmployeeShopProfile' element={<EmployeeShopProfile />} />
 
       <Route path='/AdminHomepage' element={<AdminHomepage />} />
       <Route path='/AdminShopProfile' element={<AdminShopProfile />} />
       <Route path='/AdminJobOrder' element={<AdminJobOrder />} />
       <Route path='/EmployeesList' element={<EmployeesList />} />
       <Route path='/AdminTransactionHistory' element={<AdminTransactionHistory />} />
+      <Route path='/AdminSettings' element={<AdminSettings />} />
     </Routes>
   )
 }
