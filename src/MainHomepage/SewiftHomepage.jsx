@@ -1,5 +1,6 @@
 import React from 'react'
 import Header from '/src/components/Header.jsx'
+import Footer from '/src/components/Footer.jsx'
 import SewiftBg from '/src/assets/images/SewiftBg.png'
 
 export default function SewiftHomepage() {
@@ -20,6 +21,9 @@ export default function SewiftHomepage() {
                     Try it now!</button></a>
                 </div>
                 <img src={SewiftBg} class='sm:w-3/6 md:w-2/5'/>
+            </div>
+            <div>
+                <Footer />
             </div>
         </div>
     )
