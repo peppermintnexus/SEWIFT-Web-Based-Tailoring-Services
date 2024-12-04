@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import SewiftLogo from '/src/assets/images/SewiftLogo.png'
+import LogoWhite from '/src/assets/images/LogoWhite.png'
 import UserProfile from '/src/assets/images/UserProfile.png'
 import ClientProfile from '/src/Client/ClientProfile.jsx'
 
@@ -12,7 +12,7 @@ export default function ClientHeader() {
     
     return (
         <div className='flex justify-between items-center h-24 max-w-screen-xl px-10 mx-auto bg-[#d9edf4] text-[#6f6f6f] relative'>
-            <img src={SewiftLogo} className='sm:w-16 md:w-20' />
+            <img src={LogoWhite} className='sm:w-16 md:w-20' />
 
         <div className='relative mr-5'>
             <button

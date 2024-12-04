@@ -25,7 +25,7 @@ export default function Features() {
                         User Features
                     </h1>
                     <p className='text-[#6f6f6f] pb-4'>
-                    Explore what you can do with SEWIFT! we like to provide our users with the best features
+                    Explore what you can do with SEWIFT we like to provide our users with the best features
                     </p>
                 </div>
 

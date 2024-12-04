@@ -1,5 +1,5 @@
 import React from 'react'
-import SewiftLogo from '/src/assets/images/SewiftLogo.png'
+import LogoWhite from '/src/assets/images/LogoWhite.png'
 import UserIcon from '/src/assets/images/UserIcon.png'
 import SettingsIcon from '/src/assets/images/SettingsIcon.png'
 import LogoutIcon from '/src/assets/images/LogoutIcon.png'

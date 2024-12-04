@@ -1,5 +1,5 @@
 import React from 'react'
-import SewiftLogo from '/src/assets/images/SewiftLogo.png'
+import LogoWhite from '/src/assets/images/LogoWhite.png'
 
 export default function Header() {
     return (
