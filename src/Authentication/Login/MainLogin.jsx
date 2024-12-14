@@ -5,18 +5,15 @@ export default function ClientLogin() {
     return (
         <div className='min-h-screen place-items-center flex justify-center bg-[#20262B]'>
         <div class="w-full max-w-sm p-4 bg-white border border-gray-200 rounded-lg shadow sm:p-6 md:p-8 dark:bg-gray-800 dark:border-gray-700">
-            <div className='flex justify-end'>
-                <a href='/'>
-                <button className='flex bg-[#fefefe] rounded-full'>
-                    <img src={StickerClose} className='w-10 p-2 rounded-full hover:bg-[#f6f6f6]' alt="Close" />
-                </button>
-                </a>
-                    </div>
+            <div className='grid grid-cols-2 flex justify-between'>
+                                    <div className='justify-self-start mb-5 py-2 text-xl font-medium text-gray-900 dark:text-white'>Login to Sewift</div>
+                                    <a href='/'>
+                                    <button className='flex justify-self-end bg-[#fefefe] rounded-full'>
+                                        <img src={StickerClose} className='w-10 p-2 rounded-full hover:bg-[#f6f6f6]' alt="Close" />
+                                    </button>
+                                    </a>
+                                </div>
                     <form class="space-y-5" action="#">
-                        <div className='flex items-center'>
-                            <h5 className="text-xl font-medium text-gray-900 dark:text-white">Log in to Sewift</h5>
-                        </div>
-                        
                     <div>
                         <label for="email" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Email</label>
                         <input type="email" name="email" id="email" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white" required />
