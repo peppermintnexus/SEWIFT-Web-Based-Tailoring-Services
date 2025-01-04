@@ -76,85 +76,49 @@ export default function SignUp() {
         };
 
     return (
-        <div className='flex justify-center items-center pb-10'>
-                <form onSubmit={handleSignUp}>
-                <div className='px-24 bg-[#fefefe]'>
+        <div className='flex justify-center items-center'>
+            <div class="w-full h-80 p-1 overflow-hidden box-border">
+                <div className='grid grid-cols-2 gap-7 mb-2'>
                     <div>
-                    <div className='grid grid-cols-2 mb-1'>
-                        <div className='mr-6'>
-                            <p>First Name:</p>
-                            <Textbox 
-                                name='firstName'
-                                value={formData.firstName}
-                                onChange={(e) => handleInputChange(e)}
-                            />
-                        </div>
-
-                        <div>
-                            <p>Last Name:</p>
-                            <Textbox 
-                                name='lastName'
-                                value={formData.lastName}
-                                onChange={(e) => handleInputChange(e)}
-                            />
-                        </div>
+                        <p>First Name</p>
+                        <Textbox />
                     </div>
-
-                    <div className='col-span-2 mb-1'>
-                        <p>Complete Address:</p>
-                        <Textbox 
-                            name='completeAddress'
-                            value={formData.completeAddress}
-                            onChange={(e) => handleInputChange(e)}
-                        />
-                    </div>
-
-                    <div className='grid grid-cols-2 mb-1'>
-                        <div className='mr-6'>
-                            <p>Email:</p>
-                            <Textbox 
-                                name='email'
-                                value={formData.email}
-                                onChange={(e) => handleInputChange(e)}
-                            />
-                        </div>
-                        <div>
-                            <p>Phone Number:</p>
-                            <Textbox 
-                                name='phoneNumber'
-                                value={formData.phoneNumber}
-                                onChange={(e) => handleInputChange(e)}
-                            />
-                        </div>
-                    </div>
-
-                    <div className='grid grid-cols-2 mb-1'>
-                        <div className='mr-6'>
-                            <p>Password:</p>
-                            <Textbox 
-                                name='password'
-                                value={formData.password}
-                                onChange={(e) => handleInputChange(e)}
-                            />
-                        </div>
-
-                        <div>
-                            <p>Confirm Password:</p>
-                            <Textbox 
-                                name="confirmPassword"
-                                value={formData.confirmPassword}
-                                onChange={(e) => handleInputChange(e)}
-                            />
-                        </div>
+                    <div>
+                        <p>Last Name</p>
+                        <Textbox />
                     </div>
                 </div>
+                <div className='grid grid-cols-2 gap-7 mb-2'>
+                    <div>
+                        <p>Complete Address</p>
+                        <Textbox />
+                    </div>
+                    <div>
+                        <p>Phone Number</p>
+                        <Textbox />
+                    </div>
+                </div>
+                <div className='mb-2'>
+                    <p>Email Address</p>
+                    <Textbox />
+                </div>
+                <div className='grid grid-cols-2 gap-7 mb-2'>
+                    <div>
+                        <p>Password</p>
+                        <Textbox />
+                    </div>
+                    <div>
+                        <p>Confirm Password</p>
+                        <Textbox />
+                    </div>
                 </div>
 
-                <div className='text-center mt-7 pb-3'>
-                    <button className='text-center font-semibold rounded-lg px-3 py-1 text-[#fefefe] bg-[#10aeb2] hover:text-[#fefefe] hover:shadow-md' type='submit'>Sign up</button>
-                    <p>Already have an account? <a href='/ClientLogin' className='underline hover:text-[#6793a8]'>Log in</a></p>
+                <div className='text-center mt-7 mb-3'>
+                    <a href='/EmployeeHomepage'>
+                    <button className='text-center font-semibold rounded-lg px-6 py-1 text-[#fefefe] bg-[#10aeb2] hover:text-[#fefefe] hover:shadow-md'>Sign up</button></a>
+                    <p>Already have an account? <a href='/MainLogin' className='underline hover:text-[#6793a8]'>Log in</a></p>
                 </div>
-                </form>
-                </div>
+            </div>
+        </div>
     );
 }
