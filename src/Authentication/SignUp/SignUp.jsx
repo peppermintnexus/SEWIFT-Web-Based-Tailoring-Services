@@ -15,7 +15,7 @@ const SignUp = () => {
 
   return (
     <div className="min-h-screen place-items-center flex justify-center bg-[#20262B]">
-      <div className="p-8 bg-white border border-gray-200 rounded-lg dark:bg-gray-800 dark:border-gray-700">
+      <div className="px-10 py-5 bg-white border border-gray-200 rounded-lg dark:bg-gray-800 dark:border-gray-700">
         <div className="grid grid-cols-2 mb-5 flex justify-between">
           <div className="justify-self-start p-2 text-xl font-medium text-gray-900 dark:text-white">
             Create your account
