@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import Textbox from '/src/components/Textbox.jsx'
 import ClientHomepage from '/src/Client/ClientHomepage'
-import { createUserWithEmailAndPassword, setPersistence } from 'firebase/auth'
+import { createUserWithEmailAndPassword, browserSessionPersistence, setPersistence } from 'firebase/auth'
 import { auth, db } from '../../firebase'
 import { useNavigate } from 'react-router-dom'
 import { setDoc, doc } from 'firebase/firestore'
@@ -21,7 +21,6 @@ export default function SignUp() {
         const navigate = useNavigate();
         const db = getFirestore();
         const auth = getAuth();
-        const user = auth.currentUser;
 
         // Textbox
         const handleInputChange = (e) => {
@@ -30,7 +29,7 @@ export default function SignUp() {
 
         const createUserInFirestore = async (user, formData) => {
             try {
-                await setDoc(doc(db, 'users', user.uid), {
+                await setDoc(doc(db, 'clientUsers', user.uid), {
                     ...formData,
                 });
             } catch (err) {
@@ -55,6 +54,8 @@ export default function SignUp() {
                     setError('Passwords do not match');
                     return;
                 }
+
+                await setPersistence(auth, browserSessionPersistence);
                 
                 const userCredential = await createUserWithEmailAndPassword(auth, formData.email, formData.password);
                 const user = userCredential.user;
@@ -77,50 +78,51 @@ export default function SignUp() {
 
     return (
         <div className='flex justify-center items-center'>
+            <form onSubmit={handleSignUp}>
             <div class="w-full h-90 px-1 overflow-hidden box-border">
                 <div className='grid grid-cols-2 gap-7 mb-2'>
                     <div>
                         <p className='block mb-1 text-sm font-medium text-gray-900 dark:text-white'>First Name</p>
-                        <Textbox />
+                        <Textbox name='firstName' value={formData.firstName} onChange={(e) => handleInputChange(e)} />
                     </div>
                     <div>
                         <p className='block mb-1 text-sm font-medium text-gray-900 dark:text-white'>Last Name</p>
-                        <Textbox />
+                        <Textbox name='lastName' value={formData.lastName} onChange={(e) => handleInputChange(e)} />
                     </div>
                 </div>
                 <div className='grid grid-cols-2 gap-7 mb-2'>
                     <div>
                         <p className='block mb-1 text-sm font-medium text-gray-900 dark:text-white'>Complete Address</p>
-                        <Textbox />
+                        <Textbox name='completeAddress' value={formData.completeAddress} onChange={(e) => handleInputChange(e)} />
                     </div>
                     <div>
                         <p className='block mb-1 text-sm font-medium text-gray-900 dark:text-white'>Phone Number</p>
-                        <Textbox />
+                        <Textbox name='phoneNumber' value={formData.phoneNumber} onChange={(e) => handleInputChange(e)} />
                     </div>
                 </div>
                 <div className='mb-2'>
                     <p className='block mb-1 text-sm font-medium text-gray-900 dark:text-white'>Email Address</p>
-                    <Textbox />
+                    <Textbox name='email' value={formData.email} onChange={(e) => handleInputChange(e)} />
                 </div>
                 <div className='grid grid-cols-2 gap-7 mb-2'>
                     <div>
                         <p className='block mb-1 text-sm font-medium text-gray-900 dark:text-white'>Password</p>
-                        <Textbox />
+                        <Textbox name='password' value={formData.password} onChange={(e) => handleInputChange(e)} />
                     </div>
                     <div>
                         <p className='block mb-1 text-sm font-medium text-gray-900 dark:text-white'>Confirm Password</p>
-                        <Textbox />
+                        <Textbox name='confirmPassword' value={formData.confirmPassword} onChange={(e) => handleInputChange(e)} />
                     </div>
                 </div>
 
                 <div className='text-center mt-7 mb-3'>
-                    <a href='/ClientHomepage'>
-                    <button className='text-center font-semibold rounded-lg px-6 py-1.5 text-[#fefefe] bg-blue-700 hover:text-[#fefefe] hover:shadow-md'>Sign up</button></a>
+                    <button className='text-center font-semibold rounded-lg px-6 py-1.5 text-[#fefefe] bg-blue-700 hover:text-[#fefefe] hover:shadow-md' type='submit'>Sign up</button>
                     <div class="text-sm pt-2 font-medium text-gray-500 dark:text-gray-300 text-center">
                         Already have an account? <a href="/MainLogin" class="text-blue-700 hover:underline dark:text-blue-500">Log in</a>
                     </div>
                 </div>
             </div>
+            </form>
         </div>
     );
 }

@@ -132,304 +132,156 @@ export default function ClientProfile() {
     };
 
     return (
-        <div className='bg-[#d9edf4] min-h-screen'>
-
-            <div className='pt-10 mx-32'>
-                <div className='bg-[#fefefe] shadow-lg rounded-lg'>
-
-                    <div className='grid grid-cols-4 flex text-[#fefefe]'>
-                        <div className='bg-[#6793a8] px-4 py-10'>
-                            <a href='/ClientProfile'>
-                            <h1 className='text-lg font-medium underline mb-5'>
-                                Profile
-                            </h1>
-                            </a>
-                            <a href='/ClientSettings'>
-                            <h1 className='text-lg font-medium hover:underline mb-60'>
-                                Settings
-                            </h1>
-                            </a>
-                            <a href='/'>
-                            <h1 className='text-lg font-medium hover:underline'>
-                                Log out
-                            </h1>
-                            </a>
+        <div className='place-items-center flex justify-center bg-[#20262B] min-h-screen'>
+            <div className='rounded-lg px-5 py-4 container mx-auto bg-[#fefefe]'>
+                <p className='font-semibold text-3xl mb-3'>Account</p>
+                <div className='text-lg grid grid-cols-4 gap-3'>
+                    <div>
+                        <div className='container hover:bg-[#10aeb2] hover:rounded-lg hover:text-white hover:font-medium mb-1 p-2'>Profile</div>
+                        <div className='container hover:bg-[#10aeb2] hover:rounded-lg hover:text-white hover:font-medium mb-1 p-2'>Settings</div>
+                    </div>
+                    <div className='grid grid-rows-2'>
+                        <div className='mb-2'>
+                            <label>First Name</label>
+                            <input
+                            type='text'
+                            name='firstName'
+                            value={userData.firstName}
+                            onChange={handleInputChange}
+                            disabled={!isEditing}
+                            className='border border-gray-300 rounded px-2 py-1'
+                            />
                         </div>
-                        <div className='bg-[#fefefe] col-span-3 p-4 text-[#6f6f6f]'>
-                            <h1 className='text-3xl font-semibold mb-5'>
-                                My Profile
-                            </h1>
-                            <form onSubmit={handleSubmit}>
-                            <div className='grid grid-cols-2'>
-                            {/* Start */}
-                            <div className=''>
-                                <label>First Name:</label>
-                                <input
-                                    type='text'
-                                    name='firstName'
-                                    value={userData.firstName}
-                                    onChange={handleInputChange}
-                                    disabled={!isEditing}
-                                    className='border border-gray-300 rounded px-2 py-1'
-                                />
-                            </div>
-                            <div className=''>
-                            <div className=''>
-                                <label>Last Name:</label>
-                                <input
-                                    type='text'
-                                    name='lastName'
-                                    value={userData.lastName}
-                                    onChange={handleInputChange}
-                                    disabled={!isEditing}
-                                    className='border border-gray-300 rounded px-2 py-1'
-                                />
-                            </div>
-                                <label>Phone:</label>
-                                <input
-                                    type='tel'
-                                    name='phone'
-                                    value={userData.phone}
-                                    onChange={handleInputChange}
-                                    disabled={!isEditing}
-                                    className='border border-gray-300 rounded px-2 py-1'
-                                />
-                            </div>
-                            <div className=''>
-                                <label>Complete Address:</label>
-                                <input
-                                    type='text'
-                                    name='address'
-                                    value={userData.address}
-                                    onChange={handleInputChange}
-                                    disabled={!isEditing}
-                                    className='border border-gray-300 rounded px-2 py-1'
-                                />
-                            </div>
-                            <button type="button" onClick={() => setIsEditing(!isEditing)} className="mt-4 bg-blue-500 text-white px-4 py-2 rounded">
-                                {isEditing ? 'Cancel' : 'Edit'}
-                            </button>
-                            {isEditing && (
-                                <button type="submit" className="mt-4 bg-green-500 text-white px-4 py-2 rounded">
-                                    Save
-                                </button>
-                            )}
-                            </div>
-                            </form>
-                            <h1 className='text-xl font-semibold mb-2'>
-                                Measurement Profile
-                            </h1>
-                            
-                            <form onSubmit={handleSubmit}>
-                            <div className='grid grid-cols-3'>
-                                <div className='grid grid-rows-9'>
-                                <div className='flex pb-2 pr-5 justify-between'>
-                                    <p>Shoulder</p>
-                                    <input 
-                                    name="shoulder"
-                                    value={measurements.shoulder}
-                                    onChange={handleInputChange}
-                                    className="text-left w-24 h-5 border border-gray-300 px-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"/>
-                                </div>
-                                <div className='flex pb-2 pr-5 justify-between'>
-                                    <p>Sleeve</p>
-                                    <input 
-                                    name="sleeve"
-                                    value={measurements.sleeve}
-                                    onChange={handleInputChange}
-                                    className="text-left w-24 h-5 border border-gray-300 px-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"/>
-                                </div>
-                                <div className='flex pb-2 pr-5 justify-between'>
-                                    <p>Circumference</p>
-                                    <input 
-                                    name="circumference"
-                                    value={measurements.circumference}
-                                    onChange={handleInputChange}
-                                    className="text-left w-24 h-5 border border-gray-300 px-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"/>
-                                </div>
-                                <div className='flex pb-2 pr-5 justify-between'>
-                                    <p>Figure</p>
-                                    <input 
-                                    name="figure"
-                                    value={measurements.figure}
-                                    onChange={handleInputChange}
-                                    className="text-left w-24 h-5 border border-gray-300 px-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"/>
-                                </div>
-                                <div className='flex pb-2 pr-5 justify-between'>
-                                    <p>Blouse Length</p>
-                                    <input 
-                                    name="blouseLength"
-                                    value={measurements.blouseLength}
-                                    onChange={handleInputChange}
-                                    className="text-left w-24 h-5 border border-gray-300 px-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"/>
-                                </div>
-                                <div className='flex pb-2 pr-5 justify-between'>
-                                    <p>Dress Length</p>
-                                    <input 
-                                    name="dressLength"
-                                    value={measurements.dressLength}
-                                    onChange={handleInputChange}
-                                    className="text-left w-24 h-5 border border-gray-300 px-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"/>
-                                </div>
-                                <div className='flex pb-2 pr-5 justify-between'>
-                                    <p>Blouse Bust</p>
-                                    <input 
-                                    name="blouseBust"
-                                    value={measurements.blouseBust}
-                                    onChange={handleInputChange}
-                                    className="text-left w-24 h-5 border border-gray-300 px-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"/>
-                                </div>
-                                <div className='flex pb-2 pr-5 justify-between'>
-                                    <p>Blouse Waist</p>
-                                    <input 
-                                    name="blouseWaist"
-                                    value={measurements.blouseWaist}
-                                    onChange={handleInputChange}
-                                    className="text-left w-24 h-5 border border-gray-300 px-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"/>
-                                </div>
-                                <div className='flex pb-2 pr-5 justify-between'>
-                                    <p>Blouse Hips</p>
-                                    <input 
-                                    name="blouseHips"
-                                    value={measurements.blouseHips}
-                                    onChange={handleInputChange}
-                                    className="text-left w-24 h-5 border border-gray-300 px-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"/>
-                                </div>
-                                </div>
-
-                                <div>
-                                <div className='flex pb-2 pr-5 justify-between'>
-                                    <p>Front Chest</p>
-                                    <input 
-                                    name="frontChest"
-                                    value={measurements.frontChest}
-                                    onChange={handleInputChange}
-                                    className="text-left w-24 h-5 border border-gray-300 px-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"/>
-                                </div>
-                                <div className='flex pb-2 pr-5 justify-between'>
-                                    <p>Back Chest</p>
-                                    <input 
-                                    name="backChest"
-                                    value={measurements.backChest}
-                                    onChange={handleInputChange}
-                                    className="text-left w-24 h-5 border border-gray-300 px-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"/>
-                                </div>
-                                <div className='flex pb-2 pr-5 justify-between'>
-                                    <p>Bust Point</p>
-                                    <input 
-                                    name="bustPoint"
-                                    value={measurements.bustPoint}
-                                    onChange={handleInputChange}
-                                    className="text-left w-24 h-5 border border-gray-300 px-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"/>
-                                </div>
-                                <div className='flex pb-2 pr-5 justify-between'>
-                                    <p>Bust Distance</p>
-                                    <input 
-                                    name="bustDistance"
-                                    value={measurements.bustDistance}
-                                    onChange={handleInputChange}
-                                    className="text-left w-24 h-5 border border-gray-300 px-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"/>
-                                </div>
-                                <div className='flex pb-2 pr-5 justify-between'>
-                                    <p>Skirt Length</p>
-                                    <input 
-                                    name="skirtLength"
-                                    value={measurements.skirtLength}
-                                    onChange={handleInputChange}
-                                    className="text-left w-24 h-5 border border-gray-300 px-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"/>
-                                </div>
-                                <div className='flex pb-2 pr-5 justify-between'>
-                                    <p>Skirt Waist</p>
-                                    <input 
-                                    name="skirtWaist"
-                                    value={measurements.skirtWaist}
-                                    onChange={handleInputChange}
-                                    className="text-left w-24 h-5 border border-gray-300 px-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"/>
-                                </div>
-                                <div className='flex pb-2 pr-5 justify-between'>
-                                    <p>Skirt Hips</p>
-                                    <input 
-                                    name="skirtHips"
-                                    value={measurements.skirtHips}
-                                    onChange={handleInputChange}
-                                    className="text-left w-24 h-5 border border-gray-300 px-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"/>
-                                </div>
-                                <div className='flex pb-2 pr-5 justify-between'>
-                                    <p>Crotch</p>
-                                    <input 
-                                    name="crotch"
-                                    value={measurements.crotch}
-                                    onChange={handleInputChange}
-                                    className="text-left w-24 h-5 border border-gray-300 px-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"/>
-                                </div>
-                                <div className='flex pb-2 pr-5 justify-between'>
-                                    <p>Pants Length</p>
-                                    <input 
-                                    name="pantsLength"
-                                    value={measurements.pantsLength}
-                                    onChange={handleInputChange}
-                                    className="text-left w-24 h-5 border border-gray-300 px-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"/>
-                                </div>
-                                </div>
-
-                                <div>
-                                <div className='flex pb-2 pr-5 justify-between'>
-                                    <p>Thigh</p>
-                                    <input 
-                                    name="thigh"
-                                    value={measurements.thigh}
-                                    onChange={handleInputChange}
-                                    className="text-left w-24 h-5 border border-gray-300 px-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"/>
-                                </div>
-                                <div className='flex pb-2 pr-5 justify-between'>
-                                    <p>Knee</p>
-                                    <input 
-                                    name="knee"
-                                    value={measurements.knee}
-                                    onChange={handleInputChange}
-                                    className="text-left w-24 h-5 border border-gray-300 px-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"/>
-                                </div>
-                                <div className='flex pb-2 pr-5 justify-between'>
-                                    <p>Ankle Flare</p>
-                                    <input 
-                                    name="ankleFlare"
-                                    value={measurements.ankleFlare}
-                                    onChange={handleInputChange}
-                                    className="text-left w-24 h-5 border border-gray-300 px-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"/>
-                                </div>
-                                <div className='flex pb-2 pr-5 justify-between'>
-                                    <p>Polo Length</p>
-                                    <input 
-                                    name="poloLength"
-                                    value={measurements.poloLength}
-                                    onChange={handleInputChange}
-                                    className="text-left w-24 h-5 border border-gray-300 px-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"/>
-                                </div>
-                                <div className='flex pb-2 pr-5 justify-between'>
-                                    <p>Polo Waist</p>
-                                    <input 
-                                    name="poloWaist"
-                                    value={measurements.poloWaist}
-                                    onChange={handleInputChange}
-                                    className="text-left w-24 h-5 border border-gray-300 px-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"/>
-                                </div>
-                                <div className='flex pb-2 pr-5 justify-between'>
-                                    <p>Polo Hips</p>
-                                    <input 
-                                    name="poloHips"
-                                    value={measurements.poloHips}
-                                    onChange={handleInputChange}
-                                    className="text-left w-24 h-5 border border-gray-300 px-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"/>
-                                </div>
-                               
-                                <button type="submit" className="mt-4 bg-blue-500 text-white px-4 py-2 rounded">
-                                    Save Measurements {/* Button to submit the form */}
-                                </button>
-                                </div>
-                            </div>
-                            </form>
+                        <div>
+                            <label>Complete Address</label>
+                            <input
+                            type='text'
+                            name='address'
+                            value={userData.address}
+                            onChange={handleInputChange}
+                            disabled={!isEditing}
+                            className='border border-gray-300 rounded px-2 py-1'
+                            />
                         </div>
-                        
+                    </div>
+
+                    <div className='grid grid-rows-2'>
+                        <div>
+                            <label>Last Name</label>
+                            <input
+                            type='text'
+                            name='lastName'
+                            value={userData.lastName}
+                            onChange={handleInputChange}
+                            disabled={!isEditing}
+                            className='border border-gray-300 rounded px-2 py-1'
+                            />
+                        </div>
+                        <div>
+                            <label>Phone</label>
+                            <input
+                            type='tel'
+                            name='phone'
+                            value={userData.phone}
+                            onChange={handleInputChange}
+                            disabled={!isEditing}
+                            className='border border-gray-300 rounded px-2 py-1'
+                            />
+                        </div>
+                    </div>
+
+                    <div className='mt-2 space-x-4'>
+                    <button 
+                    type="button" 
+                    onClick={() => setIsEditing(!isEditing)} 
+                    className="mt-4 bg-blue-500 text-white px-4 py-2 rounded">
+                        {isEditing ? 'Cancel' : 'Edit'}
+                    </button>
+                        {isEditing && (
+                        <button type="submit" className="mt-4 bg-green-500 text-white px-4 py-2 rounded">
+                            Save
+                        </button>
+                        )}
+                    </div>
+                </div>
+
+                <div className='grid grid-cols-4 mt-3'>
+                    <div className='text-2xl mb-2 font-medium col-start-2'>
+                        Measurement Profile
+                    </div>
+                    <div className='col-start-2'>
+                    <div className='flex pb-2 pr-5 justify-between'>
+                        <p>Shoulder</p>
+                        <input 
+                        name="shoulder"
+                        value={measurements.shoulder}
+                        onChange={handleInputChange}
+                        className="text-left w-24 h-5 border border-gray-300 px-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"/>
+                    </div>
+                    <div className='flex pb-2 pr-5 justify-between'>
+                        <p>Sleeve</p>
+                        <input 
+                        name="sleeve"
+                        value={measurements.shoulder}
+                        onChange={handleInputChange}
+                        className="text-left w-24 h-5 border border-gray-300 px-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"/>
+                    </div>
+                    <div className='flex pb-2 pr-5 justify-between'>
+                        <p>Circumference</p>
+                        <input 
+                        name="circumference"
+                        value={measurements.shoulder}
+                        onChange={handleInputChange}
+                        className="text-left w-24 h-5 border border-gray-300 px-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"/>
+                    </div>
+                    <div className='flex pb-2 pr-5 justify-between'>
+                        <p>Figure</p>
+                        <input 
+                        name="figure"
+                        value={measurements.shoulder}
+                        onChange={handleInputChange}
+                        className="text-left w-24 h-5 border border-gray-300 px-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"/>
+                    </div>
+                    <div className='flex pb-2 pr-5 justify-between'>
+                        <p>Blouse Length</p>
+                        <input 
+                        name="blouseLength"
+                        value={measurements.shoulder}
+                        onChange={handleInputChange}
+                        className="text-left w-24 h-5 border border-gray-300 px-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"/>
+                    </div>
+                    <div className='flex pb-2 pr-5 justify-between'>
+                        <p>Dress Length</p>
+                        <input 
+                        name="dressLength"
+                        value={measurements.shoulder}
+                        onChange={handleInputChange}
+                        className="text-left w-24 h-5 border border-gray-300 px-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"/>
+                    </div>
+                    <div className='flex pb-2 pr-5 justify-between'>
+                        <p>Blouse Bust</p>
+                        <input 
+                        name="blouseBust"
+                        value={measurements.shoulder}
+                        onChange={handleInputChange}
+                        className="text-left w-24 h-5 border border-gray-300 px-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"/>
+                    </div>
+                    <div className='flex pb-2 pr-5 justify-between'>
+                        <p>Blouse Waist</p>
+                        <input 
+                        name="blouseWaist"
+                        value={measurements.shoulder}
+                        onChange={handleInputChange}
+                        className="text-left w-24 h-5 border border-gray-300 px-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"/>
+                    </div>
+                    <div className='flex pb-2 pr-5 justify-between'>
+                        <p>Blouse Hips</p>
+                        <input 
+                        name="blouseHips"
+                        value={measurements.shoulder}
+                        onChange={handleInputChange}
+                        className="text-left w-24 h-5 border border-gray-300 px-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"/>
+                    </div>
                     </div>
                 </div>
             </div>
