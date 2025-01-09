@@ -70,7 +70,7 @@ export default function SignUp() {
 
                 await createUserInFirestore(user, userData);
                 await handleEmailVerification(user); // Email Verification
-                navigate('/ClientHomepage');
+                navigate('/MeasurementForm');
             } catch (err) {
                 setError('Failed to create an account.');
             }

@@ -4,17 +4,16 @@ import Textbox from '/src/components/Textbox.jsx'
 
 export default function ClientLogin() {
     return (
-        <div className='bg-[#d9edf4] min-h-screen'>
+        <div className='bg-[#10aeb2] min-h-screen'>
             <div>
                 <Header />
             </div>
 
-            <div className='bg-[#fefefe] rounded-lg mx-36 mt-1'>
-                <h1 className='text-3xl font-semibold pt-4 pb-5 text-[#6793a8] text-center'>
+            <div className='bg-[#fefefe] rounded-lg mx-40 mt-10'>
+                <h1 className='text-3xl font-semibold pt-4 pb-5 text-[#171B1F] text-center'>
                     Measurement Profile
                 </h1>
             
-
             <div className='grid grid-cols-3 mx-12 gap-14'>
                 <div className='grid grid-rows-9'>
                     <div className='flex pb-2 justify-between'>
@@ -136,11 +135,11 @@ export default function ClientLogin() {
                 <div>
                     <div className='mt-7 pb-4 flex justify-center items-center'>
                         <a href='/ClientHomepage'>
-                        <button className='mx-3 text-center font-semibold rounded-lg px-3 py-1 text-[#fefefe] bg-[#6793a8] hover:text-[#fefefe]'>
-                            Sign up
+                        <button className='mx-3 text-center font-semibold rounded-lg px-3 py-1 text-[#fefefe] bg-[#171B1F] hover:text-[#fefefe]'>
+                            Submit
                         </button>
                         </a>  
-                        <button className='mx-3 text-center font-semibold rounded-lg px-3 py-1 text-[#fefefe] bg-[#6793a8] hover:text-[#fefefe]'>
+                        <button className='mx-3 text-center font-semibold rounded-lg px-3 py-1 text-[#fefefe] bg-[#171B1F] hover:text-[#fefefe]'>
                             Add Later
                         </button>
                     </div>
