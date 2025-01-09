@@ -139,9 +139,11 @@ export default function ClientLogin() {
                             Submit
                         </button>
                         </a>  
+                        <a href='/ClientHomepage'>
                         <button className='mx-3 text-center font-semibold rounded-lg px-3 py-1 text-[#fefefe] bg-[#171B1F] hover:text-[#fefefe]'>
                             Add Later
                         </button>
+                        </a>
                     </div>
             </div>
             </div>
