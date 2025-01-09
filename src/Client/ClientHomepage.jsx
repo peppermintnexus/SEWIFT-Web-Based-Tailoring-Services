@@ -1,6 +1,11 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import ClientHeader from '/src/components/ClientHeader.jsx'
 import Carousel from '/src/components/Carousel.jsx'
+import { useNavigate } from 'react-router-dom'
+import { onAuthStateChanged, getIdToken } from 'firebase/auth'
+import { auth } from '../firebase'
+import { getDoc, doc } from 'firebase/firestore'
+import { db } from '../firebase'
 
 const slides = [
     "/src/assets/images/Slide1.png",
@@ -9,11 +14,39 @@ const slides = [
 ]
 
 export default function ClientHomepage() {
+    const [user, setUser] = useState(null);
+    const [firstName, setFirstName] = useState('')
+    const [token, setToken] = useState('');
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        const unsubscribe = onAuthStateChanged(auth, async (user) => {
+            if (user) {
+                const userToken = await getIdToken(user);
+                setToken(userToken);
+                
+                const userDoc = await getDoc(doc(db, 'clientUsers', user.uid));
+                if (userDoc.exists()) {
+                    setFirstName(userDoc.data().firstName);
+                }
+
+                setUser(user);
+                } else {
+                navigate('/ClientLogin');
+            }
+        });
+
+        return () => unsubscribe();
+    }, [navigate]);
+
+    if (!user) {
+        return <p>Loading...</p>
+    }
     
     return (
         <div>
             <div>
-            <ClientHeader />
+            <ClientHeader userName={firstName || 'Client'}/>
             </div>
             
             <div className='bg-[#fefefe] flex py-5 justify-center'> 
