@@ -77,9 +77,30 @@ export default function SignUp() {
                             <p className='block mb-1 text-sm font-medium text-gray-900 dark:text-white'>Name</p>
                             <Textbox name='name' value={formData.name} onChange={(e) => handleInputChange(e)} />
                         </div>
-                        <div className='mb-2'>
-                            <p className='block mb-1 text-sm font-medium text-gray-900 dark:text-white'>Phone Number</p>
-                            <Textbox name='phoneNumber' value={formData.phoneNumber} onChange={(e) => handleInputChange(e)}/>
+                        <div className='grid grid-cols-2 gap-7 mb-2'>
+                            <div>
+                            <p className='block mb-1 text-sm font-medium text-gray-900 dark:text-white'>Tailor Shop Name</p>
+                            <div>
+                                <button id="dropdownDefaultButton" data-dropdown-toggle="dropdown" class="text-[#b5b5b5] bg-[#fefefe] hover:bg-[#f7f7f7] border font-medium rounded-lg text-sm w-full px-1.5 py-1 text-center inline-flex items-center" type="button">Dropdown<svg class="w-2.5 h-2.5 ms-3 justify-self-end" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4"/>
+                                </svg>
+                                </button>
+
+                                <div id="dropdown" class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700">
+                                    <ul class="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownDefaultButton">
+                                        <li>
+                                            <a href="#" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Dashboard</a></li>
+                                        <li>
+                                            <a href="#" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Settings</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                            </div>
+                            <div>
+                                <p className='block mb-1 text-sm font-medium text-gray-900 dark:text-white'>Phone Number</p>
+                                <Textbox name='phoneNumber' value={formData.phoneNumber} onChange={(e) => handleInputChange(e)} />
+                            </div>
                         </div>
                         <div className='mb-2'>
                             <p className='block mb-1 text-sm font-medium text-gray-900 dark:text-white'>Email Address</p>
@@ -102,6 +123,7 @@ export default function SignUp() {
                             Already have an account? <a href="/MainLogin" class="text-blue-700 hover:underline dark:text-blue-500">Log in</a>
                         </div>
                         </div>
+                    
                     </div>
                     </form>
                 </div>

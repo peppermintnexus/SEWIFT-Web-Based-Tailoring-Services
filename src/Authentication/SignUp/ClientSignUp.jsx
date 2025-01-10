@@ -107,11 +107,11 @@ export default function SignUp() {
                 <div className='grid grid-cols-2 gap-7 mb-2'>
                     <div>
                         <p className='block mb-1 text-sm font-medium text-gray-900 dark:text-white'>Password</p>
-                        <Textbox name='password' value={formData.password} onChange={(e) => handleInputChange(e)} />
+                        <Textbox name='password' value={formData.password} onChange={(e) => handleInputChange(e)} placeholder="••••••••" />
                     </div>
                     <div>
                         <p className='block mb-1 text-sm font-medium text-gray-900 dark:text-white'>Confirm Password</p>
-                        <Textbox name='confirmPassword' value={formData.confirmPassword} onChange={(e) => handleInputChange(e)} />
+                        <Textbox name='confirmPassword' value={formData.confirmPassword} onChange={(e) => handleInputChange(e)} placeholder="••••••••" />
                     </div>
                 </div>
 
