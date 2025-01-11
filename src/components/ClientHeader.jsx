@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import LogoBlack from '/src/assets/images/LogoBlack.png'
+import LogoWhite from '/src/assets/images/LogoWhite.png'
 import UserProfile from '/src/assets/images/UserProfile.png'
 import ClientProfile from '/src/Client/ClientProfile.jsx'
 import { signOut } from 'firebase/auth';
@@ -24,8 +24,8 @@ export default function ClientHeader({ userName }) {
     };
     
     return (
-        <div className='flex justify-between items-center h-24 max-w-screen-xl px-10 mx-auto bg-[#d9edf4] text-[#6f6f6f] relative'>
-            <img src={LogoBlack} className='sm:w-16 md:w-20' />
+        <div className='flex justify-between items-center h-24 max-w-screen-xl px-10 mx-auto  bg-[#20262B] text-[#6f6f6f] relative'>
+            <img src={LogoWhite} className='sm:w-16 md:w-20' />
 
         <div className='relative mr-5'>
             <button
@@ -50,7 +50,7 @@ export default function ClientHeader({ userName }) {
                         <a href='/ClientProfile' className='block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white'>My Profile</a>
                     </li>
                     <li>
-                        <a href='#' className='block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white'>Settings</a>
+                        <a href='/ClientSettings' className='block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white'>Settings</a>
                     </li>
                     <li>
                         {/* Logout */}

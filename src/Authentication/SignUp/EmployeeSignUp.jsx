@@ -79,7 +79,7 @@ export default function SignUp() {
                         </div>
                         <div className='grid grid-cols-2 gap-7 mb-2'>
                             <div>
-                            <p className='block mb-1 text-sm font-medium text-gray-900 dark:text-white'>Tailor Shop Name</p>
+                            <p className='block mb-1 text-sm font-medium text-gray-900 dark:text-white'>Tailor Shop</p>
                             <div>
                                 <button id="dropdownDefaultButton" data-dropdown-toggle="dropdown" class="text-[#b5b5b5] bg-[#fefefe] hover:bg-[#f7f7f7] border font-medium rounded-lg text-sm w-full px-1.5 py-1 text-center inline-flex items-center" type="button">Dropdown<svg class="w-2.5 h-2.5 ms-3 justify-self-end" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
                                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4"/>

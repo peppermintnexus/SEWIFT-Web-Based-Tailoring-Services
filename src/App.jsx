@@ -9,9 +9,6 @@ import ClientSignUp from './Authentication/SignUp/ClientSignUp'
 import AdminSignUp from './Authentication/SignUp/AdminSignUp'
 import EmployeeSignUp from './Authentication/SignUp/EmployeeSignUp'
 import MeasurementForm from './Client/MeasurementForm'
-import ClientLogin from './Authentication/Login/ClientLogin'
-import AdminLogin from './Authentication/Login/AdminLogin'
-import EmployeeLogin from './Authentication/Login/EmployeeLogin'
 import MainLogin from './Authentication/Login/MainLogin'
 import ClientHomepage from './Client/ClientHomepage'
 import ClientProfile from './Client/ClientProfile'
@@ -46,9 +43,6 @@ function App() {
       <Route path='/EmployeeSignUp' element={<EmployeeSignUp />} />
       <Route path='/MeasurementForm' element={<MeasurementForm />} />
 
-      <Route path='/ClientLogin' element={<ClientLogin />} />
-      <Route path='/AdminLogin' element={<AdminLogin />} />
-      <Route path='/EmployeeLogin' element={<EmployeeLogin />} />
       <Route path='/MainLogin' element={<MainLogin />} />
 
       <Route path='/ClientHomepage' element={<ClientHomepage />} />
