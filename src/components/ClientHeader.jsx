@@ -54,12 +54,14 @@ export default function ClientHeader({ userName }) {
                     </li>
                     <li>
                         {/* Logout */}
+                        <a href='/'>
                         <button
                         onClick={handleLogout}
                         className='block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white'
                         >
                             Log out
                         </button>
+                        </a>
                     </li>
                 </ul>
             </div>
