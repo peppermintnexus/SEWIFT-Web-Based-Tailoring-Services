@@ -1,40 +1,33 @@
 import React from 'react'
 import ClientHeader from '/src/components/ClientHeader.jsx'
+import Sample from '/src/assets/images/Sample.jpg'
 
 export default function TailorShops() {
     return (
-        <div className='bg-[#d9edf4] pb-3 min-h-screen'>
+        <div className='min-h-screen bg-[#fefefe]'>
             <div>
-            <ClientHeader />
+                <ClientHeader />
             </div>
 
-            <div className='bg-[#fefefe] my-3 mx-10 min-h-screen rounded-lg'>
-                <h2 className='text-4xl font-semibold p-5'>
-                    Tailor Shops
-                </h2>
-                <div className='mx-10 my-5 grid-cols-2 grid grid-flow-row auto-rows-max gap-5'>
-                    <div className='grid grid-cols-4 shadow px-2 py-4'>
-                        <div className='place-self-center'>
-                            image
-                        </div>
-                        <div className='grid-rows-2 col-span-2'>
-                            <div className='font-semibold text-lg pb-5'>Tailor Shop Name</div>
-                            <div className='grid grid-rows-3 text-[#9ca3af]'>
-                                <div>Email:</div>
-                                <div>Contact:</div>
-                                <div>Location:</div>
-                            </div>
-                        </div>
-                        <div className=''>
-                            <h1 className='pb-2'>Ratings (5)</h1>
-                            <a href='/ViewShopProfile'>
-                            <button className='text-center font-semibold rounded-lg px-3 py-1 text-[#fefefe] bg-[#10aeb2] hover:text-[#fefefe] hover:shadow-md'>
-                                View Profile
-                            </button>
-                            </a>
-                        </div>
-                    </div> 
-                </div>
+            <p className='font-bold text-center text-black pt-5 pb-9 text-4xl'>Tailor Shops</p>
+            <div className='grid grid-cols-3 mx-40 rounded-lg p-3 gap-3'>
+                <a href="#" class="shadow-lg hover:scale-105 transform transition duration-300 ease-in-out hover:shadow-lg"> {/* iconnect sa tailor shop account */}
+                    <div class="max-w-sm bg-white  border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
+                        <img class="rounded-t-lg object-cover w-80 h-48" src={Sample} />
+                    
+                    <div class="p-4">
+                        <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">Sastre Fashion and Sportswear</h5>
+                        <p class="font-normal text-gray-700 dark:text-gray-400">
+                            Email<br />
+                            Contact<br />
+                            Location<br />
+                        </p>
+                    </div>
+                    </div>
+                </a>
+
+                <div>1</div>
+                <div>1</div>
             </div>
         </div>
     )
