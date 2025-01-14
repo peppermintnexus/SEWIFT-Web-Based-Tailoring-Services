@@ -25,7 +25,9 @@ export default function ClientHeader({ userName }) {
     
     return (
         <div className='flex justify-between items-center h-24 max-w-screen-xl px-10 mx-auto  bg-[#20262B] text-[#6f6f6f] relative'>
+            <a href='/ClientHomepage'>
             <img src={LogoWhite} className='sm:w-16 md:w-20' />
+            </a>
 
         <div className='relative mr-5'>
             <button

@@ -55,7 +55,7 @@ export default function ClientHomepage() {
                 <div className='bg-cover bg-center' style={{ backgroundImage: `url(${Explore})` }}>
                     <p className='font-bold text-3xl px-16 pt-11'>Explore<br />Tailor Shops</p>
                     <a href='/TailorShops'>
-                    <button type="button" class="mx-16 mt-4 mb-11 text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700">
+                    <button type="button" class="mx-16 mt-4 mb-9 bg-white px-5 py-2.5 rounded-full hover:text-white hover:bg-black text-black text-sm font-medium">
                         Start here
                     </button>
                     </a>
@@ -75,7 +75,7 @@ export default function ClientHomepage() {
                         <p className='mb-2 font-medium'>Price</p>
 
                         <a href='#'>
-                        <button type="button" className="place-self-end text-white bg-blue-700 hover:bg-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
+                        <button type="button" className="place-self-end text-white border border-black bg-black hover:text-black hover:bg-white font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 ">
                             Order
                         </button>
                         </a>
