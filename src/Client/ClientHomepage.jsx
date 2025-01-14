@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import ClientHeader from '/src/components/ClientHeader.jsx'
 import SchoolBlouse from '/src/assets/images/SchoolBlouse.jpg'
+import SchoolSkirt from '/src/assets/images/SchoolSkirt.jpg'
 import Explore from '/src/assets/images/Explore.png'
 import { useNavigate } from 'react-router-dom'
 import { onAuthStateChanged, getIdToken } from 'firebase/auth'
@@ -68,7 +69,7 @@ export default function ClientHomepage() {
 
                 <div className='px-9 grid grid-cols-5 gap-5'>
                     <div className='w-56 h-56 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700'>
-                        <img src={SchoolBlouse} className='mb-2 rounded-lg w-full h-full' />
+                        <img src={SchoolBlouse} className='object-cover mb-2 rounded-lg w-full h-full' />
                         <p className='font-bold'>Liceo JHS Uniform Blouse</p>
                         <p>Description</p>
                         <p className='text-[#867E7B]'>Size: S, M, L, XL</p>
@@ -81,7 +82,20 @@ export default function ClientHomepage() {
                         </a>
                     </div>
 
-                    <div></div>
+                    <div className='w-56 h-56 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700'>
+                        <img src={SchoolSkirt} className='object-cover mb-2 rounded-lg w-full h-full' />
+                        <p className='font-bold'>Liceo SHS Uniform Skirt</p>
+                        <p>Description</p>
+                        <p className='text-[#867E7B]'>Size: S, M, L, XL</p>
+                        <p className='mb-2 font-medium'>Price</p>
+
+                        <a href='#'>
+                        <button type="button" className="place-self-end text-white border border-black bg-black hover:text-black hover:bg-white font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 ">
+                            Order
+                        </button>
+                        </a>
+                    </div>
+
                     <div></div>
                     <div></div>
                     <div></div>
