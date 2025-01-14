@@ -16,6 +16,7 @@ export default function TailorShops() {
                         <img class="rounded-t-lg object-cover w-80 h-48" src={Sample} />
                     
                         <div class="p-4">
+                            <a href='/ViewShopProfile'>
                             <div class="container w-60 h-16 overflow-hidden">
                                 <h5 class="line-clamp-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
                                     Sastre Fashion and Sportswear
@@ -26,6 +27,7 @@ export default function TailorShops() {
                                 Contact<br />
                                 Location<br />
                             </p>
+                            </a>
                         </div>
                     </div>
                 </a>

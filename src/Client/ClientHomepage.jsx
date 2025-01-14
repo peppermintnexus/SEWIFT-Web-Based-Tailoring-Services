@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import OrderModal from '../components/OrderModal'
 import ClientHeader from '/src/components/ClientHeader.jsx'
 import SchoolBlouse from '/src/assets/images/SchoolBlouse.jpg'
 import SchoolSkirt from '/src/assets/images/SchoolSkirt.jpg'
@@ -75,11 +76,9 @@ export default function ClientHomepage() {
                         <p className='text-[#867E7B]'>Size: S, M, L, XL</p>
                         <p className='mb-2 font-medium'>Price</p>
 
-                        <a href='#'>
-                        <button type="button" className="place-self-end text-white border border-black bg-black hover:text-black hover:bg-white font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 ">
-                            Order
-                        </button>
-                        </a>
+                        <div>
+                            <OrderModal />
+                        </div>
                     </div>
 
                     <div className='w-56 h-56 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700'>
@@ -89,11 +88,9 @@ export default function ClientHomepage() {
                         <p className='text-[#867E7B]'>Size: S, M, L, XL</p>
                         <p className='mb-2 font-medium'>Price</p>
 
-                        <a href='#'>
-                        <button type="button" className="place-self-end text-white border border-black bg-black hover:text-black hover:bg-white font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 ">
-                            Order
-                        </button>
-                        </a>
+                        <div>
+                            <OrderModal />
+                        </div>
                     </div>
 
                     <div></div>
