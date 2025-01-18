@@ -1,13 +1,16 @@
 import React from 'react';
 import AdminSidebar from '/src/components/AdminSidebar'
-import Upload from '/src/components/Upload'
+import AdminHeader from '/src/components/AdminHeader'
 
 export default function AdminShopProfile() {
     return (
-        <div className='grid grid-cols-5 bg-[#f7f7f7] min-h-screen'>
-            <AdminSidebar />
-
-            <div className='m-3 p-4 bg-[#fefefe] col-span-4'>
+        <div className='min-h-screen relative'>
+                    <AdminHeader />
+        
+                    <div className='w-fit h-fit grid grid-cols-5 bg-[#F7F7F7]'>
+                        <AdminSidebar />
+        
+                        <div className='m-3 p-4 bg-[#fefefe] col-span-4'>
                 <div className='flex items-center justify-between'>
                     <h1 className='text-2xl font-semibold'>Employees</h1>
                     <button className='bg-[#3f6e85] py-1 p-3 font-medium text-white rounded-lg hover:shadow-lg'>+ Add Employee</button>
@@ -57,6 +60,8 @@ export default function AdminShopProfile() {
                     </table>
                 </div>
             </div>
-        </div>
+
+                    </div>
+                </div>
     )
 }

@@ -67,12 +67,7 @@ export default function AdminHomepage() {
                     </div>
                         
                         <div className="w-full h-[67vh] bg-[#fefefe] rounded-lg shadow overflow-y-auto">
-                            <div className="border p-5 space-y-4">
-                                <ReportTimeline />
-                                <ReportTimeline />
-                                <ReportTimeline />
-                                <ReportTimeline />
-                                <ReportTimeline />
+                            <div className="p-5 space-y-4">
                                 <ReportTimeline />
                             </div> 
                         </div>

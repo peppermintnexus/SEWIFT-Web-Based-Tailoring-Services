@@ -16,9 +16,10 @@ const App = () => {
     <>
       <Button 
       type="primary"
-      className='bg-[#E3F2FD] w-full text-left text-black justify-start p-5'
+      className='bg-[#E3F2FD] w-full flex justify-between text-black justify-start p-5'
       onClick={showModal}>
-        Job Order<span className='font-semibold'>12345</span>
+        <p>Job Order <span className='font-semibold'>12345</span></p>
+        <p>Status: <span className='font-semibold'>Ongoing</span></p>
       </Button>
       {/* Remove OK and Cancel buttons by setting footer to null */}
       <Modal title="JO Number 12345" open={isModalOpen} onCancel={handleCancel} footer={null}>
