@@ -14,8 +14,11 @@ const App = () => {
 
   return (
     <>
-      <Button type="primary" onClick={showModal}>
-        View More
+      <Button 
+      type="primary"
+      className='bg-[#E3F2FD] w-full text-left text-black justify-start p-5'
+      onClick={showModal}>
+        Job Order<span className='font-semibold'>12345</span>
       </Button>
       {/* Remove OK and Cancel buttons by setting footer to null */}
       <Modal title="JO Number 12345" open={isModalOpen} onCancel={handleCancel} footer={null}>

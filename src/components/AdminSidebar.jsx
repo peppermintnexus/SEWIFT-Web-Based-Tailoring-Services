@@ -4,7 +4,7 @@ export default function AdminSidebar() {
     return (
         <div>
             <aside id="logo-sidebar" class="relative bg-[#fefefe] mt-0.5 shadow-md fixed top-0 left-0 z-40 w-64 pb-6 transition-transform -translate-x-full sm:translate-x-0" aria-label="Sidebar">
-                <div className="pt-4 h-full px-6 overflow-y-auto bg-[#fefefe] dark:bg-gray-800">
+                <div className="pt-4 px-6 overflow-y-auto bg-[#fefefe] dark:bg-gray-800">
                   
                   <ul className="space-y-2">
                      <li>

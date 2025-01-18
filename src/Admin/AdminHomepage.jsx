@@ -13,18 +13,18 @@ export default function AdminHomepage() {
         };
 
     return (
-        <div className='bg-[#F7F7F7] min-h-screen relative'>
+        <div className='min-h-screen relative'>
             <AdminHeader />
 
-            <div className='grid grid-cols-5 bg-[#F7F7F7]'>
+            <div className='w-fit h-fit grid grid-cols-5 bg-[#F7F7F7]'>
                 <AdminSidebar />
 
                 <div className='ml-2 p-3 col-start-2 col-end-6'>
                     <h1 className='text-xl font-medium'>Welcome to your Dashboard</h1>
                     <p className='text-[#7F7F7F]'>Recent reports and activities will be shown in this area</p>
 
-                    <div className='mt-3 relative inline-block grid grid-cols-2'>
-                        <div className='mt-3 flex'>
+                    <div className='pt-3 relative inline-block grid grid-cols-2'>
+                        <div className='pt-3 flex'>
                             <a href="#" class="flex items-center justify-center px-3 h-8 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
                                 Previous
                             </a>
@@ -36,7 +36,7 @@ export default function AdminHomepage() {
                         <div className='flex justify-end'>
                             <button 
                             onClick={toggleDropdown} 
-                            className="text-white bg-[#10aeb2] hover:bg-[#10aeb2] font-medium rounded-lg text-sm px-5 py-2 my-2 text-center inline-flex items-center" 
+                            className="text-white bg-[#10aeb2] focus:bg-[#4096FF] hover:bg-[#4096FF] font-medium rounded-lg text-sm px-5 py-2 my-2 text-center inline-flex items-center" 
                             type="button">Sort by <svg class="w-2.5 h-2.5 ms-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
                             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4"/>
                             </svg>
@@ -45,9 +45,6 @@ export default function AdminHomepage() {
                             {isDropdownVisible && (
                                 <div id="dropdown" class="absolute top-full mt-2 z-10 bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700">
                                     <ul className="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownDefaultButton">
-                                        <li>
-                                            <a href="#" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">All</a>
-                                        </li>
                                         <li>
                                             <a href="#" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Today</a>
                                         </li>
@@ -69,8 +66,8 @@ export default function AdminHomepage() {
                         </div>
                     </div>
                         
-                        <div className="w-full h-96 bg-[#fefefe] rounded-lg shadow overflow-y-auto">
-                            <div className="p-5 space-y-4">
+                        <div className="w-full h-[67vh] bg-[#fefefe] rounded-lg shadow overflow-y-auto">
+                            <div className="border p-5 space-y-4">
                                 <ReportTimeline />
                                 <ReportTimeline />
                                 <ReportTimeline />
