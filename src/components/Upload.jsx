@@ -67,7 +67,8 @@ const App = () => {
             src={imageUrl}
             alt="avatar"
             style={{
-              width: '100%',
+              width: '200px',
+              height: '200px',
             }}
           />
         ) : (

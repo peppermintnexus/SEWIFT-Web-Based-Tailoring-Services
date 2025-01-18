@@ -1,10 +1,9 @@
 import React, { useState } from 'react'
 import Textbox from '/src/components/Textbox.jsx'
 import { useNavigate } from 'react-router'
-import { getFirestore } from 'firebase/firestore'
+import { getFirestore, doc, setDoc } from 'firebase/firestore'
 import { browserSessionPersistence, createUserWithEmailAndPassword, getAuth, sendEmailVerification, setPersistence } from 'firebase/auth'
 import { auth, db } from '../../firebase'
-import { setDoc, doc } from 'firebase/firestore'
 
 export default function SignUp() {
         const [formData, setFormData] = useState({
@@ -21,16 +20,18 @@ export default function SignUp() {
         const auth = getAuth();
     
         const handleInputChange = (e) => {
-            setFormData({ ...formData, [e.target.name]: e.target.value });
+            const { name, value } = e.target;
+            setFormData((prevData) => ({ ...prevData, [name]: value }));
         };
     
-        const createUserInFirestore = async (user, formData) => {
+        const createAdminInFirestore = async (user) => {
             try {
-                await setDoc(doc(db, "adminUsers", user.uid), {
-                    ...formData,
-                });
+                const adminRef = doc(db, "adminUsers", user.uid);
+                const { password, confirmPassword, ...adminData } = formData;
+                await setDoc(adminRef, adminData);
             } catch (err) {
-                console.error(err);
+                console.error('Error creating admin in Firestore:', err);
+                setError('Failed to create an account.');
             }
         };
     
@@ -45,29 +46,21 @@ export default function SignUp() {
     
         const handleSignUp = async (e) => {
             e.preventDefault();
+            if (formData.password !== formData.confirmPassword) {
+                setError("Passwords do not match");
+                return;
+            }
+
             try {
-                if (formData.password !== formData.confirmPassword) {
-                    setError("Passwords do not match");
-                    return;
-                }
-    
-                await setPersistence(auth, browserSessionPersistence);
-    
+                await setPersistence(auth, browserSessionPersistence);    
                 const userCredential = await createUserWithEmailAndPassword(auth, formData.email, formData.password);
                 const user = userCredential.user;
-    
-                const userData = {
-                    name: formData.name,
-                    tailorShopName: formData.tailorShopName,
-                    completeAddress: formData.completeAddress,
-                    email: formData.email,
-                    phoneNumber: formData.phoneNumber,
-                };
-    
-                await createUserInFirestore(user, userData);
+        
+                await createAdminInFirestore(user);
                 await handleEmailVerification(user);
                 navigate('/AdminHomepage');
             } catch (err) {
+                console.error('Error creating user:', err);
                 setError('Failed to create an account.');
             }
         };

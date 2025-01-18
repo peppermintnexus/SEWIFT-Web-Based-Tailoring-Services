@@ -12,6 +12,9 @@ export default function ClientSettings() {
         lastName: '',
         email: '',
     });
+    const [currentPassword, setCurrentPassword] = useState('');
+    const [newPassword, setNewPassword] = useState('');
+    const [confirmPassword, setConfirmPassword] = useState('');
     const auth = getAuth();
 
     useEffect(() => {
@@ -71,7 +74,14 @@ export default function ClientSettings() {
         } catch (error) {
             alert(`Error updating settings: ${error.message}`);
         }
-    }
+    };
+
+    const handleResetPassword = async () => {
+        if (newPassword !== confirmPassword) {
+            alert('Passwords do not match!');
+            return;
+        }
+    };
 
     return (
         <div className="bg-[#F3F4F6] min-h-screen">
@@ -86,7 +96,7 @@ export default function ClientSettings() {
                     <div className='px-7 pt-6 grid grid-cols-3 gap-10'>
                         <div className='mb-2'>
                             <label className='block mb-1 font-medium'>First Name</label>
-                            <text
+                            <input
                             type='text'
                             name='firstName'
                             value={userInfo.firstName}
@@ -96,7 +106,7 @@ export default function ClientSettings() {
                         </div>
                         <div className='mb-2'>
                             <label className='block mb-1 font-medium'>Last Name</label>
-                            <text
+                            <input
                             type='text'
                             name='lastName'
                             value={userInfo.lastName}
@@ -109,7 +119,7 @@ export default function ClientSettings() {
                     <div className='px-7'>
                         <div className='mb-2'>
                             <label className='block mb-1 font-medium'>Email</label>
-                            <text
+                            <input
                             type='text'
                             name='email'
                             value={userInfo.email}
