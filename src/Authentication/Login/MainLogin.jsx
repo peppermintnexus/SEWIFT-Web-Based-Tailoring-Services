@@ -3,7 +3,7 @@ import StickerClose from '/src/assets/images/StickerClose.png'
 import { signInWithEmailAndPassword } from 'firebase/auth'
 import { useNavigate } from 'react-router'
 import { auth, db } from '../../firebase'
-import { doc, getDoc } from 'firebase/firestore'
+import { doc, getDoc, collection, getDocs } from 'firebase/firestore'
 
 export default function MainLogin() {
     const [formData, setFormData] = useState({
@@ -21,31 +21,45 @@ export default function MainLogin() {
     const handleLogin = async (e) => {
         e.preventDefault();
         setError(null);
-
+        
         try {
             const userCredential = await signInWithEmailAndPassword(auth, formData.email, formData.password);
             const user = userCredential.user;
+        
+            const adminUsersSnapshot = await getDocs(collection(db, "adminUsers"));
+            let isEmployee = false;
+        
+            for (const adminDoc of adminUsersSnapshot.docs) {
+                const employeeRef = doc(db, "adminUsers", adminDoc.id, "employeeUsers", user.uid);
+                const employeeDoc = await getDoc(employeeRef);
 
+                if (employeeDoc.exists()) {
+                    isEmployee = true;
+                    break;
+                }
+            }
+
+            if (isEmployee) {
+                navigate("/employeeHomepage");
+                return;
+            }
+        
             const clientRef = doc(db, "clientUsers", user.uid);
-            const employeeRef = doc(db, "employeeUsers", user.uid);
             const adminRef = doc(db, "adminUsers", user.uid);
-
+        
             const clientDoc = await getDoc(clientRef);
-            const employeeDoc = await getDoc(employeeRef);
             const adminDoc = await getDoc(adminRef);
-
+        
             if (clientDoc.exists()) {
-                navigate("/ClientHomepage");
-            } else if (employeeDoc.exists()) {
-                navigate("/EmployeeHomepage");
+                navigate("/ClientHomepage"); 
             } else if (adminDoc.exists()) {
-                navigate("/AdminHomepage");
+                navigate("/AdminHomepage"); 
             } else {
-                setError("Invalid email or password");
+                setError("Invalid email or password"); 
             }
         } catch (err) {
             if (err.code === 'auth/user-not-found') {
-                setError('User not found.');
+                setError('User  not found.');
             } else if (err.code === 'auth/wrong-password') {
                 setError('Incorrect email or password.');
             } else {
@@ -53,6 +67,7 @@ export default function MainLogin() {
             }
         }
     };
+    
 
     return (
         <div className='min-h-screen place-items-center flex justify-center bg-[#20262B]'>

@@ -1,14 +1,14 @@
 import React from 'react';
-import AdminSidebar from '/src/components/AdminSidebar'
-import AdminHeader from '/src/components/AdminHeader'
+import EmployeeSidebar from '/src/components/EmployeeSidebar'
+import EmployeeHeader from '/src/components/EmployeeHeader'
 
 export default function AdminTransactionHistory() {
     return (
         <div className='min-h-screen relative'>
-                    <AdminHeader />
+                    <EmployeeHeader />
         
                     <div className='w-fit h-fit grid grid-cols-5 bg-[#F7F7F7]'>
-                        <AdminSidebar />
+                        <EmployeeSidebar />
 
                         <div className='px-12 pt-9 col-start-2 col-end-6 w-full h-full bg-[#fefefe]'>
                             <div className='flex gap-7'>

@@ -20,6 +20,7 @@ import OrderRequest from './Employee/OrderRequest'
 import EmployeeJobOrder from './Employee/EmployeeJobOrder'
 import EmployeeTransactionHistory from './Employee/EmployeeTransactionHistory'
 import EmployeeShopProfile from './Employee/EmployeeShopProfile'
+import EmployeeSettings from './Employee/EmployeeSettings'
 import AdminHomepage from './Admin/AdminHomepage'
 import AdminShopProfile from './Admin/AdminShopProfile'
 import AdminJobOrder from './Admin/AdminJobOrder'
@@ -56,6 +57,7 @@ function App() {
       <Route path='/EmployeeJobOrder' element={<EmployeeJobOrder />} />
       <Route path='/EmployeeTransactionHistory' element={<EmployeeTransactionHistory />} />
       <Route path='/EmployeeShopProfile' element={<EmployeeShopProfile />} />
+      <Route path='/EmployeeSettings' element={<EmployeeSettings />} />
 
       <Route path='/AdminHomepage' element={<AdminHomepage />} />
       <Route path='/AdminShopProfile' element={<AdminShopProfile />} />

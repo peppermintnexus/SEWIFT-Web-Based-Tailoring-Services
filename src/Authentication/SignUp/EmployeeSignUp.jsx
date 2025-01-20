@@ -48,9 +48,12 @@ export default function SignUp() {
                 const adminUserDoc = adminUserQuery.docs.find(doc => doc.data().tailorShopName === formData.tailorShopName);
 
                 if (adminUserDoc) {
-                    await setDoc(doc(firestore, 'adminUsers', adminUserDoc.id, 'employeeUsers', user.uid), {
+                    const adminUserId = adminUserDoc.id;
+
+                    await setDoc(doc(firestore, 'adminUsers', adminUserId, 'employeeUsers', user.uid), {
                         ...userData,
                         tailorShopName: formData.tailorShopName,
+                        adminUserId: adminUserId,
                     });
             } else {
                 setError('Admin user not found for the selected tailor shop');

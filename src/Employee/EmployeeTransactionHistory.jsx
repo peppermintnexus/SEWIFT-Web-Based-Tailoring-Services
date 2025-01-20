@@ -1,44 +1,21 @@
 import React from 'react';
 import EmployeeSidebar from '/src/components/EmployeeSidebar'
+import EmployeeHeader from '/src/components/EmployeeHeader'
 import JobOrderModal from '/src/components/JobOrderModal'
 
 export default function AdminTransactionHistory() {
     return (
-        <div className='grid grid-cols-5 bg-[#f7f7f7] min-h-screen'>
-            <EmployeeSidebar />
-
-            <div className='col-span-4 bg-[#f7f7f7] p-4'>
-                    <div className=''>
-                        <h1 className='font-semibold text-3xl px-5 py-5'>Transaction History</h1>
-
-                        <div className='grid grid-cols-2 p-5'>
-                        <div className='bg-[#fefefe] rounded-lg shadow-md p-3'>
-                            <div className='flex justify-between items-center'>
-                            <h1 className='font-semibold'>
-                                JO Number 12345
-                            </h1>
-                            <JobOrderModal />
-                            </div>
-                            <hr className="border-t border-gray-200 my-3" />
-
-                            <div className='flex items-center'>
-                            <img src="https://via.placeholder.com/150"
-                            alt="Placeholder"
-                            className="w-32 h-32 object-cover rounded-lg shadow-md" />
+        <div className='min-h-screen relative'>
+                    <EmployeeHeader />
+                    
+                    <div className='w-fit h-fit grid grid-cols-5 bg-[#F7F7F7]'>
+                        <EmployeeSidebar />
                             
-                            <div className='pl-4'>
-                                <h1 className='font-semibold'>Product Name</h1>
-                                <ol className='pt-4'>
-                                    <li>Type of Order:</li>
-                                    <li>Client Name:</li>
-                                    <li>Order Date:</li>
-                                </ol>
-                            </div>
-                            </div>
+                        <div className='ml-2 p-3 col-start-2 col-end-6'>
+                            <h1 className='text-xl font-medium'>Welcome to your Dashboard</h1>
+                            <p className='text-[#7F7F7F]'>Recent reports and activities will be shown in this area</p>
                         </div>
                     </div>
-                    </div>  
-            </div>
-        </div>
+                </div>
     )
 }
