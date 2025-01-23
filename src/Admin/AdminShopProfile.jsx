@@ -1,7 +1,7 @@
 import React from 'react';
 import AdminSidebar from '/src/components/AdminSidebar'
 import AdminHeader from '/src/components/AdminHeader'
-import Explore from '/src/assets/images/Explore.png'
+import Sample from '/src/assets/images/Sample.jpg'
 import Upload from '/src/components/Upload'
 import Input from '/src/components/Input'
 import Ratings from '/src/components/Ratings'
@@ -16,27 +16,28 @@ export default function AdminShopProfile() {
                     <div className='grid grid-cols-5 bg-[#Fefefe]'>
                         <AdminSidebar />
         
-                        <div className='mx-3 p-2 my-1 col-start-2 col-end-6'>
-                            <div className='flex'>
-                            <img class="h-40 w-40" src={Explore} alt="image description" />
-                            <div className='pl-3'>
-                                <p className='pt-1 font-semibold text-xl'>Tailor Shop Name</p>
-                                <p>Working Hours and Days</p>
-                                <p>Complete Address</p>
-                                <p>Description</p>
-                            </div>
-                            </div>
+                        <div className='ml-2 p-5 col-start-2 col-end-6'>
 
-                            <Divider />
+                                <div className='flex justify-between col-start-2 col-end-6'>
 
-                            <div className='grid grid-cols-4'>
-                                <div className='w-56 h-56 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700'>
-                                    <img src={SchoolSkirt} className='object-cover mb-2 rounded-lg w-full h-full' />
-                                    <p className='font-bold'>Liceo SHS Uniform Skirt</p>
-                                    <p className='text-[#867E7B]'>Size: S, M, L, XL</p>
-                                    <p className='mb-2 font-medium'>Price</p>
+                                    <div className='ml-4 flex'>
+                                    <img class="object-cover h-40 w-40" src={Sample} alt="image description" />
+                                        <div className='ml-4'>
+                                        <h1 className='text-xl font-medium'>Tailor Shop Name</h1>
+                                        <p className='mb-2 text-sm text-[#9C9C9C]'>Rating</p>
+                                        <p className='text-[#9C9C9C]'>Location</p>
+                                        <p>Open Hours and Open Days</p>
+                                        <p>Description</p>
+                                        </div>
+                                    </div>
+
+                                    <div className='justify-self-end'>
+                                            <button type="button" class="text-white bg-blue-700 hover:bg-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 ">Add Product</button>
+                                            <button type="button" class="text-white bg-blue-700 hover:bg-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 ">Edit</button>                                    
+                                    </div>
                                 </div>
-                            </div>
+
+                                <Divider />
                         </div>
                     </div>
 

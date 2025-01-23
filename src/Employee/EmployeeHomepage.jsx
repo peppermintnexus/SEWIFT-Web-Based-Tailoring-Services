@@ -4,7 +4,7 @@ import EmployeeHeader from '/src/components/EmployeeHeader'
 
 export default function ClientProfile() {
     return (
-        <div className='min-h-screen relative'>
+        <div className='bg-[#F7F7F7] min-h-screen relative'>
             <EmployeeHeader />
             
             <div className='w-fit h-fit grid grid-cols-5 bg-[#F7F7F7]'>
