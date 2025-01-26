@@ -15,6 +15,7 @@ import ClientProfile from './Client/ClientProfile'
 import ClientSettings from './Client/ClientSettings'
 import TailorShops from './Client/TailorShops'
 import ViewShopProfile from './Client/ViewShopProfile'
+import OrderForm from './Client/OrderForm'
 import EmployeeHomepage from './Employee/EmployeeHomepage'
 import OrderRequest from './Employee/OrderRequest'
 import EmployeeJobOrder from './Employee/EmployeeJobOrder'
@@ -51,6 +52,7 @@ function App() {
       <Route path='/ClientSettings' element={<ClientSettings />} />
       <Route path='/TailorShops' element={<TailorShops />} />
       <Route path='/ViewShopProfile' element={<ViewShopProfile />} />
+      <Route path='/OrderForm' element={<OrderForm />} />
 
       <Route path='/EmployeeHomepage' element={<EmployeeHomepage />} />
       <Route path='/OrderRequest' element={<OrderRequest />} />

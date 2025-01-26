@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import OrderModal from '../components/OrderModal'
-import ClientHeader from '/src/components/ClientHeader.jsx'
 import SchoolBlouse from '/src/assets/images/SchoolBlouse.jpg'
-import SchoolSkirt from '/src/assets/images/SchoolSkirt.jpg'
-import Explore from '/src/assets/images/Explore.png'
+import ClientHeader from '/src/components/ClientHeader.jsx'
 import { useNavigate } from 'react-router-dom'
 import { onAuthStateChanged, getIdToken } from 'firebase/auth'
 import { auth } from '../firebase'
@@ -73,6 +71,10 @@ export default function ClientHomepage() {
                 <button type="button" class="py-2.5 px-5 me-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-full border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">Skirt</button>
                 <button type="button" class="py-2.5 px-5 me-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-full border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">Pants</button>
                 <button type="button" class="py-2.5 px-5 me-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-full border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">Polo</button>
+                </div>
+
+                <div className='py-3 grid grid-cols-5'>
+                    <OrderModal />
                 </div>
             </div>
         </div>
