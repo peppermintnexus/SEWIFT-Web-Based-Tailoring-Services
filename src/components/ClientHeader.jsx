@@ -76,17 +76,20 @@ export default function ClientHeader({ userName }) {
                         <a href='/ClientProfile' className='block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white'>My Profile</a>
                     </li>
                     <li>
+                        <a href='/ClientOrder' className='block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white'>View Orders</a>
+                    </li>
+                    <li>
                         <a href='/ClientSettings' className='block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white'>Settings</a>
                     </li>
                     <li>
                         {/* Logout */}
                         <a href='/'>
-                        <button
+                        <li
                         onClick={handleLogout}
                         className='block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white'
                         >
                             Log out
-                        </button>
+                        </li>
                         </a>
                     </li>
                 </ul>

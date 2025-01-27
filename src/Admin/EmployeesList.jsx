@@ -11,12 +11,8 @@ export default function AdminShopProfile() {
                         <AdminSidebar />
         
                         <div className='m-3 p-4 bg-[#fefefe] col-span-4'>
-                <div className='flex items-center justify-between'>
-                    <h1 className='text-2xl font-semibold'>Employees</h1>
-                    <button className='bg-[#3f6e85] py-1 p-3 font-medium text-white rounded-lg hover:shadow-lg'>+ Add Employee</button>
-                </div>
                 
-                <div class="mt-7 relative overflow-x-auto shadow-md sm:rounded-lg">
+                <div class="mt-3 relative overflow-x-auto shadow-md sm:rounded-lg">
                     <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
                         <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                             <tr>
@@ -52,10 +48,7 @@ export default function AdminShopProfile() {
                                         <td class="px-6 py-4">
                                             On Duty
                                         </td>
-                                        <td class="px-6 py-4 text-right">
-                                            <a href="#" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</a>
-                                            </td>
-                                        </tr>
+                                    </tr>
                                 </tbody>
                     </table>
                 </div>

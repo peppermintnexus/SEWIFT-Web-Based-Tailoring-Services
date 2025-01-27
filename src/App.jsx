@@ -15,7 +15,7 @@ import ClientProfile from './Client/ClientProfile'
 import ClientSettings from './Client/ClientSettings'
 import TailorShops from './Client/TailorShops'
 import ViewShopProfile from './Client/ViewShopProfile'
-import OrderForm from './Client/OrderForm'
+import ClientOrder from './Client/ClientOrder'
 import EmployeeHomepage from './Employee/EmployeeHomepage'
 import OrderRequest from './Employee/OrderRequest'
 import EmployeeJobOrder from './Employee/EmployeeJobOrder'
@@ -27,7 +27,8 @@ import AdminJobOrder from './Admin/AdminJobOrder'
 import EmployeesList from './Admin/EmployeesList'
 import AdminTransactionHistory from './Admin/AdminTransactionHistory'
 import AdminSettings from './Admin/AdminSettings'
-import AddProduct from './components/AddProduct'
+import AddProduct from './Admin/AddProduct'
+import EditProduct from './Admin/EditProduct'
 
 function App() {
 
@@ -52,7 +53,7 @@ function App() {
       <Route path='/ClientSettings' element={<ClientSettings />} />
       <Route path='/TailorShops' element={<TailorShops />} />
       <Route path='/ViewShopProfile' element={<ViewShopProfile />} />
-      <Route path='/OrderForm' element={<OrderForm />} />
+      <Route path='/ClientOrder' element={<ClientOrder />} />
 
       <Route path='/EmployeeHomepage' element={<EmployeeHomepage />} />
       <Route path='/OrderRequest' element={<OrderRequest />} />
@@ -66,8 +67,10 @@ function App() {
       <Route path='/EmployeesList' element={<EmployeesList />} />
       <Route path='/AdminTransactionHistory' element={<AdminTransactionHistory />} />
       <Route path='/AdminSettings' element={<AdminSettings />} />
-
       <Route path='/AddProduct' element={<AddProduct />} />
+      <Route path='/EditProduct' element={<EditProduct />} />
+
+
     </Routes>
   )
 }

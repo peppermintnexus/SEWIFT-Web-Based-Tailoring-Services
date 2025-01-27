@@ -16,7 +16,7 @@ export default function OrderModal() {
                 onClick={toggleModal}>
                 <img class="p-3 rounded-t-lg object-cover w-fit h-fit" src={SchoolBlouse} />
                 <div class="px-4 py-3">
-                    <h5 class="mb-2 line-clamp-2 text-xl font-bold tracking-tight text-gray-900 dark:text-white">LDCU School Blouse</h5>
+                    <h5 class="mb-2 line-clamp-2 text-xl font-bold tracking-tight text-gray-900 dark:text-white">School Blouse</h5>
                     <p class="font-normal text-gray-700 dark:text-gray-400">Size</p>
                     <p class="font-normal text-gray-700 dark:text-gray-400">Price</p>
                 </div>
@@ -51,10 +51,9 @@ export default function OrderModal() {
                         <div className="grid grid-cols-2">
                             <div>
                                 <img src={SchoolBlouse} className="m-2 w-full" />
-                                <label className="text-[#7f7f7f]">Stock: </label><label className="text-[#7f7f7f]">100</label>
                             </div>
                             <div className="pl-5 container w-full h-full">
-                                <label className="text-xl font-medium">LDCU School Blouse</label>
+                                <label className="text-xl font-medium">School Blouse </label><span className="text-[#22B14C]">Available</span>
                                 <div className="flex items-center">
                                 <svg className='w-4 h-4' viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <path d="M3.5 11V14C3.5 17.7712 3.5 19.6569 4.67157 20.8284C5.84315 22 7.72876 22 11.5 22H12.5C16.2712 22 18.1569 22 19.3284 20.8284C20.5 19.6569 20.5 17.7712 20.5 14V11" stroke="#7F7F7F" stroke-width="1.5"/>
@@ -63,7 +62,7 @@ export default function OrderModal() {
                                 <path d="M20.6703 5.35133C20.4922 4.46093 20.4031 4.01573 20.2221 3.65484C19.8406 2.89439 19.1542 2.33168 18.3337 2.10675C17.9443 2 17.4903 2 16.5823 2H14.5L15.2245 9.24527C15.3809 10.8091 16.6968 12 18.2685 12C20.1989 12 21.6468 10.2339 21.2682 8.34093L20.6703 5.35133Z" stroke="#7F7F7F" stroke-width="1.5"/>
                                 <path d="M9.5 21.5V18.5C9.5 17.5654 9.5 17.0981 9.70096 16.75C9.83261 16.522 10.022 16.3326 10.25 16.201C10.5981 16 11.0654 16 12 16C12.9346 16 13.4019 16 13.75 16.201C13.978 16.3326 14.1674 16.522 14.299 16.75C14.5 17.0981 14.5 17.5654 14.5 18.5V21.5" stroke="#7F7F7F" stroke-width="1.5" stroke-linecap="round"/>
                                 </svg>
-                                <label className="pl-1 pb-2 text-[#7F7F7F]">Sastre Fashion and Sportswear</label>
+                                <label className="pt-2 pl-1 pb-2 text-[#7F7F7F]">Sastre Fashion and Sportswear</label>
                                 </div>
                                 
 
@@ -91,7 +90,7 @@ export default function OrderModal() {
                                             >
                                             <option selected>-</option>
                                             <option>Premade</option>
-                                            <option>Premade</option>
+                                            <option>Customized</option>
                                             <option>Adjust</option>
                                             </select>
                                     </div>
