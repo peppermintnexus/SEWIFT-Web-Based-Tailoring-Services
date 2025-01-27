@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Button, Modal } from 'antd';
+import SchoolBlouse from '/src/assets/images/SchoolBlouse.jpg'
 
 const App = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -27,49 +28,58 @@ const App = () => {
       open={isModalOpen} 
       onCancel={handleCancel} 
       footer={null}
-      width={900}
+      width={600}
       centered
       >
-      <div className="border-t border-gray-100 mt-4 mb-2" />
-        <div className='text-base grid grid-cols-2'>
-          <div className='grid grid-cols-2'>
+        <div className="overflow-y-auto pr-5 max-h-[80vh]">
+      <div className="border-t border-gray-100 mt-3 mb-3" />
+        <div className='overflow-y-auto max-h-[60vh] grid grid-cols-2'>
+          <div>
+            <img src={SchoolBlouse} className='object-cover w-full h-60'></img>
+          </div>
+
+          <div className='pl-4'>
             <div>
-              <div>
-                <span className='block font-medium'>Client Name</span>
-                <label className='text-[#7f7f7f]'>Bogart dela Cruz</label>
-              </div>
-              <div className='pt-3'>
-                <span className='block font-medium'>Product Name</span>
-                <label className='text-[#7f7f7f]'>School Blouse</label>
-              </div>
-              <div className='pt-3'>
-                <span className='block font-medium'>Date of Order</span>
-                <label className='text-[#7f7f7f]'>January 1, 2025</label>
-              </div>
-
-              <div className='pt-3'>
-                <span className='block font-medium'>Status</span>
-                <label className='text-[#10aeb2]'>Ongoing</label>
-              </div>
-
+              <span className='block font-medium'>Product Name</span>
+              <label className='text-[#7f7f7f]'>School Blouse</label>
             </div>
-            <div>
-              <div>
-                <span className='block font-medium'>Tailor ID</span>
-                <label className='text-[#7f7f7f]'>12391802841</label>
-              </div>
-              <div className='pt-3'>
-                <span className='block font-medium'>JO Number</span>
-                <label className='text-[#7f7f7f]'>12345</label>
-              </div>
-              <div className='pt-3'>
-                <span className='block font-medium'>Total Price</span>
-                <label className='text-[#7f7f7f]'>100.00</label>
-              </div>
+            <div className='pt-3'>
+              <span className='block font-medium'>JO Number</span>
+              <label className='text-[#7f7f7f]'>12345</label>
+            </div>
+            <div className='pt-3'>
+              <span className='block font-medium'>Status</span>
+              <label className='text-[#ef9f5c]'>Ongoing</label>
+            </div>
+            <div className='pt-3'>
+              <span className='block font-medium'>Total Price</span>
+              <label className='text-[#7f7f7f]'>100.00</label>
             </div>
           </div>
-          <div className='flex items-center'>
-            <form className="pt-2 overflow-y-auto max-h-[60vh] pr-2">
+        </div>
+
+        <div className="border-t border-gray-100 mt-5 mb-3" />
+
+        <div className='flex px-10 justify-between'>
+          <div>
+            <span className='block text-center font-medium'>Client Name</span>
+            <label className='text-center text-[#7f7f7f]'>Bogart Dela Cruz</label>
+          </div>
+          <div>
+            <span className='block text-center font-medium'>Date of Order</span>
+            <label className='text-center text-[#7f7f7f]'>January 1, 2025</label>
+          </div>
+          <div>
+            <span className='block text-center font-medium'>Tailor ID</span>
+            <label className='text-center text-[#7f7f7f]'>1234567890</label>
+          </div>
+        </div>
+
+        <div className="border-t border-gray-100 mt-5 mb-3" />
+
+        <span className='text-lg font-medium'>Client Measurement</span>
+
+        <form className="pt-2">
               <div className="gap-3 grid grid-cols-3">
                 <div>
                   <label htmlFor="size" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Quantity</label>
@@ -92,7 +102,7 @@ const App = () => {
                     <input
                     id="size"
                     name="size"
-                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-1.5 dark:bg-gray-600 dark:border-gray-500 dark:text-white cursor-not-allowed"
+                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-1.5 dark:bg-gray-600 dark:border-gray-500 dark:text-white"
                     disabled
                     />
                 </div>
@@ -254,7 +264,6 @@ const App = () => {
                     htmlFor="shoulder" 
                     className="block mb-1 text-sm font-medium text-gray-900 dark:text-white">Receipt</label>
             </form>
-          </div>
         </div>
       </Modal>
     </>

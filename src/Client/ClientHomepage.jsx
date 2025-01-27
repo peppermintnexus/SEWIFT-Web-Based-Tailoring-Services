@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react'
 import OrderModal from '../components/OrderModal'
-import SchoolBlouse from '/src/assets/images/SchoolBlouse.jpg'
 import ClientHeader from '/src/components/ClientHeader.jsx'
 import { useNavigate } from 'react-router-dom'
 import { onAuthStateChanged, getIdToken } from 'firebase/auth'

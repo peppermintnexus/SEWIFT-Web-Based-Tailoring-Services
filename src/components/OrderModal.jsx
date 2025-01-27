@@ -25,7 +25,7 @@ export default function OrderModal() {
             {isModalVisible && ( // Render modal conditionally based on state
             <div className="fixed top-0 right-0 left-0 z-50 flex items-center justify-center w-full h-full overflow-y-auto overflow-x-hidden bg-black bg-opacity-50">
                 <div className="relative p-4 w-full max-w-4xl max-h-full">
-                    <div className="px-5 py-2 bg-white rounded-lg">
+                    <div className="px-5 py-3 bg-white rounded-lg">
                         <button
                         type="button"
                         onClick={toggleModal}
@@ -66,7 +66,7 @@ export default function OrderModal() {
                                 </div>
                                 
 
-                                <form className="pt-2 overflow-y-auto max-h-[60vh] pr-2">
+                                <form className="pt-2 overflow-y-auto max-h-[59vh] pr-2">
                                 <div className="gap-3 grid grid-cols-3">
                                     <div>
                                         <label htmlFor="size" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Quantity</label>
