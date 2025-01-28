@@ -17,7 +17,7 @@ export default function AdminShopProfile() {
 
                     <div className="mt-3  mx-5 h-[75vh] bg-[#fefefe] rounded-lg shadow overflow-y-auto">
                         <div className="p-4 space-y-4">
-                            <div className=' flex'>
+                            <div className='flex'>
                                 <a href="#" class="flex items-center justify-center px-3 h-8 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
                                     Ongoing
                                 </a>

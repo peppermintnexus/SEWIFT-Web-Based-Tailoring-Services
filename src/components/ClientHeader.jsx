@@ -24,9 +24,9 @@ export default function ClientHeader({ userName }) {
     };
     
     return (
-        <div className='flex justify-between items-center h-20 max-w-screen-xl px-10 mx-auto  bg-[#171B1F] text-[#6f6f6f] relative'>
+        <div className='viewport flex flex-wrap justify-between items-center h-20 w-full px-4 sm:px-10 bg-[#171B1F] text-[#6f6f6f] relative'>
             <a href='/ClientHomepage'>
-            <img src={LogoWhite} className='sm:w-16 md:w-20' />
+            <img src={LogoWhite} className='w-16 md:w-20 h-auto' />
             </a>
 
         <div className='flex gap-3 items-center'>

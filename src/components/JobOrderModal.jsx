@@ -17,12 +17,12 @@ const App = () => {
     <>
       <Button 
       type="primary"
-      className='bg-[#E3F2FD] w-full flex justify-between text-black justify-start p-5'
+      className='bg-[#E3F2FD] w-auto sm:w-full flex justify-between text-black justify-start p-3.5 sm:p-5'
       onClick={showModal}>
-        <p>Job Order <span className='font-semibold'>12345</span></p>
-        <p>Status: <span className='font-semibold'>Ongoing</span></p>
+        <p className='text-xs sm:text-sm'>Job Order <span className='text-xs sm:text-sm font-semibold'>12345</span></p>
+        <p className='text-xs sm:text-sm'>Status: <span className='text-xs sm:text-sm font-semibold'>Ongoing</span></p>
       </Button>
-      {/* Remove OK and Cancel buttons by setting footer to null */}
+
       <Modal 
       title="Job Order Details" 
       open={isModalOpen} 
