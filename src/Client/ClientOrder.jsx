@@ -14,12 +14,13 @@ export default function ClientOrder() {
                 <div className='pl-7'>
                     <label className='block text-xl font-medium'>School Blouse</label>
                     <label className='block text-[#7f7f7f]'>Job Order Number:</label>
+                    <label className='block text-[#7f7f7f]'>Status:</label>
                     <label className='block text-[#7f7f7f]'>Date Ordered:</label>
                     <label className='block text-[#7f7f7f]'>Date Progress:</label>
                 </div>
                 </div>
                 <div>
-                    <label className='pr-5 text-[#DEAF0C]'>Ongoing</label>
+                    <button className='px-5 py-2 bg-[#10aeb2] text-white rounded-lg mr-5 shadow'>Cancel Order</button>
                 </div>
             </div>
         </div>

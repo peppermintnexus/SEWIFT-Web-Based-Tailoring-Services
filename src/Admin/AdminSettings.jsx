@@ -4,79 +4,75 @@ import AdminHeader from '/src/components/AdminHeader'
 
 export default function AdminTransactionHistory() {
     return (
-        <div className='min-h-screen relative'>
-                    <AdminHeader />
+        <div className='bg-[#F7F7F7] min-h-screen relative'>
+            <AdminHeader />
         
-                    <div className='w-fit h-fit grid grid-cols-5 bg-[#F7F7F7]'>
-                        <AdminSidebar />
+            <div className='flex'>
+                <AdminSidebar />
 
-                        <div className='px-12 pt-9 col-start-2 col-end-6 w-full h-full bg-[#fefefe]'>
-                            <div className='flex gap-7'>
-                                <div className='mb-2'>
-                                    <label className='block mb-1 font-medium'>First Name</label>
-                                    <input
-                                    type='text'
-                                    name='firstName'
-                                    className='text-[#6F6F6F] bg-[#f7f7f7] border'
-                                    />
-                                </div>
-                                <div className='mb-2'>
-                                    <label className='block mb-1 font-medium'>Last Name</label>
-                                    <input
-                                    type='text'
-                                    name='lastName'
-                                    className='text-[#6F6F6F] bg-[#f7f7f7] border'
-                                    />
-                                </div>
+                <div className="p-4 flex-1 w-full">
+            <div className="container w-full h-[98vh] sm:h-screen bg-[#F7F7F7]">
+                <div className='bg-[#FEFEFE] border'>
+                    <h1 className='px-7 py-3 text-xl font-medium'>Account Information</h1>
 
-                                <button className='sel-center bg-[#171B1F] text-white mt-4 mb-1 px-6  rounded'>
-                                    Edit
-                                </button>
-                            </div>
-
-                            <div className='mb-2'>
-                                <label className='block mb-1 font-medium'>Email</label>
-                                <input
+                    <div className="border-t border-gray-100 mb-3" />
+                    <div className='gap-7 px-7 grid grid-cols-2'>
+                        <div>
+                            <h1 className='mb-2 font-medium'>Name</h1>
+                            <input
                                 type='text'
-                                className='text-[#6F6F6F] bg-[#f7f7f7] border'
-                                />
-                            </div>
-
-                            <h1 className='pt-5 text-2xl font-semibold'>Change Password</h1>
-
-                            <div className='pt-5 mb-2'>
-                                <label className='block mb-1 font-medium'>Current Password</label>
-                                <input
-                                type='text'
-                                className='text-[#6F6F6F] bg-[#f7f7f7] border'
-                                />
-                            </div>
-
-                            <div className='pt-5 mb-2'>
-                                <label className='block mb-1 font-medium'>New Password</label>
-                                <input
-                                type='text'
-                                className='text-[#6F6F6F] bg-[#f7f7f7] border'
-                                />
-                                <h1 className='text-xs mb-3 italic'>
-                                *Password must be more than ten characters*
-                            </h1>
-                            </div>
-
-                            <div className='mb-2'>
-                                <label className='block mb-1 font-medium'>Confirm Password</label>
-                                <input
-                                type='text'
-                                className='text-[#6F6F6F] bg-[#f7f7f7] border'
-                                />
-                            </div>
-
-                            <button className='sel-center bg-[#171B1F] text-white mt-3 py-2 px-4  rounded'>
-                                    Reset Password
-                                </button>
-                            
+                                name='firstName'
+                                className='bg-gray-50 border border-gray-300 text-gray-900 text-sm block w-80 p-1.5 dark:bg-gray-600 dark:border-gray-500 dark:text-white'
+                            />
+                        </div>
+                        <div>
+                            <h1 className='mb-2 font-medium'>Email</h1>
+                            <text placeholder="Email">Email</text>
                         </div>
                     </div>
+
+                    <div className='px-7 mt-4'>
+                            <h1 className='mb-2 font-medium'>Phone Number</h1>
+                            <input
+                                type='text'
+                                name='firstName'
+                                className='bg-gray-50 border border-gray-300 text-gray-900 text-sm block w-80 p-1.5 dark:bg-gray-600 dark:border-gray-500 dark:text-white'
+                            />
+                    </div>
+
+                    <div className="border-t border-gray-100 mt-3 mb-3" />
+                    <button type="button" class="ml-7 mb-4 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Save</button>
                 </div>
+
+                <div className='mt-4 bg-[#FEFEFE] border'>
+                    <h1 className='px-7 py-3 text-xl font-medium'>Change Password</h1>
+
+                    <div className="border-t border-gray-100 mb-3" />
+                    <div className='gap-7 px-7 grid grid-cols-2'>
+                        <div>
+                            <h1 className='mb-2 font-medium'>New Password</h1>
+                            <input
+                                type='text'
+                                name='firstName'
+                                className='bg-gray-50 border border-gray-300 text-gray-900 text-sm block w-80 p-1.5 dark:bg-gray-600 dark:border-gray-500 dark:text-white'
+                            />
+                        </div>
+                        <div>
+                            <h1 className='mb-2 font-medium'>Confirm Password</h1>
+                            <input
+                                type='text'
+                                name='firstName'
+                                className='bg-gray-50 border border-gray-300 text-gray-900 text-sm block w-80 p-1.5 dark:bg-gray-600 dark:border-gray-500 dark:text-white'
+                            />
+                        </div>
+                    </div>
+
+                    <div className="border-t border-gray-100 mt-3 mb-3" />
+                    <button type="button" class="ml-7 mb-4 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Reset Password</button>
+                </div>
+            </div>
+        </div>
+            </div>
+        </div>
     )
 }

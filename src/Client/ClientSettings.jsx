@@ -85,85 +85,83 @@ export default function ClientSettings() {
 
     return (
         <div className="bg-[#F3F4F6] min-h-screen">
-                <ClientHeader />
-                
-                <div className="bg-white mx-72 mt-10 pb-5 rounded-t-xl shadow-lg">
-                    <div className='shadow-sm'>
-                        <p className='px-5 py-3 text-2xl font-semibold'>Settings</p>
+            <ClientHeader />
+
+            <div className="bg-white mx-72 mt-10 pb-5 shadow-lg">
+            <h1 className='px-7 py-3 text-xl font-medium'>Account Information</h1>
+
+            <div className="border-t border-gray-100 mb-3" />
+            <div className='px-7 grid grid-cols-2'>
+                        <div>
+                            <h1 className='mb-2 font-medium'>First Name</h1>
+                            <input
+                                type='text'
+                                name='firstName'
+                                value={userInfo.firstName}
+                                onChange={handleChange}
+                                className='text-[#6F6F6F] bg-gray-50 border border-gray-300 text-gray-900 text-sm block w-64 p-1.5 dark:bg-gray-600 dark:border-gray-500 dark:text-white'
+                            />
+                        </div>
+                        <div>
+                        <h1 className='mb-2 font-medium'>Last Name</h1>
+                            <input
+                                type='text'
+                                name='lastName'
+                                value={userInfo.lastName}
+                                onChange={handleChange}
+                                className='text-[#6F6F6F] bg-gray-50 border border-gray-300 text-gray-900 text-sm block w-64 p-1.5 dark:bg-gray-600 dark:border-gray-500 dark:text-white'
+                            />
+                        </div>
+
+                        <div>
+                        <h1 className='mt-4 mb-2 font-medium'>Email</h1>
+                            <input
+                                type='text'
+                                name='email'
+                                value={userInfo.email}
+                                onChange={handleChange}
+                                className='text-[#7f7f7f] bg-gray-50 border border-gray-300 text-gray-900 text-sm block w-64 p-1.5 dark:bg-gray-600 dark:border-gray-500 dark:text-white'
+                            />
+                            <button type="button" class="mt-5 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5  dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Save</button>
+                        </div>
                     </div>
 
-                    <div>
-                    <div className='px-7 pt-6 grid grid-cols-3 gap-10'>
-                        <div className='mb-2'>
-                            <label className='block mb-1 font-medium'>First Name</label>
+            </div>
+
+            <div className="bg-white mx-72 mt-5 pb-5 shadow-lg">
+            <h1 className='px-7 py-3 text-xl font-medium'>Change Password</h1>
+
+            <div className="border-t border-gray-100 mb-3" />
+            <div className='px-7 grid grid-cols-2'>
+                        <div>
+                            <h1 className='mb-2 font-medium'>First Name</h1>
                             <input
-                            type='text'
-                            name='firstName'
-                            value={userInfo.firstName}
-                            onChange={handleChange}
-                            className='text-[#6F6F6F]'
+                                type='text'
+                                name='firstName'
+                                value={userInfo.firstName}
+                                onChange={handleChange}
+                                className='text-[#6F6F6F] bg-gray-50 border border-gray-300 text-gray-900 text-sm block w-64 p-1.5 dark:bg-gray-600 dark:border-gray-500 dark:text-white'
                             />
+
+                            <button type="button" class="mt-5 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5  dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Save</button>
                         </div>
-                        <div className='mb-2'>
-                            <label className='block mb-1 font-medium'>Last Name</label>
+                        <div>
+                        <h1 className='mb-2 font-medium'>Last Name</h1>
                             <input
-                            type='text'
-                            name='lastName'
-                            value={userInfo.lastName}
-                            onChange={handleChange}
-                            className='text-[#6F6F6F]'
+                                type='text'
+                                name='lastName'
+                                value={userInfo.lastName}
+                                onChange={handleChange}
+                                className='text-[#6F6F6F] bg-gray-50 border border-gray-300 text-gray-900 text-sm block w-64 p-1.5 dark:bg-gray-600 dark:border-gray-500 dark:text-white'
                             />
+                            
                         </div>
+
+                        
                     </div>
 
-                    <div className='px-7'>
-                        <div className='mb-2'>
-                            <label className='block mb-1 font-medium'>Email</label>
-                            <input
-                            type='text'
-                            name='email'
-                            value={userInfo.email}
-                            onChange={handleChange}
-                            className='text-[#6F6F6F] w-full'
-                            />
-                        </div>
+            </div>
 
-                        <p className='mt-7 mb-3 text-xl font-medium'>Change Password</p>
-                        <div className='mb-5'>
-                            <label className='block mb-1 font-medium'>Current Password</label>
-                            <input
-                            type='text'
-                            className='text-[#6F6F6F] border border-gray-300 rounded px-2 py-1'
-                            placeholder='••••••••'
-                            />
-                        </div>
-
-                        <div className='mb-2'>
-                            <label className='block mb-1 font-medium'>New Password</label>
-                            <input
-                            type='text'
-                            className='text-[#6F6F6F] border border-gray-300 rounded px-2 py-1'
-                            />
-                            <h1 className='text-xs mb-3 italic'>
-                                *Password must be more than ten characters*
-                            </h1>
-                        </div>
-                        <div className='mb-2'>
-                            <label className='block mb-1 font-medium'>Confirm Password</label>
-                            <input
-                            type='text'
-                            className='text-[#6F6F6F] border border-gray-300 rounded px-2 py-1'
-                            />
-                        </div>
-
-                        <button 
-                        type="" 
-                        className="mt-4 bg-[#171B1F] text-white px-6 py-2 rounded">
-                        Reset Password
-                        </button>
-                    </div>
-                    </div>
-                </div>
         </div>
     )
 }

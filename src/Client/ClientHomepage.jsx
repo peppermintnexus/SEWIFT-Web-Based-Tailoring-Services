@@ -7,12 +7,6 @@ import { auth } from '../firebase'
 import { getDoc, doc } from 'firebase/firestore'
 import { db } from '../firebase'
 
-const slides = [
-    "/src/assets/images/Slide1.png",
-    "/src/assets/images/Slide2.png",
-    "/src/assets/images/Slide3.png"
-]
-
 export default function ClientHomepage() {
     const [user, setUser] = useState(null);
     const [firstName, setFirstName] = useState('')

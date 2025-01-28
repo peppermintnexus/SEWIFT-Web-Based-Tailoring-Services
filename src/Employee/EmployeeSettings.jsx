@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react'
 import EmployeeSidebar from '/src/components/EmployeeSidebar'
 import EmployeeHeader from '/src/components/EmployeeHeader'
 
@@ -70,17 +70,9 @@ export default function AdminTransactionHistory() {
                     <h1 className='px-7 py-3 text-xl font-medium'>Account Information</h1>
 
                     <div className="border-t border-gray-100 mb-3" />
-                    <div className='gap-7 px-7 grid grid-cols-2'>
+                    <div className='gap-7 px-7'>
                         <div>
-                            <h1 className='mb-2 font-medium'>First Name</h1>
-                            <input
-                                type='text'
-                                name='firstName'
-                                className='bg-gray-50 border border-gray-300 text-gray-900 text-sm block w-80 p-1.5 dark:bg-gray-600 dark:border-gray-500 dark:text-white'
-                            />
-                        </div>
-                        <div>
-                            <h1 className='mb-2 font-medium'>Last Name</h1>
+                            <h1 className='mb-2 font-medium'>Name</h1>
                             <input
                                 type='text'
                                 name='firstName'

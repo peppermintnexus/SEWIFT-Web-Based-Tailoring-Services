@@ -5,31 +5,36 @@ import JobOrderModal from '/src/components/JobOrderModal'
 
 export default function AdminShopProfile() {
     return (
-        <div className='min-h-screen relative'>
+        <div className='bg-[#F7F7F7] min-h-screen relative'>
             <AdminHeader />
             
-            <div className='w-fit h-fit grid grid-cols-5 bg-[#F7F7F7]'>
+            <div className='flex'>
                 <AdminSidebar />
 
-                <div className='ml-1 h-full col-start-2 col-end-6'>
-                    <h1 className='px-5 pt-3 text-2xl font-semibold'>Job Orders</h1>
-                    <p className='px-5 text-[#7F7F7F]'>Your list of Job Orders is shown in this area</p>
+                <div className="p-4 w-screen sm:w-full">
+                    <div className="p-4 container w-full h-[98vh] sm:h-screen bg-[#FEFEFE]">
+                        <h1 className='px-3 text-2xl font-medium'>Job Orders</h1>
+                        <p className='px-3 text-[#7F7F7F]'>Your list of Job Orders is shown in this area</p>
+        
+                        <div className='mt-2 h-[75vh] sm:h-[83vh] bg-[#fefefe] overflow-y-auto'>
+                            <div className="px-2 py-3 space-y-4">
+                                <div className='flex'>
+                                    <a href="#" class="flex items-center justify-center px-3 h-8 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
+                                        Ongoing
+                                    </a>
+                                    <a href="#" class="flex items-center justify-center px-3 h-8 ms-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
+                                        Finished
+                                    </a>
+                                </div>
 
-                    <div className="mt-3  mx-5 h-[75vh] bg-[#fefefe] rounded-lg shadow overflow-y-auto">
-                        <div className="p-4 space-y-4">
-                            <div className='flex'>
-                                <a href="#" class="flex items-center justify-center px-3 h-8 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
-                                    Ongoing
-                                </a>
-                                <a href="#" class="flex items-center justify-center px-3 h-8 ms-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
-                                    Finished
-                                </a>
-                            </div>
-
-                            <ul className="space-y-2">
-                                <JobOrderModal />
-                            </ul>
-                        </div> 
+                                <div>
+                                <ul className="space-y-2">
+                                    <JobOrderModal />
+                                </ul>
+                                </div>
+                    
+                            </div> 
+                        </div>
                     </div>
                 </div>
             </div>
