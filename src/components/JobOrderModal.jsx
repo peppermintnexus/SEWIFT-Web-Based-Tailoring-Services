@@ -17,10 +17,10 @@ const App = () => {
     <>
       <Button 
       type="primary"
-      className='bg-[#E3F2FD] w-auto sm:w-full flex justify-between text-black justify-start p-3.5 sm:p-5'
-      onClick={showModal}>
+      className='bg-[#ECF2E4] shadow w-auto sm:w-full flex justify-between text-black justify-start p-3.5 sm:p-5'
+      onClick={showModal}
+      customModal='hover:bg-black'>
         <p className='text-xs sm:text-sm'>Job Order <span className='text-xs sm:text-sm font-semibold'>12345</span></p>
-        <p className='text-xs sm:text-sm'>Status: <span className='text-xs sm:text-sm font-semibold'>Ongoing</span></p>
       </Button>
 
       <Modal 
@@ -49,7 +49,13 @@ const App = () => {
             </div>
             <div className='pt-3'>
               <span className='block font-medium'>Status</span>
-              <label className='text-[#ef9f5c]'>Ongoing</label>
+              <select className='mt-1 block w-full border border-gray-300 rounded-md shadow-sm'>
+                <option value="ongoing">Ongoing</option>
+                <option value="completed">Completed</option>
+                <option value="pending">Pending</option>
+                <option value="canceled">Cancelled</option>
+                <option value="canceled">Claimed</option>
+              </select>
             </div>
             <div className='pt-3'>
               <span className='block font-medium'>Total Price</span>

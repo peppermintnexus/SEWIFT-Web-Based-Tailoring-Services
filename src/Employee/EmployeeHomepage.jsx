@@ -1,6 +1,8 @@
 import React from 'react'
 import EmployeeSidebar from '/src/components/EmployeeSidebar'
 import EmployeeHeader from '/src/components/EmployeeHeader'
+import JobOrderModal from '/src/components/JobOrderModal'
+import OrderRequestModal from '/src/components/OrderRequestModal'
 
 export default function ClientProfile() {
     return (
@@ -10,7 +12,7 @@ export default function ClientProfile() {
     <div className='flex'>
         <EmployeeSidebar />
 
-        <div data-drawer-target="default-sidebar" data-drawer-toggle="default-sidebar" aria-controls="default-sidebar" type="button" class="inline-flex items-center justify-center w-20 h-screen px-2 py-5 my-2 ms-3 text-sm text-gray-500 rounded-lg sm:hidden bg-white dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600">
+        <div data-drawer-target="default-sidebar" data-drawer-toggle="default-sidebar" aria-controls="default-sidebar" type="button" class="inline-flex items-center justify-center w-20 h-auto px-2 py-5 my-2 ms-3 text-sm text-gray-500 rounded-lg sm:hidden bg-white dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600">
             <ul className="space-y-3 items-center justify-center h-full">
                 <li className="flex items-center justify-center">
                     <svg className='w-7 h-7' viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -41,13 +43,6 @@ export default function ClientProfile() {
                     </a>
                 </li>
                 <li>
-                    <a href="/EmployeeTransactionHistory" className="hover:font-medium flex items-center py-2 px-4 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
-                    <svg className="w-7 h-7 text-[#2b3a47] transition duration-75 dark:text-gray-400 group-hover:text-[#2b3a47] dark:group-hover:text-white" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                    <path fill-rule="evenodd" clip-rule="evenodd" d="M2 0H14V16H12L10 14L8 16L6 14L4 16H2V0ZM5 4H11V6H5V4ZM11 8H5V10H11V8Z" fill="currentColor"/>
-                    </svg>
-                    </a>
-                </li>
-                <li>
                     <a href="/EmployeeSettings" className="hover:font-medium flex items-center py-2 px-4 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
                     <svg className="w-7 h-7 text-[#2b3a47] transition duration-75 dark:text-gray-400 group-hover:text-[#2b3a47] dark:group-hover:text-white" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                     <path fill-rule="evenodd" clip-rule="evenodd" d="M12.7848 0.449982C13.8239 0.449982 14.7167 1.16546 14.9122 2.15495L14.9991 2.59495C15.3408 4.32442 17.1859 5.35722 18.9016 4.7794L19.3383 4.63233C20.3199 4.30175 21.4054 4.69358 21.9249 5.56605L22.7097 6.88386C23.2293 7.75636 23.0365 8.86366 22.2504 9.52253L21.9008 9.81555C20.5267 10.9672 20.5267 13.0328 21.9008 14.1844L22.2504 14.4774C23.0365 15.1363 23.2293 16.2436 22.7097 17.1161L21.925 18.4339C21.4054 19.3064 20.3199 19.6982 19.3382 19.3676L18.9017 19.2205C17.1859 18.6426 15.3408 19.6754 14.9991 21.405L14.9122 21.845C14.7167 22.8345 13.8239 23.55 12.7848 23.55H11.2152C10.1761 23.55 9.28331 22.8345 9.08781 21.8451L9.00082 21.4048C8.65909 19.6754 6.81395 18.6426 5.09822 19.2205L4.66179 19.3675C3.68016 19.6982 2.59465 19.3063 2.07505 18.4338L1.2903 17.1161C0.770719 16.2436 0.963446 15.1363 1.74956 14.4774L2.09922 14.1844C3.47324 13.0327 3.47324 10.9672 2.09922 9.8156L1.74956 9.52254C0.963446 8.86366 0.77072 7.75638 1.2903 6.8839L2.07508 5.56608C2.59466 4.69359 3.68014 4.30176 4.66176 4.63236L5.09831 4.77939C6.81401 5.35722 8.65909 4.32449 9.00082 2.59506L9.0878 2.15487C9.28331 1.16542 10.176 0.449982 11.2152 0.449982H12.7848ZM12 15.3C13.8225 15.3 15.3 13.8225 15.3 12C15.3 10.1774 13.8225 8.69998 12 8.69998C10.1774 8.69998 8.69997 10.1774 8.69997 12C8.69997 13.8225 10.1774 15.3 12 15.3Z" fill="currentColor"/>
@@ -64,24 +59,55 @@ export default function ClientProfile() {
             </ul>
         </div>
 
-        <div className="p-4 flex-1 w-full">
-            <div className="p-4 container w-full h-[98vh] sm:h-screen bg-[#FEFEFE]">
-                <h1 className='px-3 text-2xl font-medium'>Welcome to your Dashboard</h1>
-                <p className='px-3 text-[#7F7F7F]'>What will be your agenda today?</p>
+        <div className="flex-1 w-full">
+            <div className="grid grid-cols-3 gap-5 p-4 container w-full h-full sm:h-screen]">
+                <div className='col-span-2 p-3 bg-[#Fefefe]'>
+                    <h1 className='px-3 text-2xl font-medium'>Transaction History</h1>
+                    <p className='px-3 text-[#7F7F7F]'>Complete transaction from clients will be recorded in this area</p>
 
-                <div className='px-3 mt-5 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5'>
-    <a 
-        href="/OrderRequest" 
-        className="flex flex-col h-full max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700"
-    >
-        <h5 className="pb-2 text-xl font-bold tracking-tight text-gray-900 dark:text-white">
-            Order Request
-        </h5>
-        <p className="font-normal text-gray-700 dark:text-gray-400">
-            Check recent client order requests
-        </p>
-    </a>
-</div>
+                    <div className='mt-2 h-[75vh] sm:h-[83vh] bg-[#fefefe] overflow-y-auto'>
+                        <div className="px-2 py-1 sm:py-3 space-y-4">
+                            <div className='flex flex-wrap '>
+                                <a href="#" className="flex items-center justify-center px-3 h-8 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
+                                    Today
+                                </a>
+                                <a href="#" className="flex items-center justify-center px-3 h-8 ms-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
+                                    This Week
+                                </a>
+                                <a href="#" className="flex items-center justify-center px-3 h-8 ms-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
+                                    Month
+                                </a>
+                                <a href="#" className="flex items-center justify-center px-3 h-8 ms-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
+                                    Year
+                                </a>
+                            </div>
+                            
+                            <div>
+                                <ul className="space-y-2">
+                                    <JobOrderModal />
+                                </ul>
+                            </div>
+                        </div>
+                        
+                    </div>
+                </div>
+
+                <div className='p-3 bg-[#Fefefe]'>
+                    <h1 className='px-2 text-2xl font-medium'>Order Request</h1>
+                    <p className='px-2 text-[#7F7F7F]'>Accept or deny client request</p>
+
+                    <div className='mt-2 h-[75vh] sm:h-[83vh] bg-[#fefefe] overflow-y-auto'>
+                        <div className="px-2 py-1 sm:py-3 space-y-4">
+                            
+                            <div>
+                                <ul className="space-y-2">
+                                    <OrderRequestModal />
+                                </ul>
+                            </div>
+                        </div>
+                        
+                    </div>
+                </div>
             </div>
         </div>
     </div>
