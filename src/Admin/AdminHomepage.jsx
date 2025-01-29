@@ -1,23 +1,56 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import AdminSidebar from '/src/components/AdminSidebar'
 import AdminHeader from '/src/components/AdminHeader'
 import ReportTimeline from '/src/components/ReportTimeline'
 import { useNavigate } from 'react-router';
+import { onAuthStateChanged, getIdToken } from 'firebase/auth';
+import { auth } from '../firebase';
+import { getDoc, doc } from 'firebase/firestore';
+import { db } from '../firebase';
 
 export default function AdminHomepage() {
+    const [user, setUser] = useState(null);
+    const [name, setName] = useState('');
+    const [token, setToken] = useState(null);
+    const [tailorShopName, setTailorShopName] = useState('');
     const [isDropdownVisible, setIsDropdownVisible] = useState(false);
-        const navigate = useNavigate();
-    
-        const toggleDropdown = () => {
-            setIsDropdownVisible(!isDropdownVisible);
-        };
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        const unsubscribe = onAuthStateChanged(auth, async (user) => {
+            if (user) {
+                const userToken = await getIdToken(user);
+                setToken(userToken);
+
+                const userDoc = await getDoc(doc(db, 'adminUsers', user.uid));
+                if (userDoc.exists()) {
+                    setName(userDoc.data().name);
+                    setTailorShopName(userDoc.data().tailorShopName);
+                }
+
+                setUser(user);
+            } else {
+                navigate('/AdminLogin');
+            }
+        });
+
+        return () => unsubscribe();
+    }, [navigate]);
+
+    const toggleDropdown = () => {
+        setIsDropdownVisible(!isDropdownVisible);
+    };
+
+    if (!user) {
+        return <p>Loading...</p>
+    }
 
     return (
         <div className='bg-[#F7F7F7] min-h-screen relative'>
-            <AdminHeader />
+            <AdminHeader userName={name || 'admin'}/>
         
             <div className='flex'>
-                <AdminSidebar />
+                <AdminSidebar tailorShopName={tailorShopName || 'Tailor Shop Name'}/>
         
                 <div data-drawer-target="default-sidebar" data-drawer-toggle="default-sidebar" aria-controls="default-sidebar" type="button" class="inline-flex items-center justify-center w-20 h-auto px-2 py-5 my-2 ms-3 text-sm text-gray-500 rounded-lg sm:hidden bg-white dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600">
                     <ul className="space-y-3 items-center justify-center h-full">

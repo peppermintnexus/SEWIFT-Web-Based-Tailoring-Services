@@ -1,6 +1,6 @@
 import React from 'react'
 
-export default function AdminSidebar() {
+export default function AdminSidebar({ tailorShopName }) {
    return (
       <div>
          <aside id="logo-sidebar" className="mt-0.5 shadow left-0 z-40 w-72 h-full fixed sm:static transition-transform -translate-x-full sm:translate-x-0" aria-label="Sidebar">
@@ -15,7 +15,7 @@ export default function AdminSidebar() {
               <path d="M20.6703 5.35133C20.4922 4.46093 20.4031 4.01573 20.2221 3.65484C19.8406 2.89439 19.1542 2.33168 18.3337 2.10675C17.9443 2 17.4903 2 16.5823 2H14.5L15.2245 9.24527C15.3809 10.8091 16.6968 12 18.2685 12C20.1989 12 21.6468 10.2339 21.2682 8.34093L20.6703 5.35133Z" stroke="#10aeb2" stroke-width="1.5"/>
               <path d="M9.5 21.5V18.5C9.5 17.5654 9.5 17.0981 9.70096 16.75C9.83261 16.522 10.022 16.3326 10.25 16.201C10.5981 16 11.0654 16 12 16C12.9346 16 13.4019 16 13.75 16.201C13.978 16.3326 14.1674 16.522 14.299 16.75C14.5 17.0981 14.5 17.5654 14.5 18.5V21.5" stroke="#10aeb2" stroke-width="1.5" stroke-linecap="round"/>
               </svg>
-                    <h1 className='pl-2 text-[#10aeb2]'>Tailor Shop Name</h1>
+                  <h1 className='pl-2 text-[#10aeb2]'>{tailorShopName}</h1>
                 </div>
             </li>
             <li>

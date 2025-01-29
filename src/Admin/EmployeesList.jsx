@@ -1,14 +1,68 @@
-import React from 'react';
-import AdminSidebar from '/src/components/AdminSidebar'
-import AdminHeader from '/src/components/AdminHeader'
+import React, { useState, useEffect } from 'react';
+import AdminSidebar from '/src/components/AdminSidebar';
+import AdminHeader from '/src/components/AdminHeader';
+import { useNavigate } from 'react-router-dom';
+import { onAuthStateChanged, getIdToken } from 'firebase/auth';
+import { auth } from '../firebase';
+import { getDoc, doc, collection, getDocs, query, where } from 'firebase/firestore';
+import { db } from '../firebase';
+import EmployeeModal from '../components/EmployeeModal';
 
 export default function EmployeesList() {
+    const [user, setUser] = useState(null);
+    const [name, setName] = useState('');
+    const [token, setToken] = useState(null);
+    const [tailorShopName, setTailorShopName] = useState('');
+    const [employees, setEmployees] = useState([]); // State for employees
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        const unsubscribe = onAuthStateChanged(auth, async (user) => {
+            if (user) {
+                const userToken = await getIdToken(user);
+                setToken(userToken);
+
+                const userDoc = await getDoc(doc(db, 'adminUsers', user.uid));
+                if (userDoc.exists()) {
+                    setName(userDoc.data().name);
+                    setTailorShopName(userDoc.data().tailorShopName);
+                }
+
+                setUser(user);
+
+                // Fetch employees data
+                fetchEmployees(user.uid);
+            } else {
+                navigate('/AdminLogin');
+            }
+        });
+
+        return () => unsubscribe();
+    }, [navigate]);
+
+    // Function to fetch employees from Firestore
+    const fetchEmployees = async (adminId) => {
+        try {
+            const userDoc = await getDoc(doc(db, 'adminUsers', adminId));
+            if (userDoc.exists()) {
+                const employeesData = userDoc.data().employees || [];
+                setEmployees(employeesData);
+            }
+        } catch (error) {
+            console.error('Error fetching employees:', error);
+        }
+    };
+
+    if (!user) {
+        return <p>Loading...</p>;
+    }
+
     return (
         <div className='bg-[#F7F7F7] min-h-screen relative'>
-    <AdminHeader />
+    <AdminHeader userName={name || 'admin'} />
     
     <div className='flex flex sm:flex-row'>
-        <AdminSidebar />
+    <AdminSidebar tailorShopName={tailorShopName || 'Tailor Shop Name'} />
 
         <div data-drawer-target="default-sidebar" data-drawer-toggle="default-sidebar" aria-controls="default-sidebar" type="button" class="inline-flex items-center justify-center w-20 h-auto px-2 py-5 my-2 ms-3 text-sm text-gray-500 rounded-lg sm:hidden bg-white dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600">
                     <ul className="space-y-3 items-center justify-center h-full">
@@ -132,37 +186,26 @@ export default function EmployeesList() {
                 <div className="overflow-x-auto">
                     <table className="min-w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
                         <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-                            <tr>
-                                <th scope="col" className="px-6 py-3">
-                                    Name
-                                </th>
-                                <th scope="col" className="px-6 py-3">
-                                    Email
-                                </th>
-                                <th scope="col" className="px-6 py-3">
-                                    Phone Number
-                                </th>
-                                <th scope="col" className="px-6 py-3">
-                                    Tailor ID
-                                </th>
-                            </tr>
+                        <tr>
+                                    <th scope="col" className="px-6 py-3">
+                                        Name
+                                    </th>
+                                    <th scope="col" className="px-6 py-3">
+                                        Email
+                                    </th>
+                                    <th scope="col" className="px-6 py-3">
+                                        Phone Number
+                                    </th>
+                                    <th scope="col" className="px-6 py-3">
+                                        <span className="sr-only">Edit</span>
+                                    </th>
+                                </tr>
                         </thead>
                         <tbody>
-                            <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                                <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                    Bogart De La Cruz
-                                </th>
-                                <td className="px-6 py-4">
-                                    bdelacruz@gmail.com
-                                </td>
-                                <td className="px-6 py-4">
-                                    09********
-                                </td>
-                                <td className="px-6 py-4">
-                                    1234567890
-                                </td>
-                            </tr>
-                        </tbody>
+                                {employees.map((employee, index) => (
+                                    <EmployeeModal key={employee.id} employee={employee} index={index} />
+                                ))}
+                            </tbody>
                     </table>
                 </div>
             </div>
