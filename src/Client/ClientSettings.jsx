@@ -134,24 +134,16 @@ export default function ClientSettings() {
             <div className="border-t border-gray-100 mb-3" />
             <div className='px-7 grid grid-cols-2'>
                         <div>
-                            <h1 className='mb-2 font-medium'>First Name</h1>
+                            <h1 className='mb-2 font-medium'>New Password</h1>
                             <input
-                                type='text'
-                                name='firstName'
-                                value={userInfo.firstName}
-                                onChange={handleChange}
                                 className='text-[#6F6F6F] bg-gray-50 border border-gray-300 text-gray-900 text-sm block w-64 p-1.5 dark:bg-gray-600 dark:border-gray-500 dark:text-white'
                             />
 
-                            <button type="button" class="mt-5 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5  dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Save</button>
+                            <button type="button" class="mt-5 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5  dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Reset Password</button>
                         </div>
                         <div>
-                        <h1 className='mb-2 font-medium'>Last Name</h1>
+                        <h1 className='mb-2 font-medium'>Confirm Password</h1>
                             <input
-                                type='text'
-                                name='lastName'
-                                value={userInfo.lastName}
-                                onChange={handleChange}
                                 className='text-[#6F6F6F] bg-gray-50 border border-gray-300 text-gray-900 text-sm block w-64 p-1.5 dark:bg-gray-600 dark:border-gray-500 dark:text-white'
                             />
                             

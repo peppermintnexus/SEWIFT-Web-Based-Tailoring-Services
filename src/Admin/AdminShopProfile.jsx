@@ -219,7 +219,7 @@ export default function AdminShopProfile() {
                             <textarea 
                                 value={description} 
                                 onChange={(e) => setDescription(e.target.value)} 
-                                placeholder="Enter description and contact details" 
+                                placeholder="Enter description or" 
                                 className="block w-full sm:w-96 font-normal text-gray-700 mb-2 border border-gray-300 rounded p-1 resize-none"
                             />
                         </>

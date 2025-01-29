@@ -52,7 +52,7 @@ function App() {
       <Route path='/ClientProfile' element={<ClientProfile />} />
       <Route path='/ClientSettings' element={<ClientSettings />} />
       <Route path='/TailorShops' element={<TailorShops />} />
-      <Route path='/ViewShopProfile' element={<ViewShopProfile />} />
+      <Route path="/ViewShopProfile/:shopId" element={<ViewShopProfile />} />
       <Route path='/ClientOrder' element={<ClientOrder />} />
 
       <Route path='/EmployeeHomepage' element={<EmployeeHomepage />} />
