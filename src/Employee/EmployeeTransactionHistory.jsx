@@ -90,17 +90,6 @@ export default function EmployeeTransactionHistory() {
                                                         <div>
                                                         <ul className="space-y-2">
                                                             <JobOrderModal />
-                                                            <JobOrderModal />
-                                                            <JobOrderModal />
-                                                            <JobOrderModal />
-                                                            <JobOrderModal />
-                                                            <JobOrderModal />
-                                                            <JobOrderModal />
-                                                            <JobOrderModal />
-                                                            <JobOrderModal />
-                                                            <JobOrderModal />
-                                                            <JobOrderModal />
-                                                            <JobOrderModal />
                                                             
                                                         </ul>
                                                         </div>

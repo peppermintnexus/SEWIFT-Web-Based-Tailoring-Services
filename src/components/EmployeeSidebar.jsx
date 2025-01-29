@@ -19,15 +19,6 @@ export default function EmployeeSidebar() {
                 </div>
             </li>
             <li>
-                <a href="/EmployeeHomepage" className="hover:font-medium flex items-center p-2 px-4 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
-                <svg className="w-5 h-5 text-[#2b3a47] transition duration-75 dark:text-gray-400 group-hover:text-[#2b3a47] dark:group-hover:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 21">
-                 <path d="M16.975 11H10V4.025a1 1 0 0 0-1.066-.998 8.5 8.5 0 1 0 9.039 9.039.999.999 0 0 0-1-1.066h.002Z"/>
-                 <path d="M12.5 0c-.157 0-.311.01-.565.027A1 1 0 0 0 11 1.02V10h8.975a1 1 0 0 0 1-.935c.013-.188.028-.374.028-.565A8.51 8.51 0 0 0 12.5 0Z"/>
-                 </svg>
-                    <span className="ms-3 text-[#2b3a47] group-hover:text-[#2b3a47]">Dashboard</span>
-                </a>
-            </li>
-            <li>
                 <a href="/EmployeeJobOrder" className="hover:font-medium flex items-center p-2 px-4 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
                 <svg fill="currentColor" xmlns="http://www.w3.org/2000/svg" className='w-5 h-5 text-[#2b3a47] transition duration-75 dark:text-gray-400 group-hover:text-[#2b3a47] dark:group-hover:text-white' viewBox="0 0 52 52" enable-background="new 0 0 52 52" xml:space="preserve">
               <path d="M39.3,26.9c0,1-0.9,1.9-1.9,1.9H14.6c-1,0-1.9-0.9-1.9-1.9V25c0-1,0.9-1.9,1.9-1.9h22.9c1,0,1.9,0.9,1.9,1.9
@@ -39,6 +30,14 @@ export default function EmployeeSidebar() {
                     <span className="ms-3 text-[#2b3a47] group-hover:text-[#2b3a47]">Job Order</span>
                 </a>
             </li>
+            <li>
+                        <a href="/EmployeeTransactionHistory" className="hover:font-medium flex items-center p-2 px-4 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
+                        <svg className="w-5 h-5 text-[#2b3a47] transition duration-75 dark:text-gray-400 group-hover:text-[#2b3a47] dark:group-hover:text-white" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd" clip-rule="evenodd" d="M2 0H14V16H12L10 14L8 16L6 14L4 16H2V0ZM5 4H11V6H5V4ZM11 8H5V10H11V8Z" fill="currentColor"/>
+                        </svg>
+                           <span className="ms-3 text-[#2b3a47] group-hover:text-[#2b3a47]">Transaction History</span>
+                        </a>
+                     </li>
             <li>
                 <a href="/EmployeeSettings" className="hover:font-medium flex items-center p-2 px-4 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
                 <svg className="w-5 h-5 text-[#2b3a47] transition duration-75 dark:text-gray-400 group-hover:text-[#2b3a47] dark:group-hover:text-white" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">

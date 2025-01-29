@@ -2,28 +2,41 @@ import React, { useState } from 'react';
 import { Button, Modal } from 'antd';
 import SchoolBlouse from '/src/assets/images/SchoolBlouse.jpg';
 
-const EmployeeJobOrder = ({ visible, onClose, onAccept, initialStatus, jobOrder }) => {
-  const [status, setStatus] = useState(initialStatus);
+const JobOrderModal = ({ onAccept }) => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [status, setStatus] = useState('pending');
+  const [isEditable, setIsEditable] = useState(false);
+
+  const showModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const handleCancel = () => {
+    setIsModalOpen(false);
+  };
+
+  const handleStatusChange = (event) => {
+    setStatus(event.target.value);
+  };
 
   const handleAccept = () => {
-    const newStatus = 'accepted';
-    setStatus(newStatus);
-    onAccept(jobOrder.id, newStatus);
-    onClose();
+    setIsEditable('true'); // Enable editing when Accept is clicked
+    setStatus('ongoing');
+    if (onAccept) {
+      onAccept();
+    }
   };
 
   const handleDeny = () => {
-    const newStatus = 'denied';
-    setStatus(newStatus);
-    onAccept(jobOrder.id, newStatus);
-    onClose();
+    // Add your deny logic here
+    setIsEditable(false);
   };
 
   const getButtonBackgroundColor = () => {
     switch (status) {
-      case 'ongoing': return '#B8E4ED';
+      case 'ongoing': return '#FFE9A1';
       case 'completed': return '#AEEAC3';
-      case 'pending': return '#FFE9A1';
+      case 'pending': return '#B8E4ED';
       case 'canceled': return '#F5B5B8';
       case 'claimed': return '#D6DADC';
       default: return '#FFFFFF';
@@ -31,46 +44,59 @@ const EmployeeJobOrder = ({ visible, onClose, onAccept, initialStatus, jobOrder 
   };
 
   return (
-    <Modal 
-      title="Job Order Details" 
-      open={visible} 
-      onCancel={onClose} 
-      footer={null}
-      width={600}
-      centered
-    >
-        <div className="overflow-y-auto pr-5 max-h-[70vh]">
-        <div className="border-t border-gray-100 mt-3 mb-3" />
-        <div className='overflow-y-auto max-h-[60vh] grid grid-cols-2'>
-          <div>
-            <img src={SchoolBlouse} className='object-cover w-full h-60' alt="School Blouse" />
-          </div>
+    <>
+      <Button 
+        type="primary"
+        style={{ 
+          backgroundColor: getButtonBackgroundColor(), 
+          borderColor: getButtonBackgroundColor() 
+        }}
+        className='shadow w-auto sm:w-full flex justify-between text-black justify-start p-3.5 sm:p-5'
+        onClick={showModal}
+      >
+        <p className='text-xs sm:text-sm'>Job Order <span className='text-xs sm:text-sm font-semibold'>12345</span></p>
+      </Button>
 
-          <div className='pl-4'>
+      <Modal 
+        title="Job Order Details" 
+        open={isModalOpen} 
+        onCancel={handleCancel} 
+        footer={null}
+        width={600}
+        centered
+      >
+        <div className="overflow-y-auto pr-5 max-h-[70vh]">
+          <div className="border-t border-gray-100 mt-3 mb-3" />
+          <div className='overflow-y-auto max-h-[60vh] grid grid-cols-2'>
             <div>
-              <span className='block font-medium'>Product Name</span>
-              <label className='text-[#7f7f7f]'>{jobOrder.productName}</label>
+              <img src={SchoolBlouse} className='object-cover w-full h-60' alt="School Blouse" />
             </div>
+
+            <div className='pl-4'>
+              <div>
+                <span className='block font-medium'>Product Name</span>
+                <label className='text-[#7f7f7f]'>School Blouse</label>
+              </div>
               <div className='pt-3'>
                 <span className='block font-medium'>JO Number</span>
                 <label className='text-[#7f7f7f]'>12345</label>
               </div>
 
               <div className='pt-3'>
-                <span className='block font-medium'>Status</span>
-                <select
-                  className='mt-1 block w-full border border-gray-300 rounded-md shadow-sm'
-                  value={status}
-                  onChange={handleStatusChange}
-                  disabled
-                >
-                  <option value="ongoing">Ongoing</option>
-                  <option value="completed">Completed</option>
-                  <option value="pending">Pending</option>
-                  <option value="canceled">Cancelled</option>
-                  <option value="claimed">Claimed</option>
-                </select>
-              </div>
+            <span className='block font-medium'>Status</span>
+            <select
+              className='mt-1 block w-full border border-gray-300 rounded-md shadow-sm'
+              value={status}
+              onChange={handleStatusChange}
+              disabled={!isEditable} // Only enable when isEditable is true
+            >
+              <option value="ongoing">Ongoing</option>
+              <option value="completed">Completed</option>
+              <option value="pending">Pending</option>
+              <option value="canceled">Cancelled</option>
+              <option value="claimed">Claimed</option>
+            </select>
+          </div>
 
               <div className='pt-3'>
                 <span className='block font-medium'>Total Price</span>
@@ -240,7 +266,7 @@ const EmployeeJobOrder = ({ visible, onClose, onAccept, initialStatus, jobOrder 
                     disabled
                   />
                 </div>
-              <div>
+ <div>
                     <label htmlFor="dressLength" className="block mb-1 text-sm font-medium text-gray-900 dark:text-white">Dress Length</label>
                     <input
                       type="text"
@@ -294,17 +320,17 @@ const EmployeeJobOrder = ({ visible, onClose, onAccept, initialStatus, jobOrder 
               />
               <div className="border-t border-gray-100 mt-4 mb-2" />
               <div className='flex justify-end mt-4'>
-          <Button onClick={handleDeny} style={{ marginRight: '8px' }} danger>
-            Deny
-          </Button>
-          <Button onClick={handleAccept} type="primary">
-            Accept
-          </Button>
+            <Button onClick={handleDeny} style={{ marginRight: '8px' }} danger>
+              Deny
+            </Button>
+            <Button onClick={handleAccept} type="primary">
+              Accept
+            </Button>
           </div>
-          </form>
-        </div>
-      </Modal>
-  );
+            </form>
+          </div>
+        </Modal>
+      </>
+    );
 };
-
 export default JobOrderModal;

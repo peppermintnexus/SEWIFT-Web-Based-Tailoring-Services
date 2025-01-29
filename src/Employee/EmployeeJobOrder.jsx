@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import EmployeeSidebar from '/src/components/EmployeeSidebar';
 import EmployeeHeader from '/src/components/EmployeeHeader';
+import JobOrderModal from '/src/components/JobOrderModal'
 
 export default function EmployeeJobOrder() {
     const [jobOrders, setJobOrders] = useState([]); // State for job orders
@@ -26,13 +27,26 @@ export default function EmployeeJobOrder() {
                             <div className="px-2 py-3 space-y-4">
                                 <div className='flex'>
                                     <a href="#" className="flex items-center justify-center px-3 h-8 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
+                                        Pending
+                                    </a>
+                                    <a href="#" className="flex items-center justify-center px-3 h-8 ms-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
                                         Ongoing
                                     </a>
                                     <a href="#" className="flex items-center justify-center px-3 h-8 ms-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
-                                        Finished
+                                        Completed
+                                    </a>
+                                    <a href="#" className="flex items-center justify-center px-3 h-8 ms-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
+                                        Claimed
+                                    </a>
+                                    <a href="#" className="flex items-center justify-center px-3 h-8 ms-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
+                                        Canceled
                                     </a>
                                 </div>
                             </div> 
+
+                            <ul className="px-2 space-y-2">
+                                <JobOrderModal />     
+                            </ul>
                         </div>
                     </div>
                 </div>
