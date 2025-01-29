@@ -2,83 +2,55 @@ import React, { useState } from 'react';
 import { Button, Modal } from 'antd';
 import SchoolBlouse from '/src/assets/images/SchoolBlouse.jpg';
 
-const JobOrderModal = ( onAccept) => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [status, setStatus] = useState('pending'); // Default status
-
-  const showModal = () => {
-    setIsModalOpen(true);
-  };
-
-  const handleCancel = () => {
-    setIsModalOpen(false);
-  };
+const EmployeeJobOrder = ({ visible, onClose, onAccept, initialStatus, jobOrder }) => {
+  const [status, setStatus] = useState(initialStatus);
 
   const handleAccept = () => {
-    setStatus('accepted'); // Update status to accepted
-    onAccept(status);
-    setIsModalOpen(false); // Close the modal
-    // Add any additional logic for accepting the job order here
+    const newStatus = 'accepted';
+    setStatus(newStatus);
+    onAccept(jobOrder.id, newStatus);
+    onClose();
   };
 
   const handleDeny = () => {
-    setStatus('denied'); // Update status to denied
-    setIsModalOpen(false); // Close the modal
-    // Add any additional logic for denying the job order here
-  };
-
-  const handleStatusChange = (event) => {
-    setStatus(event.target.value);
+    const newStatus = 'denied';
+    setStatus(newStatus);
+    onAccept(jobOrder.id, newStatus);
+    onClose();
   };
 
   const getButtonBackgroundColor = () => {
     switch (status) {
-      case 'ongoing':
-        return '#B8E4ED'; // Custom color for ongoing
-      case 'completed':
-        return '#AEEAC3'; // Blue for completed
-      case 'pending':
-        return '#FFE9A1'; // Yellow for pending
-      case 'canceled':
-        return '#F5B5B8'; // Gray for cancelled
-      case 'claimed':
-        return '#D6DADC'; // Green for claimed
-      default:
-        return '#FFFFFF'; 
+      case 'ongoing': return '#B8E4ED';
+      case 'completed': return '#AEEAC3';
+      case 'pending': return '#FFE9A1';
+      case 'canceled': return '#F5B5B8';
+      case 'claimed': return '#D6DADC';
+      default: return '#FFFFFF';
     }
   };
 
   return (
-    <>
-      <Button 
-        type="primary"
-        style={{ backgroundColor: getButtonBackgroundColor(), borderColor: getButtonBackgroundColor() }} // Set button background color
-        className='shadow w-auto sm:w-full flex justify-between text-black justify-start p-3.5 sm:p-5'
-        onClick={showModal}
-      >
-        <p className='text-xs sm:text-sm'>Job Order <span className='text-xs sm:text-sm font-semibold'>12345</span></p>
-      </Button>
-
-      <Modal 
-        title="Job Order Details" 
-        open={isModalOpen} 
-        onCancel={handleCancel} 
-        footer={null}
-        width={600}
-        centered
-      >
+    <Modal 
+      title="Job Order Details" 
+      open={visible} 
+      onCancel={onClose} 
+      footer={null}
+      width={600}
+      centered
+    >
         <div className="overflow-y-auto pr-5 max-h-[70vh]">
-          <div className="border-t border-gray-100 mt-3 mb-3" />
-          <div className='overflow-y-auto max-h-[60vh] grid grid-cols-2'>
-            <div>
-              <img src={SchoolBlouse} className='object-cover w-full h-60' alt="School Blouse" />
-            </div>
+        <div className="border-t border-gray-100 mt-3 mb-3" />
+        <div className='overflow-y-auto max-h-[60vh] grid grid-cols-2'>
+          <div>
+            <img src={SchoolBlouse} className='object-cover w-full h-60' alt="School Blouse" />
+          </div>
 
-            <div className='pl-4'>
-              <div>
-                <span className='block font-medium'>Product Name</span>
-                <label className='text-[#7f7f7f]'>School Blouse</label>
-              </div>
+          <div className='pl-4'>
+            <div>
+              <span className='block font-medium'>Product Name</span>
+              <label className='text-[#7f7f7f]'>{jobOrder.productName}</label>
+            </div>
               <div className='pt-3'>
                 <span className='block font-medium'>JO Number</span>
                 <label className='text-[#7f7f7f]'>12345</label>
@@ -268,7 +240,7 @@ const JobOrderModal = ( onAccept) => {
                     disabled
                   />
                 </div>
- <div>
+              <div>
                     <label htmlFor="dressLength" className="block mb-1 text-sm font-medium text-gray-900 dark:text-white">Dress Length</label>
                     <input
                       type="text"
@@ -321,19 +293,18 @@ const JobOrderModal = ( onAccept) => {
                 disabled
               />
               <div className="border-t border-gray-100 mt-4 mb-2" />
-          <div className='flex justify-end mt-4'>
-            <Button onClick={handleDeny} style={{ marginRight: '8px' }} danger>
-              Deny
-            </Button>
-            <Button onClick={handleAccept} type="primary">
-              Accept
-            </Button>
+              <div className='flex justify-end mt-4'>
+          <Button onClick={handleDeny} style={{ marginRight: '8px' }} danger>
+            Deny
+          </Button>
+          <Button onClick={handleAccept} type="primary">
+            Accept
+          </Button>
           </div>
-            </form>
-          </div>
-        </Modal>
-      </>
-    );
+          </form>
+        </div>
+      </Modal>
+  );
 };
 
 export default JobOrderModal;

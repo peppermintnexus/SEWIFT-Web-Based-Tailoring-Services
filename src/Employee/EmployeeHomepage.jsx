@@ -2,7 +2,6 @@ import React from 'react'
 import EmployeeSidebar from '/src/components/EmployeeSidebar'
 import EmployeeHeader from '/src/components/EmployeeHeader'
 import JobOrderModal from '/src/components/JobOrderModal'
-import OrderRequestModal from '/src/components/OrderRequestModal'
 
 export default function EmployeeHomepage() {
     return (

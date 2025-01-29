@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import EmployeeSidebar from '/src/components/EmployeeSidebar';
 import EmployeeHeader from '/src/components/EmployeeHeader';
-import JobOrderModal from '/src/components/JobOrderModal';
 
 export default function EmployeeJobOrder() {
     const [jobOrders, setJobOrders] = useState([]); // State for job orders
@@ -32,18 +31,6 @@ export default function EmployeeJobOrder() {
                                     <a href="#" className="flex items-center justify-center px-3 h-8 ms-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
                                         Finished
                                     </a>
-                                </div>
-
-                                <div>
-                                    {jobOrders.length > 0 ? ( // Check if there are any job orders
-                                        jobOrders.map((order, index) => (
-                                            <div key={index} className="flex items-center justify-between p-2 border-b">
-                                                <span>{order.status}</span> {/* Display the status of each job order */}
-                                            </div>
-                                        ))
-                                    ) : (
-                                        <p>No job orders available.</p> // Message when there are no job orders
-                                    )}
                                 </div>
                             </div> 
                         </div>
