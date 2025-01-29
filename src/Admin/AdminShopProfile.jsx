@@ -3,6 +3,7 @@ import { auth } from '../firebase';
 import AdminSidebar from '/src/components/AdminSidebar'
 import AdminHeader from '/src/components/AdminHeader'
 import ProductModal from '../components/ProductModal'
+import Rating from '/src/components/Rating'
 import { useNavigate } from 'react-router-dom';
 import { getDoc, doc, updateDoc } from 'firebase/firestore';
 import { db } from '../firebase';
@@ -190,8 +191,8 @@ export default function AdminShopProfile() {
 
                 <div className="p-4 flex-1 w-full">
     <div className="container w-full h-[98vh] sm:h-screen bg-[#FEFEFE]">
-        <div className='grid grid-cols-1 sm:grid-cols-2 gap-4'>
-            <div className='flex flex-col sm:flex-row gap-3'>
+        <div className='grid grid-cols-1 sm:grid-cols-3 gap-4'>
+            <div className='flex flex-col sm:flex-row gap-3 col-span-2'>
                 <label htmlFor="dropzone-file" className="flex flex-col items-center justify-center w-full sm:w-48 h-48 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-gray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600">
                     <div className="flex flex-col items-center justify-center pt-5 pb-6">
                         <svg className="w-8 h-8 mb-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 16">
@@ -202,30 +203,30 @@ export default function AdminShopProfile() {
                     </div>
                     <input id="dropzone-file" type="file" className="hidden" />
                 </label>
-                <div className='pt-2 flex flex-col'>
-                    <label className='pt-2 text-xl font-medium'>{tailorShopName}</label>
-                    <p className='mb-2 text-sm text-[#9C9C9C]'>Rating</p>
-                    <label className='block font-normal text-gray-700 dark:text-gray-400'>{completeAddress || 'Complete Address'}</label>
+                <div className='flex flex-col'>
+                    <label className='mb-1 text-xl font-medium'>{tailorShopName}</label>
+                    <Rating />
+                    <label className='mt-2 block font-normal text-[#c3c3c3] dark:text-gray-400'>{completeAddress || 'Complete Address'}</label>
                     {isEditing ? (
                         <>
                             <input 
                                 type="text" 
                                 value={openingHours} 
                                 onChange={(e) => setOpeningHours(e.target.value)} 
-                                placeholder="Opening Hours" 
-                                className="block font-normal text-gray-700 mb-2 border border-gray-300 rounded p-1"
+                                placeholder="Opening Hours and Days" 
+                                className="w-full sm:w-96 block font-normal text-gray-700 mb-2 border border-gray-300 rounded p-1"
                             />
                             <textarea 
                                 value={description} 
                                 onChange={(e) => setDescription(e.target.value)} 
-                                placeholder="Description" 
-                                className="block w-full font-normal text-gray-700 mb-2 border border-gray-300 rounded p-1 resize-none"
+                                placeholder="Enter description and contact details" 
+                                className="block w-full sm:w-96 font-normal text-gray-700 mb-2 border border-gray-300 rounded p-1 resize-none"
                             />
                         </>
                     ) : (
                         <>
-                            <label className='block font-normal text-gray-700'>{openingHours || 'N/A'}</label>
-                            <label className='block font-normal text-gray-700'>{description || 'N/A'}</label>
+                            <label className='block font-normal text-[#2b3a47]'>{openingHours || '-'}</label>
+                            <label className='block font-normal text-[#2b3a47]'>{description || '-'}</label>
                         </>
                     )}
                 </div>

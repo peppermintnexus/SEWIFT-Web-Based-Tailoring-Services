@@ -70,7 +70,6 @@ function App() {
       <Route path='/AddProduct' element={<AddProduct />} />
       <Route path='/EditProduct' element={<EditProduct />} />
 
-
     </Routes>
   )
 }

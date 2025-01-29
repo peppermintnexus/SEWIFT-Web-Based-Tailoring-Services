@@ -44,7 +44,7 @@ export default function AdminHomepage() {
     if (!user) {
         return <p>Loading...</p>
     }
-    
+
     return (
         <div className='bg-[#F7F7F7] min-h-screen relative'>
             <AdminHeader userName={name || 'admin'}/>
