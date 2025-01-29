@@ -196,7 +196,7 @@ const JobOrderModal = ( onAccept) => {
                   <label htmlFor="frontChest" className="block mb-1 text-sm font-medium text-gray-900 dark:text-white">Front Chest</label>
                   <input
                     type="text"
-name="frontChest"
+                    name="frontChest"
                     id="frontChest"
                     className="text-center bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-1.5 mb-1 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                     disabled

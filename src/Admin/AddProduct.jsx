@@ -1,10 +1,39 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
+import { collection, addDoc, updateDoc, arrayUnion, doc } from 'firebase/firestore';
+import { db } from '../firebase';
+import { onAuthStateChanged, getIdToken } from 'firebase/auth';
+import { auth } from '../firebase';
 
 export default function ClientProfile() {
+    const [user, setUser] = useState(null);
+    const [token, setToken] = useState(null);
     const [isCategoryDropdownVisible, setIsCategoryDropdownVisible] = useState(false);
     const [isStatusDropdownVisible, setIsStatusDropdownVisible] = useState(false);
+    const [productList, setProductList] = useState([]);
+    const [newProduct, setNewProduct] = useState({
+        name: '',
+        category: '',
+        description: '',
+        price: '',
+        availableSizes: '',
+        status: 'Available',
+    });
     const navigate = useNavigate();
+
+    useEffect(() => {
+        const unsubscribe = onAuthStateChanged(auth, async (user) => {
+            if (user) {
+                const userToken = await getIdToken(user);
+                setToken(userToken);
+                setUser(user);
+            } else {
+                navigate('/AdminLogin');
+            }
+        });
+
+        return () => unsubscribe();
+    }, [navigate]);
 
     const toggleCategoryDropdown = () => {
         setIsCategoryDropdownVisible(!isCategoryDropdownVisible);
@@ -14,6 +43,47 @@ export default function ClientProfile() {
     const toggleStatusDropdown = () => {
         setIsStatusDropdownVisible(!isStatusDropdownVisible);
         setIsCategoryDropdownVisible(false);
+    };
+
+    const handleInputChange = (e) => {
+        const { name, value } = e.target;
+        setNewProduct({ ...newProduct, [name]: value });
+    };
+
+    const handleCategorySelect = (category) => {
+        setNewProduct({ ...newProduct, category });
+        setIsCategoryDropdownVisible(false);
+    };
+
+    const handleStatusSelect = (status) => {
+        setNewProduct({ ...newProduct, status });
+        setIsStatusDropdownVisible(false);
+    };
+
+    const handleAddProduct = async () => {
+        try {
+            const userDocRef = doc(db, 'adminUsers', user.uid);
+
+            await updateDoc(userDocRef, {
+                productList: arrayUnion(newProduct)
+            });
+
+            console.log("Product added to users document");
+
+            // Clear the newProduct state
+            setNewProduct({
+                name: '',
+                category: '',
+                description: '',
+                price: '',
+                availableSizes: '',
+                status: 'Available',
+            });
+
+            navigate('/AdminShopProfile')
+        } catch (e) {
+            console.error("Error adding document: ", e);
+    }
     };
 
     return (
@@ -34,7 +104,12 @@ export default function ClientProfile() {
                     <div className='grid grid-cols-2 gap-3'>
                         <div className='space-y-1 p-4 bg-[#fefefe]'>
                             <p>Name</p>
-                            <input className='w-full px-1.5 py-1 text-gray-900 bg-gray-50 border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500' />
+                            <input 
+                                name="name"
+                                value={newProduct.name}
+                                onChange={handleInputChange}
+                                className='w-full px-1.5 py-1 text-gray-900 bg-gray-50 border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500' 
+                            />
 
                             <div className='space-y-1 bg-[#fefefe]'>
                                 <p>Category</p>
@@ -46,7 +121,7 @@ export default function ClientProfile() {
                                     type="button"
                                     aria-expanded={isCategoryDropdownVisible}
                                     >
-                                        - 
+                                        {newProduct.category || 'Select Category'}
                                     <svg className="w-2.5 h-2.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
                                     <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m1 1 4 4 4-4"/>
                                     </svg>
@@ -55,21 +130,16 @@ export default function ClientProfile() {
                                     {isCategoryDropdownVisible && (
                                         <div id="dropdown" className="absolute top-full mt-2 z-10 bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700">
                                             <ul className="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownDefaultButton">
-                                                <li>
-                                                    <a className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Blouse</a>
+                                                {['Blouse', 'Skirt', 'Pants', 'Blazer', 'Shirt'].map((category) => (
+                                                <li key={category}>
+                                                    <button 
+                                                    onClick={() => handleCategorySelect(category)}
+                                                    className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                                                    >
+                                                    {category}
+                                                    </button>
                                                 </li>
-                                                <li>
-                                                    <a className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Skirt</a>
-                                                </li>
-                                                <li>
-                                                    <a className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Pants</a>
-                                                </li>
-                                                <li>
-                                                    <a className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Blazer</a>
-                                                </li>
-                                                <li>
-                                                    <a className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Shirt</a>
-                                                </li>
+                                                ))}
                                             </ul>
                                         </div>
                                      )}
@@ -77,7 +147,13 @@ export default function ClientProfile() {
                             </div>
 
                             <p>Description</p>
-                            <textarea id="message" rows="4" className="block px-1.5 py-1 w-full text-sm text-gray-900 bg-gray-50 border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 resize-none" placeholder="Enter description here..."></textarea>
+                            <textarea name="description" 
+                            value={newProduct.description}
+                            onChange={handleInputChange}
+                            rows="4" 
+                            className="block px-1.5 py-1 w-full text-sm text-gray-900 bg-gray-50 border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 resize-none" 
+                            placeholder="Enter description here..."
+                            ></textarea>
                         </div>
 
                         <div className='px-4 py-2 space-y-1 bg-[#fefefe]'>
@@ -100,10 +176,20 @@ export default function ClientProfile() {
                         <div className='grid grid-cols-2 gap-3'>
                             <div className='space-y-1'>
                                 <p>Price</p>
-                                <input className='w-full px-1.5 py-1 text-gray-900 bg-gray-50 border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500' />
+                                <input 
+                                name="price"
+                                value={newProduct.price}
+                                onChange={handleInputChange}
+                                className='w-full px-1.5 py-1 text-gray-900 bg-gray-50 border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500' 
+                                />
 
                                 <p>Available Sizes</p>
-                                <input className='w-full px-1.5 py-1 text-gray-900 bg-gray-50 border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500' />
+                                <input 
+                                name='availableSizes'
+                                value={newProduct.availableSizes}
+                                onChange={handleInputChange}
+                                className='w-full px-1.5 py-1 text-gray-900 bg-gray-50 border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500' 
+                                />
                             </div>
 
                             <div className='space-y-1'>
@@ -116,7 +202,8 @@ export default function ClientProfile() {
                                     type="button"
                                     aria-expanded={isStatusDropdownVisible}
                                     >
-                                        - 
+                                        
+                                        {newProduct.status}
                                     <svg className="w-2.5 h-2.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
                                     <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m1 1 4 4 4-4"/>
                                     </svg>
@@ -125,23 +212,28 @@ export default function ClientProfile() {
                                     {isStatusDropdownVisible && (
                                         <div id="dropdown" className="absolute top-full mt-2 z-10 bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700">
                                             <ul className="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownDefaultButton">
-                                                <li>
-                                                    <a className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Available</a>
+                                                {['Available', 'Not Available'].map((status) => (
+                                                <li key={status}>
+                                                    <button 
+                                                    onClick={() => handleStatusSelect(status)}
+                                                    className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                                                    >
+                                                {status}
+                                                </button>
                                                 </li>
-                                                <li>
-                                                    <a className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Not Available</a>
-                                                </li>
+                                                ))}
                                             </ul>
                                         </div>
                                      )}
                                 </div>
 
                                 <div className='grid justify-items-end pt-6'>
-                                    <a href='/AdminShopProfile'>
                                     <button 
-                                        type="button" 
-                                        className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Add Product</button>
-                                    </a>
+                                        type="button"
+                                        onClick={handleAddProduct} 
+                                        className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
+                                            Add Product
+                                        </button>
                                 </div>
                             </div>
                         </div>
