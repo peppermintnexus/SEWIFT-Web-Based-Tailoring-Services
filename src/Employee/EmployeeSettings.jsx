@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import EmployeeSidebar from '/src/components/EmployeeSidebar'
 import EmployeeHeader from '/src/components/EmployeeHeader'
 
@@ -10,7 +10,7 @@ export default function AdminTransactionHistory() {
     <div className='flex'>
         <EmployeeSidebar />
 
-        <div data-drawer-target="default-sidebar" data-drawer-toggle="default-sidebar" aria-controls="default-sidebar" type="button" class="inline-flex items-center justify-center w-20 h-screen px-2 py-5 my-2 ms-3 text-sm text-gray-500 rounded-lg sm:hidden bg-white dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600">
+        <div data-drawer-target="default-sidebar" data-drawer-toggle="default-sidebar" aria-controls="default-sidebar" type="button" class="inline-flex items-center justify-center w-20 px-2 py-5 my-2 ms-3 text-sm text-gray-500 rounded-lg sm:hidden bg-white dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600">
             <ul className="space-y-3 items-center justify-center h-full">
                 <li className="flex items-center justify-center">
                     <svg className='w-7 h-7' viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -65,75 +65,83 @@ export default function AdminTransactionHistory() {
         </div>
 
         <div className="p-4 flex-1 w-full">
-            <div className="container w-full h-[98vh] sm:h-screen bg-[#F7F7F7]">
-                <div className='bg-[#FEFEFE] border'>
-                    <h1 className='px-7 py-3 text-xl font-medium'>Account Information</h1>
+    <div className="container w-full h-full sm:h-screen bg-[#F7F7F7]">
+        <div className='bg-[#FEFEFE] border'>
+            <h1 className='px-7 py-3 text-xl font-medium'>Account Information</h1>
 
-                    <div className="border-t border-gray-100 mb-3" />
-                    <div className='gap-7 px-7'>
-                        <div>
-                            <h1 className='mb-2 font-medium'>Name</h1>
-                            <input
-                                type='text'
-                                name='firstName'
-                                className='bg-gray-50 border border-gray-300 text-gray-900 text-sm block w-80 p-1.5 dark:bg-gray-600 dark:border-gray-500 dark:text-white'
-                            />
-                        </div>
-                    </div>
-                    <div className='gap-7 mt-4 px-7 grid grid-cols-2'>
-                        <div>
-                            <h1 className='mb-2 font-medium'>Email</h1>
-                            <text placeholder="Email">Email</text>
-                        </div>
-                        <div>
-                        <h1 className='mb-2 font-medium'>Tailor ID</h1>
-                        <text placeholder="Tailor ID">1234567890</text>
-                        </div>
-                    </div>
-
-                    <div className='px-7 mt-4'>
-                            <h1 className='mb-2 font-medium'>Phone Number</h1>
-                            <input
-                                type='text'
-                                name='firstName'
-                                className='bg-gray-50 border border-gray-300 text-gray-900 text-sm block w-80 p-1.5 dark:bg-gray-600 dark:border-gray-500 dark:text-white'
-                            />
-                    </div>
-
-                    <div className="border-t border-gray-100 mt-3 mb-3" />
-                    <button type="button" class="ml-7 mb-4 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Save</button>
+            <div className="border-t border-gray-100 mb-3" />
+            <div className='gap-7 px-7 grid grid-cols-1 sm:grid-cols-2'>
+                <div>
+                    <h1 className='mb-2 font-medium'>Name</h1>
+                    <input
+                        type='text'
+                        name='firstName'
+                        className='bg-gray-50 border border-gray-300 text-gray-900 text-sm block w-full sm:w-80 p-1.5 dark:bg-gray-600 dark:border-gray-500 dark:text-white'
+                    />
                 </div>
-
-                <div className='mt-4 bg-[#FEFEFE] border'>
-                    <h1 className='px-7 py-3 text-xl font-medium'>Change Password</h1>
-
-                    <div className="border-t border-gray-100 mb-3" />
-                    <div className='gap-7 px-7 grid grid-cols-2'>
-                        <div>
-                            <h1 className='mb-2 font-medium'>New Password</h1>
-                            <input
-                                type='text'
-                                name='firstName'
-                                className='bg-gray-50 border border-gray-300 text-gray-900 text-sm block w-80 p-1.5 dark:bg-gray-600 dark:border-gray-500 dark:text-white'
-                            />
-                        </div>
-                        <div>
-                            <h1 className='mb-2 font-medium'>Confirm Password</h1>
-                            <input
-                                type='text'
-                                name='firstName'
-                                className='bg-gray-50 border border-gray-300 text-gray-900 text-sm block w-80 p-1.5 dark:bg-gray-600 dark:border-gray-500 dark:text-white'
-                            />
-                        </div>
-                    </div>
-
-                    <div className="border-t border-gray-100 mt-3 mb-3" />
-                    <button type="button" class="ml-7 mb-4 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Reset Password</button>
-                </div>
-
-                
             </div>
+            <div className='gap-7 mt-4 px-7 grid grid-cols-1 sm:grid-cols-2'>
+                <div>
+                    <h1 className='mb-2 font-medium'>Email</h1>
+                    <input
+                        type='text'
+                        name='email'
+                        className='bg-gray-50 border border-gray-300 text-gray-900 text-sm block w-full sm:w-80 p-1.5 dark:bg-gray-600 dark:border-gray-500 dark:text-white'
+                        placeholder="Email"
+                    />
+                </div>
+                <div>
+                    <h1 className='mb-2 font-medium'>Tailor ID</h1>
+                    <input
+                        type='text'
+                        name='tailorId'
+                        className='bg-gray-50 border border-gray-300 text-gray-900 text-sm block w-full sm:w-80 p-1.5 dark:bg-gray-600 dark:border-gray-500 dark:text-white'
+                        placeholder="Tailor ID"
+                    />
+                </div>
+            </div>
+
+            <div className='px-7 mt-4'>
+                <h1 className='mb-2 font-medium'>Phone Number</h1>
+                <input
+                    type='text'
+                    name='phoneNumber'
+                    className='bg-gray-50 border border-gray-300 text-gray-900 text-sm block w-full sm:w-80 p-1.5 dark:bg-gray-600 dark:border-gray-500 dark:text-white'
+                />
+            </div>
+
+            <div className="border-t border-gray-100 mt-3 mb-3" />
+            <button type="button" className="ml-7 mb-4 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Save</button>
         </div>
+
+        <div className='mt-3 bg-[#FEFEFE] border'>
+            <h1 className='px-7 py-3 text-xl font-medium'>Change Password</h1>
+
+            <div className="border-t border-gray-100 mb-3" />
+            <div className='gap-7 px-7 grid grid-cols-1 sm:grid-cols-2'>
+                <div>
+                    <h1 className='mb-2 font-medium'>New Password</h1>
+                    <input
+                        type='password'
+                        name='newPassword'
+                        className='bg-gray-50 border border-gray-300 text-gray-900 text-sm block w-auto sm:w-52 p-1.5 dark:bg-gray-600 dark:border-gray-500 dark:text-white'
+                    />
+                </div>
+                <div>
+                    <h1 className='mb-2 font-medium'>Confirm Password</h1>
+                    <input
+                        type='password'
+                        name='confirmPassword'
+                        className='bg-gray-50 border border-gray-300 text-gray-900 text-sm block w-auto sm:w-52 p-1.5 dark:bg-gray-600 dark:border-gray-500 dark:text-white'
+                    />
+                </div>
+            </div>
+
+            <div className="border-t border-gray-100 mt-3 mb-3" />
+            <button type="button" className="ml-7 mb-4 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Reset Password</button>
+        </div>
+    </div>
+</div>
     </div>
 </div>
     )

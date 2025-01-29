@@ -3,7 +3,7 @@ import EmployeeSidebar from '/src/components/EmployeeSidebar'
 import EmployeeHeader from '/src/components/EmployeeHeader'
 import JobOrderModal from '/src/components/JobOrderModal'
 
-export default function AdminTransactionHistory() {
+export default function EmployeeTransactionHistory() {
     return (
         <div className='bg-[#F7F7F7] min-h-screen relative'>
             <EmployeeHeader />

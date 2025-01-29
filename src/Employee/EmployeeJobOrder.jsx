@@ -1,9 +1,15 @@
-import React from 'react';
+import React, { useState } from 'react';
 import EmployeeSidebar from '/src/components/EmployeeSidebar'
 import EmployeeHeader from '/src/components/EmployeeHeader'
 import JobOrderModal from '/src/components/JobOrderModal'
+import OrderRequestModal from '/src/components/OrderRequestModal';
 
-export default function AdminShopProfile() {
+export default function EmployeeJobOrder() {
+    const [jobOrders, setJobOrders] = useState([]); // <-- Added state for job orders
+
+    const handleAccept = (status) => { // <-- Added handleAccept function
+        setJobOrders([...jobOrders, { status }]); // Add the accepted job order to the list
+    };
     return (
         <div className='bg-[#F7F7F7] min-h-screen relative'>
             <EmployeeHeader />
@@ -83,8 +89,8 @@ export default function AdminShopProfile() {
 
                                 <div>
                                 <ul className="space-y-2">
-                                    <JobOrderModal />
-                                </ul>
+                                        <JobOrderModal onAccept={handleAccept} /> {/* <-- Render JobOrderModal with onAccept prop */}
+                                    </ul>
                                 </div>
                     
                             </div> 

@@ -4,7 +4,7 @@ import EmployeeHeader from '/src/components/EmployeeHeader'
 import JobOrderModal from '/src/components/JobOrderModal'
 import OrderRequestModal from '/src/components/OrderRequestModal'
 
-export default function ClientProfile() {
+export default function EmployeeHomepage() {
     return (
 <div className='bg-[#F7F7F7] min-h-screen relative'>
     <EmployeeHeader />
@@ -84,7 +84,7 @@ export default function ClientProfile() {
                             
                             <div>
                                 <ul className="space-y-2">
-                                    <JobOrderModal />
+                                    
                                 </ul>
                             </div>
                         </div>
@@ -101,7 +101,7 @@ export default function ClientProfile() {
                             
                             <div>
                                 <ul className="space-y-2">
-                                    <OrderRequestModal />
+                                    <JobOrderModal />
                                 </ul>
                             </div>
                         </div>
