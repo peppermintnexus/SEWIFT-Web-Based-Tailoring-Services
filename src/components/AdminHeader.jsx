@@ -5,7 +5,7 @@ export default function AdminHeader({ userName }) {
     return (
         <div className='viewport shadow flex-wrap justify-between items-center h-20 w-full px-4 sm:px-10  text-[#fefefe] bg-[#fefefe] relative'>
             <div className='flex justify-between items-center'>
-                <a href="/AdminHomepage" className='flex-shrink-0'>
+                <a href="/AdminJobOrder" className='flex-shrink-0'>
                     <img src={LogoBlack} className="ml-4 sm:ml-14 mt-5 h-10" alt="Sewift Logo" />
                 </a>
 

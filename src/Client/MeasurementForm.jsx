@@ -95,11 +95,8 @@ export default function ClientLogin() {
 
     return (
         <div className='bg-[#10aeb2] min-h-screen'>
-            <div>
-                <Header />
-            </div>
-
-            <div className='bg-[#fefefe] rounded-lg mx-40 mt-10'>
+            <div className='pt-20'>
+            <div className='bg-[#fefefe] rounded-lg mx-40 '>
                 <h1 className='text-3xl font-semibold pt-4 pb-5 text-[#171B1F] text-center'>
                     Measurement Profile
                 </h1>
@@ -230,6 +227,7 @@ export default function ClientLogin() {
                     </div>
             </div>
             </form>
+            </div>
             </div>
         </div>
     )

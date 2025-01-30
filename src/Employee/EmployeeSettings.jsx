@@ -70,7 +70,7 @@ export default function AdminTransactionHistory() {
             <h1 className='px-7 py-3 text-xl font-medium'>Account Information</h1>
 
             <div className="border-t border-gray-100 mb-3" />
-            <div className='gap-7 px-7 grid grid-cols-1 sm:grid-cols-2'>
+            <div className='gap-7 px-7 grid grid-cols-2 sm:grid-cols-2'>
                 <div>
                     <h1 className='mb-2 font-medium'>Name</h1>
                     <input
@@ -79,8 +79,6 @@ export default function AdminTransactionHistory() {
                         className='bg-gray-50 border border-gray-300 text-gray-900 text-sm block w-full sm:w-80 p-1.5 dark:bg-gray-600 dark:border-gray-500 dark:text-white'
                     />
                 </div>
-            </div>
-            <div className='gap-7 mt-4 px-7 grid grid-cols-1 sm:grid-cols-2'>
                 <div>
                     <h1 className='mb-2 font-medium'>Email</h1>
                     <input
@@ -88,15 +86,6 @@ export default function AdminTransactionHistory() {
                         name='email'
                         className='bg-gray-50 border border-gray-300 text-gray-900 text-sm block w-full sm:w-80 p-1.5 dark:bg-gray-600 dark:border-gray-500 dark:text-white'
                         placeholder="Email"
-                    />
-                </div>
-                <div>
-                    <h1 className='mb-2 font-medium'>Tailor ID</h1>
-                    <input
-                        type='text'
-                        name='tailorId'
-                        className='bg-gray-50 border border-gray-300 text-gray-900 text-sm block w-full sm:w-80 p-1.5 dark:bg-gray-600 dark:border-gray-500 dark:text-white'
-                        placeholder="Tailor ID"
                     />
                 </div>
             </div>
