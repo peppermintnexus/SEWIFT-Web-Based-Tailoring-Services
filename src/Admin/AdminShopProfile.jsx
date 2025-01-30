@@ -3,7 +3,6 @@ import { auth } from '../firebase';
 import AdminSidebar from '/src/components/AdminSidebar'
 import AdminHeader from '/src/components/AdminHeader'
 import ProductModal from '../components/ProductModal'
-import Rating from '/src/components/Rating'
 import { useNavigate } from 'react-router-dom';
 import { getDoc, doc, updateDoc } from 'firebase/firestore';
 import { db } from '../firebase';

@@ -1,6 +1,7 @@
 import React from 'react'
 import Header from '/src/components/Header.jsx'
 import SewiftPicture from '/src/assets/images/SewiftPicture.png'
+import ViewSample from '/src/assets/images/ViewSample.png'
 
 export default function SewiftHomepage() {
     return (
@@ -19,6 +20,11 @@ export default function SewiftHomepage() {
                     </button>
                     </a>
                 </div>
+            </div>
+
+            <div className='p-4 sm:p-10 bg-[#FEFEFE]'>
+                <h1 className='text-center text-3xl font-bold'>Order Apparels from Tailor Shops</h1>
+                <img src={ViewSample} />
             </div>
 
             <div className='p-4 sm:p-14 bg-[#171B1F]'>

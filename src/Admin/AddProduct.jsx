@@ -5,6 +5,14 @@ import { db } from '../firebase';
 import { onAuthStateChanged, getIdToken } from 'firebase/auth';
 import { auth } from '../firebase';
 
+const categoryFields = {
+    Blouse: ['Shoulder', 'Sleeve', 'Circumference', 'Figure', 'Blouse Length', 'Blouse Bust', 'Blouse Waist', 'Blouse Hips', 'Front Chest', 'Back Chest', 'Bust Point', 'Bust Distance'],
+    Skirt: ['Skirt Length', 'Skirt Waist', 'Skirt Hips'],
+    Pants: ['Crotch', 'Pants Length', 'Knee', 'Ankle Flare'],
+    Blazer: ['Shoulder', 'Sleeve', 'Circumference', 'Figure', 'Front Chest', 'Back Chest', 'Bust Point', 'Bust Distance'],
+    Shirt: ['Shoulder', 'Sleeve', 'Circumference', 'Figure', 'Front Chest', 'Back Chest', 'Polo Length', 'Polo Waist', 'Polo Hips']
+};
+
 export default function ClientProfile() {
     const [user, setUser] = useState(null);
     const [token, setToken] = useState(null);
@@ -20,6 +28,16 @@ export default function ClientProfile() {
         status: 'Available',
     });
     const navigate = useNavigate();
+
+    console [newProduct, setNewProduct] = useState({
+        name: '',
+        category: '',
+        description: '',
+        price: '',
+        availableSizes: '',
+        status: 'Available',
+        measurements: {},
+    });
 
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, async (user) => {
@@ -45,14 +63,35 @@ export default function ClientProfile() {
         setIsCategoryDropdownVisible(false);
     };
 
-    const handleInputChange = (e) => {
-        const { name, value } = e.target;
-        setNewProduct({ ...newProduct, [name]: value });
+    const handleCategorySelect = (category) => {
+        const measurements = categoryFields[category].reduce((acc, field) => {
+            acc[field] = '';
+            return acc;
+        }, {});
+
+        setNewProduct(prev => ({
+            ...prev,
+            category,
+            measurements,
+        }));
+        setIsCategoryDropdownVisible(false);
     };
 
-    const handleCategorySelect = (category) => {
-        setNewProduct({ ...newProduct, category });
-        setIsCategoryDropdownVisible(false);
+    const handleInputChange = (e) => {
+        const { name, value } = e.target;
+        
+        if (name.startsWith('measurement-')) {
+            const fieldName = name.split('-')[1];
+            setNewProduct(prev => ({
+                ...prev,
+                measurements: {
+                    ...prev.measurements,
+                    [fieldName]: value,
+                }
+            }));
+        } else {
+            setNewProduct({ ...newProduct, [name]: value})
+        }
     };
 
     const handleStatusSelect = (status) => {
@@ -69,16 +108,6 @@ export default function ClientProfile() {
             });
 
             console.log("Product added to users document");
-
-            // Clear the newProduct state
-            setNewProduct({
-                name: '',
-                category: '',
-                description: '',
-                price: '',
-                availableSizes: '',
-                status: 'Available',
-            });
 
             navigate('/AdminShopProfile')
         } catch (e) {
@@ -134,7 +163,7 @@ export default function ClientProfile() {
                                                 <li key={category}>
                                                     <button 
                                                     onClick={() => handleCategorySelect(category)}
-                                                    className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                                                    className="w-full text-left block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
                                                     >
                                                     {category}
                                                     </button>
@@ -216,7 +245,7 @@ export default function ClientProfile() {
                                                 <li key={status}>
                                                     <button 
                                                     onClick={() => handleStatusSelect(status)}
-                                                    className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                                                    className="w-full text-left block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
                                                     >
                                                 {status}
                                                 </button>

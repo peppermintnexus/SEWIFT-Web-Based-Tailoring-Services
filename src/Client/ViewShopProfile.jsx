@@ -66,14 +66,11 @@ export default function ViewShopProfile() {
                                 alt={shop.tailorShopName}
                                 className='w-full sm:w-48 h-48 object-cover rounded-lg'
                             />
-                            <div className='flex flex-col'>
-                                <h1 className='mt-1 mb-1.5 text-2xl font-bold'>{shop.tailorShopName}</h1>
+                            <div className='justify-between flex flex-col'>
+                                <h1 className='b-0.5 text-xl font-bold'>{shop.tailorShopName}</h1>
                                 <Rating />
-                                <label className='mt-5 block font-normal text-[#c3c3c3] dark:text-gray-400'>
-                                    {shop.completeAddress || 'Complete Address'}
-                                </label>
                                 
-                                <div className='space-y-1'>
+                                <div className=' space-y-1'>
                                     {shop.openingHours && (
                                         <div>
                                             <h1 className='text-md font-medium'>Opening Hours:</h1>
@@ -86,6 +83,9 @@ export default function ViewShopProfile() {
                                         </div>
                                     )}
                                 </div>
+                                <label className='block font-normal text-[#c3c3c3] dark:text-gray-400'>
+                                    {shop.completeAddress || 'Complete Address'}
+                                </label>
                             </div>
                         </div>
 

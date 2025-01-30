@@ -36,7 +36,7 @@ export default function About() {
                 </g>
                 </g>
                 </svg>
-                <p>mzerrudo15616@liceo.edu.ph</p>
+                <p>ruy76317@liceo.edu.ph</p>
                 </div>
             </div>
         </div>

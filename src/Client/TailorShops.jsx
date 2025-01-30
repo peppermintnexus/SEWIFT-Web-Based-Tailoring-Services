@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import ClientHeader from '/src/components/ClientHeader.jsx';
 import Sample from '/src/assets/images/Sample.jpg';
 import { db } from '/src/firebase';
+import Rating from '/src/components/Rating';
 import { collection, getDocs } from 'firebase/firestore';
 
 export default function TailorShops() {
@@ -59,11 +60,12 @@ export default function TailorShops() {
                     <h5 className="line-clamp-2 text-2xl sm:text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
                       {shop.tailorShopName}
                     </h5>
+                    <Rating />
                   </div>
                   <p className="font-normal text-gray-700 dark:text-gray-400">
                     {shop.openingHours}
                   </p>
-                  <p className="font-normal text-gray-700 dark:text-gray-400">
+                  <p className="font-semibold text-gray-700 dark:text-gray-400">
                     {shop.completeAddress}
                   </p>
                 </div>
