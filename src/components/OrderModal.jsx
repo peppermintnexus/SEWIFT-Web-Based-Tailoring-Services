@@ -1,183 +1,182 @@
 import React, { useEffect, useState } from "react";
 import SchoolBlouse from '/src/assets/images/SchoolBlouse.jpg';
 import { db } from '../firebase';
-import { collection, getDocs, doc, getDoc, updateDoc } from 'firebase/firestore';
+import { collection, getDocs, doc, getDoc, addDoc } from 'firebase/firestore'; // Added addDoc
 import { auth } from '../firebase';
 import { onAuthStateChanged } from "firebase/auth";
 
 export default function OrderModal() {
-    const [isModalVisible, setIsModalVisible] = useState(false);
-    const [products, setProducts] = useState([]);
-    const [selectedProduct, setSelectedProduct] = useState(null);
-    const [orderType, setOrderType] = useState("premade");
-    const [clientMeasurements, setClientMeasurements] = useState({});
-    const [user, setUser] = useState(null);
-    const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [products, setProducts] = useState([]);
+  const [selectedProduct, setSelectedProduct] = useState(null);
+  const [orderType, setOrderType] = useState("premade");
+  const [clientMeasurements, setClientMeasurements] = useState({});
+  const [user, setUser] = useState(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        if (!user || !selectedProduct) return;
+  // Handle form submission
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!user || !selectedProduct) return;
 
-        setIsSubmitting(true);
+    setIsSubmitting(true);
 
-        try {
-            const form = e.target;
-            const formData = new FormData(form);
+    try {
+      const form = e.target;
+      const formData = new FormData(form);
 
-            if (!selectedProduct.name || !selectedProduct.price) {
-                alert("Selected product is invalid. PLease try again.");
-                return;
-            }
+      if (!selectedProduct.name || !selectedProduct.price) {
+        alert("Selected product is invalid. Please try again.");
+        return;
+      }
 
-            const quantity = parseInt(formData.get('quantity'), 10);
-            if (isNaN(quantity) || quantity < 1) {
-                alert("Please enter a valid quantity.");
-                return;
-            }
+      const quantity = parseInt(formData.get("quantity"), 10);
+      if (isNaN(quantity) || quantity < 1) {
+        alert("Please enter a valid quantity.");
+        return;
+      }
 
-            const orderData = {
-                product: {
-                    id: selectedProduct.id || `fallback-id-${Date.now()}`,
-                    name: selectedProduct.name || "Unnamed Product",
-                    price: selectedProduct.price || 0,
-                    size: selectedProduct.size || "Not Specified",
-                    category: selectedProduct.category || "Uncategorized",
-                    imageUrl: selectedProduct.imageUrl || SchoolBlouse,
-                },
-                client: {
-                    uid: user.uid,
-                    email: user.email,
-                    measurements: clientMeasurements || {},
-                },
-                orderDetails: {
-                    type: orderType || "premade",
-                    quantity: quantity,
-                    size: formData.get('size') || "Not Specified",
-                    remarks: formData.get('remarks') || "No Remarks",
-                    status: 'pending',
-                },
-                createdAt: new Date(),
-            };
+      const orderData = {
+        product: {
+          id: selectedProduct.id || `fallback-id-${Date.now()}`,
+          name: selectedProduct.name || "Unnamed Product",
+          price: selectedProduct.price || 0,
+          size: selectedProduct.size || "Not Specified",
+          category: selectedProduct.category || "Uncategorized",
+          imageUrl: selectedProduct.imageUrl || SchoolBlouse,
+        },
+        client: {
+          uid: user.uid,
+          email: user.email,
+          measurements: clientMeasurements || {},
+        },
+        orderDetails: {
+          type: orderType || "premade",
+          quantity: quantity,
+          size: formData.get("size") || "Not Specified",
+          remarks: formData.get("remarks") || "No Remarks",
+          status: "pending",
+        },
+        createdAt: new Date(),
+      };
 
-            console.log("Order Data:", orderData);
-            
-            const adminDocRef = doc(db, 'adminUsers', selectedProduct.adminId);
-            const adminDoc = await getDoc(adminDocRef);
+      console.log("Order Data:", orderData);
 
-            if (adminDoc.exists()) {
-                const existingOrders = adminDoc.data().orders || [];
-                const updatedOrders = [...existingOrders, orderData];
+      // Add the order to the 'orders' subcollection under the selected adminUser
+      const ordersRef = collection(db, "adminUsers", selectedProduct.adminId, "orders");
+      await addDoc(ordersRef, orderData);
 
-                await updateDoc(adminDocRef, {
-                    orders: updatedOrders,
-                });
-            }
-
-            setIsModalVisible(false);
-        } catch (error) {
-            console.error("Error submitting order:", error);
-            alert('Error submitting order. Please try again.');
-        } finally {
-            setIsSubmitting(false);
-        }
-    };
-
-    useEffect(() => {
-        const fetchProducts = async () => {
-            try {
-                const querySnapshot = await getDocs(collection(db, "adminUsers"));
-                const allProducts = [];
-
-                querySnapshot.forEach((adminDoc) => {
-                    const userProducts = adminDoc.data().productList || [];
-                    userProducts.forEach(product => {
-                      allProducts.push({
-                        ...product,
-                        adminId: adminDoc.id,
-                        tailorShopName: adminDoc.data().tailorShopName,
-                        // imageUrl: product.imageUrl || SchoolBlouse // Prepare for dynamic images later
-                      });
-                    });
-                  });
-
-                  setProducts(allProducts);
-                } catch (error) {
-                    console.error("Error fetching products:". error);
-                }
-            };
-
-            fetchProducts();
-        }, []);
-
-        useEffect(() => {
-            const unsubscribe = onAuthStateChanged(auth, (user) => {
-                if (user) {
-                    setUser(user);
-                }
-            });
-
-            return () => unsubscribe();
-        }, []);
-
-        useEffect(() => {
-            const fetchClientMeasurements = async () => {
-                if (selectedProduct && user) {
-                    try {
-                        const clientDoc = await getDoc(doc(db, 'clientUsers', user.uid));
-                        if (clientDoc.exists()) {
-                            setClientMeasurements(clientDoc.data().measurements || {});
-                        }
-                    } catch (error) {
-                        console.error("Error fetching client measurements:", error);
-                    }
-                }
-            };
-
-            fetchClientMeasurements();
-        }, [selectedProduct, user]);
-
-    const toggleModal = (product) => {
-        setSelectedProduct(product);
-        setIsModalVisible(!isModalVisible);
-    };
-
-    const handleOrderTypeChange = (event) => {
-        setOrderType(event.target.value);
+      setIsModalVisible(false);
+      alert("Order submitted successfully!");
+    } catch (error) {
+      console.error("Error submitting order:", error);
+      alert("Error submitting order. Please try again.");
+    } finally {
+      setIsSubmitting(false);
     }
+  };
 
-    const renderMeasurementFields = () => {
-        if (!selectedProduct || !selectedProduct.category) return null;
+  // Fetch products from Firestore
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const querySnapshot = await getDocs(collection(db, "adminUsers"));
+        const allProducts = [];
 
-        const fields = {
-            blouse: ["shoulder", "sleeve", "circumference", "figure", "blouseLength", "blouseBust", "blouseWaist", "blouseHips", "frontChest", "backChest", "bustPoint", "bustDistance"],
-            skirt: ["skirtLength", "skirtWaist", "skirtHips"],
-            pants: ["crotch", "pantsLength", "knee", "ankleFlare"],
-            blazer: ["shoulder", "sleeve", "circumference", "figure", "frontChest", "backChest", "bustPoint", "bustDistance"],
-            shirt: ["shoulder", "sleeve", "circumference", "figure", "frontChest", "backChest", "poloLength", "poloWaist", "poloHips"],
-        };
+        querySnapshot.forEach((adminDoc) => {
+          const userProducts = adminDoc.data().productList || [];
+          userProducts.forEach((product) => {
+            allProducts.push({
+              ...product,
+              adminId: adminDoc.id, // Store adminId for reference
+              tailorShopName: adminDoc.data().tailorShopName,
+            });
+          });
+        });
 
-        const categoryFields = fields[selectedProduct.category.toLowerCase()] || [];
+        setProducts(allProducts);
+      } catch (error) {
+        console.error("Error fetching products:", error);
+      }
+    };
 
-        return (
-            <>
-                {categoryFields.map((field) => (
-                    <div key={field}>
-                        <label htmlFor={field} className="block mb-1 text-sm font-medium text-gray-900 dark:text-white">
-                        {field.replace(/([A-Z])/g, ' $1').replace(/^./, (str) => str.toUpperCase())}
-                        </label>
-                        <input
-                            type="text"
-                            name={field}
-                            className="text-center bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-1.5 mb-1 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                            placeholder="cm"
-                            value={clientMeasurements[field] || ""} // Auto-fill with client measurements
-                            required
-                            readOnly // Make fields read-only if needed
-                        />
-                    </div>
-                ))}
-            </>
-        );
+    fetchProducts();
+  }, []);
+
+  // Fetch authenticated user
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        setUser(user);
+      }
+    });
+
+    return () => unsubscribe();
+  }, []);
+
+  // Fetch client measurements
+  useEffect(() => {
+    const fetchClientMeasurements = async () => {
+      if (selectedProduct && user) {
+        try {
+          const clientDoc = await getDoc(doc(db, 'clientUsers', user.uid));
+          if (clientDoc.exists()) {
+            setClientMeasurements(clientDoc.data().measurements || {});
+          }
+        } catch (error) {
+          console.error("Error fetching client measurements:", error);
+        }
+      }
+    };
+
+    fetchClientMeasurements();
+  }, [selectedProduct, user]);
+
+  // Toggle modal visibility
+  const toggleModal = (product) => {
+    setSelectedProduct(product);
+    setIsModalVisible(!isModalVisible);
+  };
+
+  // Handle order type change
+  const handleOrderTypeChange = (event) => {
+    setOrderType(event.target.value);
+  };
+
+  // Render measurement fields based on product category
+  const renderMeasurementFields = () => {
+    if (!selectedProduct || !selectedProduct.category) return null;
+
+    const fields = {
+      blouse: ["shoulder", "sleeve", "circumference", "figure", "blouseLength", "blouseBust", "blouseWaist", "blouseHips", "frontChest", "backChest", "bustPoint", "bustDistance"],
+      skirt: ["skirtLength", "skirtWaist", "skirtHips"],
+      pants: ["crotch", "pantsLength", "knee", "ankleFlare"],
+      blazer: ["shoulder", "sleeve", "circumference", "figure", "frontChest", "backChest", "bustPoint", "bustDistance"],
+      shirt: ["shoulder", "sleeve", "circumference", "figure", "frontChest", "backChest", "poloLength", "poloWaist", "poloHips"],
+    };
+
+    const categoryFields = fields[selectedProduct.category.toLowerCase()] || [];
+
+    return (
+        <>
+          {categoryFields.map((field) => (
+            <div key={field}>
+              <label htmlFor={field} className="block mb-1 text-sm font-medium text-gray-900 dark:text-white">
+                {field.replace(/([A-Z])/g, ' $1').replace(/^./, (str) => str.toUpperCase())}
+              </label>
+              <input
+                type="text"
+                name={field}
+                className="text-center bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-1.5 mb-1 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                placeholder="cm"
+                value={clientMeasurements[field] || ""} // Auto-fill with client measurements
+                required
+                readOnly // Make fields read-only if needed
+              />
+            </div>
+          ))}
+        </>
+      );
     };
 
     return ( 

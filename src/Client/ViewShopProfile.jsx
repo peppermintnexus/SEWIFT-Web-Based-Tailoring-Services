@@ -4,15 +4,21 @@ import ClientHeader from '/src/components/ClientHeader.jsx';
 import { db } from '/src/firebase';
 import { doc, getDoc, collection, getDocs } from 'firebase/firestore';
 import Rating from '/src/components/Rating';
+import OrderModal from '../components/OrderModal';
 
 export default function ViewShopProfile() {
     const { shopId } = useParams();
     const [products, setProducts] = useState([]);
     const [shop, setShop] = useState(null);
     const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null); // Added error state
+    const [selectedProduct, setSelectedProduct] = useState(null);
+    const [isModalVisible, setIsModalVisible] = useState(false);
 
     useEffect(() => {
         const fetchShopDetails = async () => {
+            setLoading(true); // Set loading to true before fetching
+            setError(null); // Reset error state
             try {
                 const docRef = doc(db, 'adminUsers', shopId);
                 const docSnap = await getDoc(docRef);
@@ -30,10 +36,12 @@ export default function ViewShopProfile() {
                     console.log('Fetched products:', productsData); // Debug log
                 } else {
                     console.log('No such document!');
+                    setError('Shop not found'); // Set error message
                     setProducts([]);
                 }
             } catch (error) {
                 console.error('Error fetching data:', error);
+                setError('Failed to load shop details'); // Set error message
                 setProducts([]);
             } finally {
                 setLoading(false);
@@ -47,6 +55,10 @@ export default function ViewShopProfile() {
 
     if (loading) {
         return <div className='bg-[#FEFEFE] min-h-screen relative'>Loading...</div>;
+    }
+
+    if (error) {
+        return <div className='bg-[#FEFEFE] min-h-screen relative'>{error}</div>; // Display error message
     }
 
     if (!shop) {
@@ -70,7 +82,7 @@ export default function ViewShopProfile() {
                                 <h1 className='b-0.5 text-xl font-bold'>{shop.tailorShopName}</h1>
                                 <Rating />
                                 
-                                <div className=' space-y-1'>
+                                <div className='space-y-1'>
                                     {shop.openingHours && (
                                         <div>
                                             <h1 className='text-md font-medium'>Opening Hours:</h1>
@@ -93,28 +105,35 @@ export default function ViewShopProfile() {
                         <div className="border-t border-gray-100 mt-4 mb-4" />
                         <h2 className="text-2xl font-bold mb-4">Our Products</h2>
                         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                            {products.length > 0 ? (
-                                products.map((product) => (
-                                    <div key={product.id} className="bg-white p-4 rounded-lg shadow-md">
-                                        <img 
-                                            src={product.imageUrl || '/src/assets/images/Sample.jpg'} 
-                                            alt={product.name}
-                                            className="w-full h-48 object-cover rounded-md mb-4"
-                                        />
-                                        <h3 className="text-lg font-semibold mb-2">{product.name}</h3>
-                                        <p className="text-gray-600 mb-2">{product.description}</p>
-                                        <div className="flex justify-between items-center">
-                                            <span className="text-blue-600 font-bold">₱{product.price}</span>
-                                            <button className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
-                                                View Details
-                                            </button>
-                                        </div>
-                                    </div>
-                                ))
-                            ) : (
-                                <p className="text-gray-500">No products available yet</p>
-                            )}
+                            {products.map((product) => (
+                                <div key={product.id} className="bg-white p-4 rounded-lg shadow-md">
+                                    {/* Product content */}
+                                    <h3 className="font-bold">{product.name}</h3> {/* Assuming product has a name */}
+                                    <p>{product.description}</p> {/* Assuming product has a description */}
+                                    <button 
+                                        onClick={() => {
+                                            setSelectedProduct(product);
+                                            setIsModalVisible(true);
+                                        }} 
+                                        className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+                                    >
+                                        View Details
+                                    </button>
+                                </div>
+                            ))}
                         </div>
+
+                        {isModalVisible && selectedProduct && (
+                            <OrderModal
+                                product={selectedProduct}
+                                shopId={shopId}
+                                shopName={shop.tailorShopName}
+                                onClose={() => {
+                                    setIsModalVisible(false);
+                                    setSelectedProduct(null);
+                                }}
+                            />
+                        )}
                     </div>
                 </div>
             </div>
