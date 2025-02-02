@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { Rate, Typography } from 'antd';
+import React, { useState, useEffect } from "react";
+import { Rate, Typography } from "antd";
 
 const { Text } = Typography;
 
@@ -9,12 +9,12 @@ const Rating = () => {
 
   // Load ratings from localStorage on component mount
   useEffect(() => {
-    const savedRatings = JSON.parse(localStorage.getItem('ratings')) || [];
+    const savedRatings = JSON.parse(localStorage.getItem("ratings")) || [];
     setAllRatings(savedRatings);
-    
+
     // Check if current user has already rated (replace 'currentUserId' with actual user ID)
     const currentUserId = "user123"; // Replace with actual user ID from your auth system
-    const existingRating = savedRatings.find(r => r.userId === currentUserId);
+    const existingRating = savedRatings.find((r) => r.userId === currentUserId);
     if (existingRating) {
       setUserRating(existingRating.value);
     }
@@ -22,36 +22,37 @@ const Rating = () => {
 
   const handleRate = (value) => {
     const currentUserId = "user123"; // Replace with actual user ID from your auth system
-    
+
     // Update local state
     setUserRating(value);
 
     // Update all ratings
-    const newRatings = allRatings.filter(r => r.userId !== currentUserId)
-                          .concat([{ userId: currentUserId, value }]);
-    
+    const newRatings = allRatings
+      .filter((r) => r.userId !== currentUserId)
+      .concat([{ userId: currentUserId, value }]);
+
     setAllRatings(newRatings);
-    
+
     // Save to localStorage
-    localStorage.setItem('ratings', JSON.stringify(newRatings));
+    localStorage.setItem("ratings", JSON.stringify(newRatings));
   };
 
   // Calculate average rating
-  const averageRating = allRatings.length > 0 
-    ? allRatings.reduce((sum, r) => sum + r.value, 0) / allRatings.length
-    : 0;
+  const averageRating =
+    allRatings.length > 0
+      ? allRatings.reduce((sum, r) => sum + r.value, 0) / allRatings.length
+      : 0;
 
   return (
-    <div>
-      <Rate 
+    <div className='flex items-center'>
+      <Rate
         value={userRating}
         onChange={handleRate}
-        style={{ fontSize: '14px' }}
+        style={{ fontSize: "14px" }}
+        className='pr-3'
       />
-      <div style={{ marginTop: 8 }}>
-        <Text type="secondary">
-          {allRatings.length} ratings · {averageRating.toFixed(1)}
-        </Text>
+      <div className='pb-1'>
+        <Text type='secondary'>{averageRating.toFixed(1)}</Text>
       </div>
     </div>
   );
