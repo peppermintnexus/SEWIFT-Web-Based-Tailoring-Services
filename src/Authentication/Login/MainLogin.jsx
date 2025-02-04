@@ -3,7 +3,15 @@ import StickerClose from "/src/assets/images/StickerClose.png";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { useNavigate } from "react-router";
 import { auth, db } from "../../firebase";
-import { doc, getDoc } from "firebase/firestore";
+import {
+  doc,
+  getDoc,
+  collection,
+  query,
+  where,
+  getDocs,
+  collectionGroup,
+} from "firebase/firestore";
 
 export default function MainLogin() {
   const [formData, setFormData] = useState({
@@ -23,6 +31,7 @@ export default function MainLogin() {
     setError(null);
 
     try {
+      // Sign in the user using Firebase Auth
       const userCredential = await signInWithEmailAndPassword(
         auth,
         formData.email,
@@ -30,24 +39,42 @@ export default function MainLogin() {
       );
       const user = userCredential.user;
 
-      const clientRef = doc(db, "Client", user.uid); // Updated collection name
-      const employeeRef = doc(db, "employeeUsers", user.uid); // Leave this as is for now
-      const adminRef = doc(db, "Administrator", user.uid); // Updated collection name
-
+      // 1. Check if the user is a Client (assuming you have a "Client" collection)
+      const clientRef = doc(db, "Client", user.uid);
       const clientDoc = await getDoc(clientRef);
-      const employeeDoc = await getDoc(employeeRef);
-      const adminDoc = await getDoc(adminRef);
-
       if (clientDoc.exists()) {
         navigate("/ClientHomepage");
-      } else if (employeeDoc.exists()) {
-        navigate("/EmployeeJobOrder");
-      } else if (adminDoc.exists()) {
-        navigate("/AdminJobOrder");
-      } else {
-        setError("Error logging in.");
+        return;
       }
+
+      // 2. Check if the user is an Administrator
+      // We assume that your Administrator documents have a field `Head_ID` equal to the admin's UID.
+      const adminQuery = query(
+        collection(db, "Administrator"),
+        where("Head_ID", "==", user.uid)
+      );
+      const adminQuerySnapshot = await getDocs(adminQuery);
+      if (!adminQuerySnapshot.empty) {
+        navigate("/AdminJobOrder");
+        return;
+      }
+
+      // 3. Check if the user is a Tailor Shop Employee
+      // Using a collection group query to search across all Tailor_Shop_Employee subcollections
+      const employeeQuery = query(
+        collectionGroup(db, "Tailor_Shop_Employee"),
+        where("Tailor_ID", "==", user.uid)
+      );
+      const employeeQuerySnapshot = await getDocs(employeeQuery);
+      if (!employeeQuerySnapshot.empty) {
+        navigate("/EmployeeJobOrder");
+        return;
+      }
+
+      // If the user is not found in any of the collections
+      setError("Error logging in: User type not found.");
     } catch (err) {
+      console.error(err);
       if (err.code === "auth/user-not-found") {
         setError("User not found");
       } else if (err.code === "auth/wrong-password") {
@@ -60,7 +87,7 @@ export default function MainLogin() {
 
   return (
     <div className='min-h-screen place-items-center flex justify-center bg-[#20262B]'>
-      <div class='w-full max-w-sm p-4 bg-white border border-gray-200 rounded-lg shadow sm:p-6 md:p-8 dark:bg-gray-800 dark:border-gray-700'>
+      <div className='w-full max-w-sm p-4 bg-white border border-gray-200 rounded-lg shadow sm:p-6 md:p-8'>
         <div className='flex justify-end'>
           <a href='/'>
             <button className='flex bg-[#fefefe] rounded-full'>
@@ -72,17 +99,17 @@ export default function MainLogin() {
             </button>
           </a>
         </div>
-        <form class='space-y-5' action='#' onSubmit={handleLogin}>
+        <form className='space-y-5' onSubmit={handleLogin}>
           <div className='flex items-center'>
-            <h5 className='text-xl font-medium text-gray-900 dark:text-white'>
+            <h5 className='text-xl font-medium text-gray-900'>
               Log in to Sewift
             </h5>
           </div>
 
           <div>
             <label
-              for='email'
-              class='block mb-2 text-sm font-medium text-gray-900 dark:text-white'
+              htmlFor='email'
+              className='block mb-2 text-sm font-medium text-gray-900'
             >
               Email
             </label>
@@ -92,14 +119,15 @@ export default function MainLogin() {
               id='email'
               value={formData.email}
               onChange={handleInputChange}
-              class='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white'
+              className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg 
+                         focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5'
               required
             />
           </div>
           <div>
             <label
-              for='password'
-              class='block mb-2 text-sm font-medium text-gray-900 dark:text-white'
+              htmlFor='password'
+              className='block mb-2 text-sm font-medium text-gray-900'
             >
               Password
             </label>
@@ -110,30 +138,31 @@ export default function MainLogin() {
               value={formData.password}
               onChange={handleInputChange}
               placeholder='••••••••'
-              class='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white'
+              className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg 
+                         focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5'
               required
             />
           </div>
-          <div class='flex items-start'>
+          <div className='flex items-start'>
             <a
               href='#'
-              class='ms-auto text-sm text-blue-700 hover:underline dark:text-blue-500'
+              className='ms-auto text-sm text-blue-700 hover:underline'
             >
               Lost Password?
             </a>
           </div>
+          {error && <p className='text-red-500 text-sm'>{error}</p>}
           <button
             type='submit'
-            class='w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800'
+            className='w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 
+                       focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm 
+                       px-5 py-2.5 text-center'
           >
             Login to your account
           </button>
-          <div class='text-sm font-medium text-gray-500 dark:text-gray-300 text-center'>
+          <div className='text-sm font-medium text-gray-500 text-center'>
             Not registered?{" "}
-            <a
-              href='/Signup'
-              class='text-blue-700 hover:underline dark:text-blue-500'
-            >
+            <a href='/Signup' className='text-blue-700 hover:underline'>
               Create account
             </a>
           </div>

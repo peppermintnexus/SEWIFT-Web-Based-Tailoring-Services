@@ -3,7 +3,8 @@ import { Rate, Typography } from "antd";
 
 const { Text } = Typography;
 
-const Rating = () => {
+const Rating = ({ shopId }) => {
+  // Add shopId prop
   const [userRating, setUserRating] = useState(0);
   const [allRatings, setAllRatings] = useState([]);
 
@@ -12,35 +13,36 @@ const Rating = () => {
     const savedRatings = JSON.parse(localStorage.getItem("ratings")) || [];
     setAllRatings(savedRatings);
 
-    // Check if current user has already rated (replace 'currentUserId' with actual user ID)
-    const currentUserId = "user123"; // Replace with actual user ID from your auth system
-    const existingRating = savedRatings.find((r) => r.userId === currentUserId);
+    const currentUserId = "user123"; // Replace with actual user ID
+    // Find rating for current user AND current shop
+    const existingRating = savedRatings.find(
+      (r) => r.userId === currentUserId && r.shopId === shopId
+    );
     if (existingRating) {
       setUserRating(existingRating.value);
     }
-  }, []);
+  }, [shopId]); // Add shopId to dependency array
 
   const handleRate = (value) => {
-    const currentUserId = "user123"; // Replace with actual user ID from your auth system
+    const currentUserId = "user123"; // Replace with actual user ID
 
     // Update local state
     setUserRating(value);
 
-    // Update all ratings
+    // Update all ratings: remove previous rating for this user+shop
     const newRatings = allRatings
-      .filter((r) => r.userId !== currentUserId)
-      .concat([{ userId: currentUserId, value }]);
+      .filter((r) => !(r.userId === currentUserId && r.shopId === shopId))
+      .concat([{ userId: currentUserId, shopId, value }]); // Include shopId
 
     setAllRatings(newRatings);
-
-    // Save to localStorage
     localStorage.setItem("ratings", JSON.stringify(newRatings));
   };
 
-  // Calculate average rating
+  // Calculate average for THIS SHOP
+  const shopRatings = allRatings.filter((r) => r.shopId === shopId);
   const averageRating =
-    allRatings.length > 0
-      ? allRatings.reduce((sum, r) => sum + r.value, 0) / allRatings.length
+    shopRatings.length > 0
+      ? shopRatings.reduce((sum, r) => sum + r.value, 0) / shopRatings.length
       : 0;
 
   return (

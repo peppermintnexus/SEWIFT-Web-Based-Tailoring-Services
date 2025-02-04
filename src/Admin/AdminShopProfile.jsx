@@ -13,7 +13,7 @@ export default function AdminShopProfile() {
   const [name, setName] = useState("");
   const [token, setToken] = useState(null);
   const [Tailor_Shop_Name, setTailorShopName] = useState("");
-  const [completeAddress, setCompleteAddress] = useState("");
+  const [Complete_Address, setCompleteAddress] = useState("");
   const [openingHours, setOpeningHours] = useState("");
   const [description, setDescription] = useState("");
   const [isEditing, setIsEditing] = useState(false);
@@ -31,7 +31,7 @@ export default function AdminShopProfile() {
         if (userDoc.exists()) {
           setName(userDoc.data().name);
           setTailorShopName(userDoc.data().Tailor_Shop_Name);
-          setCompleteAddress(userDoc.data().completeAddress);
+          setCompleteAddress(userDoc.data().Complete_Address);
           setOpeningHours(userDoc.data().openingHours || "");
           setDescription(userDoc.data().description || "");
 
@@ -100,7 +100,7 @@ export default function AdminShopProfile() {
                         stroke-linejoin='round'
                       />
                     </svg>
-                    {completeAddress || "Complete Address"}
+                    {Complete_Address || "Complete Address"}
                   </h1>
                 </div>
 

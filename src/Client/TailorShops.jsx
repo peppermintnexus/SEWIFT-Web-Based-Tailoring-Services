@@ -13,7 +13,7 @@ export default function TailorShops() {
   // Fetch shops from Firebase
   useEffect(() => {
     const fetchShops = async () => {
-      const querySnapshot = await getDocs(collection(db, "adminUsers"));
+      const querySnapshot = await getDocs(collection(db, "Administrator"));
       const shopsData = querySnapshot.docs.map((doc) => ({
         id: doc.id,
         ...doc.data(),
@@ -60,15 +60,15 @@ export default function TailorShops() {
                 <div className='p-4'>
                   <div className='container w-full h-16 overflow-hidden'>
                     <h5 className='line-clamp-2 text-2xl sm:text-2xl font-bold tracking-tight text-gray-900 dark:text-white'>
-                      {shop.tailorShopName}
+                      {shop.Tailor_Shop_Name}
                     </h5>
                     <Rating />
                   </div>
                   <p className='font-normal text-gray-700 dark:text-gray-400'>
-                    {shop.openingHours}
+                    {shop.Opening_Hours}
                   </p>
                   <p className='font-semibold text-gray-700 dark:text-gray-400'>
-                    {shop.completeAddress}
+                    {shop.Complete_Address}
                   </p>
                 </div>
               </div>

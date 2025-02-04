@@ -19,7 +19,7 @@ export default function EmployeesList() {
   const [name, setName] = useState("");
   const [token, setToken] = useState(null);
   const [Tailor_Shop_Name, setTailorShopName] = useState("");
-  const [employees, setEmployees] = useState([]); // State for employees
+  const [Tailor_Shop_Employee, setEmployees] = useState([]); // State for employees
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -51,7 +51,7 @@ export default function EmployeesList() {
     try {
       const userDoc = await getDoc(doc(db, "Administrator", adminId));
       if (userDoc.exists()) {
-        const employeesData = userDoc.data().employees || [];
+        const employeesData = userDoc.data().Tailor_Shop_Employee || [];
         setEmployees(employeesData);
       }
     } catch (error) {
@@ -86,10 +86,10 @@ export default function EmployeesList() {
               </tr>
             </thead>
             <tbody>
-              {employees.map((employee, index) => (
+              {Tailor_Shop_Employee.map((Tailor_Shop_Employee, index) => (
                 <EmployeeModal
-                  key={employee.id}
-                  employee={employee}
+                  key={Tailor_Shop_Employee.id}
+                  Tailor_Shop_Employee={Tailor_Shop_Employee}
                   index={index}
                 />
               ))}

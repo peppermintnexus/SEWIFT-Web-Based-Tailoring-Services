@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import AdminSidebar from "/src/components/AdminSidebar";
-import JobOrderModal from "/src/components/JobOrderModal";
+import OrderModal from "/src/components/OrderModal";
 import { useNavigate } from "react-router";
 import { onAuthStateChanged, getIdToken } from "firebase/auth";
 import { auth } from "../firebase";
@@ -73,7 +73,7 @@ export default function AdminTransactionHistory() {
         <div class='rounded-lg'>
           <div class='grid mb-4'>
             <div class='flex rounded-sm gap-4 bg-white-50 dark:bg-white-800'>
-              <JobOrderModal />
+              <OrderModal />
             </div>
           </div>
         </div>

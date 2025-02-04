@@ -63,6 +63,7 @@ export default function ClientProfile() {
       Unit_of_Measurement: "cm", // Default unit
     },
   });
+  const [imagePreview, setImagePreview] = useState(null); // State for image preview
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -92,7 +93,7 @@ export default function ClientProfile() {
 
     setNewProduct((prev) => ({
       ...prev,
-      category,
+      Category: category, // Changed from `category` to `Category`
       Product_Measurement: {
         ...prev.Product_Measurement,
         Measurement: measurements, // Update the Measurement field
@@ -147,6 +148,7 @@ export default function ClientProfile() {
     if (file) {
       const reader = new FileReader();
       reader.onloadend = () => {
+        setImagePreview(reader.result); // Set the image preview URL
         setNewProduct((prev) => ({
           ...prev,
           Photo_of_Product: reader.result, // Store the Base64 string
@@ -168,6 +170,7 @@ export default function ClientProfile() {
       const docRef = await addDoc(productRef, {
         ...newProduct,
         Product_ID: "", // Firestore will auto-generate the ID
+        Category: newProduct.Category, // Changed from `category` to `Category`
       });
 
       // Update the Product_ID field with the auto-generated ID
@@ -249,7 +252,8 @@ export default function ClientProfile() {
                   type='button'
                   aria-expanded={isCategoryDropdownVisible}
                 >
-                  {newProduct.category || "Select Category"}
+                  {newProduct.Category || "Select Category"}{" "}
+                  {/* Updated to `Category` */}
                   <svg
                     className='w-2.5 h-2.5'
                     aria-hidden='true'
@@ -294,30 +298,38 @@ export default function ClientProfile() {
                 htmlFor='dropzone-file'
                 className='flex flex-col items-center justify-center w-48 h-48 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 hover:bg-gray-100'
               >
-                <div className='flex flex-col items-center justify-center pt-5 pb-6'>
-                  <svg
-                    className='w-8 h-8 mb-4 text-gray-500'
-                    aria-hidden='true'
-                    xmlns='http://www.w3.org/2000/svg'
-                    fill='none'
-                    viewBox='0 0 20 16'
-                  >
-                    <path
-                      stroke='currentColor'
-                      strokeLinecap='round'
-                      strokeLinejoin='round'
-                      strokeWidth='2'
-                      d='M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2'
-                    />
-                  </svg>
-                  <p className='mb-2 text-xs text-gray-500'>
-                    <span className='font-semibold'>Click to upload</span> or
-                    drag and drop
-                  </p>
-                  <p className='text-center text-xs text-gray-500'>
-                    SVG, PNG, JPG or GIF (MAX. 800x400px)
-                  </p>
-                </div>
+                {imagePreview ? (
+                  <img
+                    src={imagePreview}
+                    alt='Preview'
+                    className='w-full h-full object-cover rounded-lg'
+                  />
+                ) : (
+                  <div className='flex flex-col items-center justify-center pt-5 pb-6'>
+                    <svg
+                      className='w-8 h-8 mb-4 text-gray-500'
+                      aria-hidden='true'
+                      xmlns='http://www.w3.org/2000/svg'
+                      fill='none'
+                      viewBox='0 0 20 16'
+                    >
+                      <path
+                        stroke='currentColor'
+                        strokeLinecap='round'
+                        strokeLinejoin='round'
+                        strokeWidth='2'
+                        d='M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2'
+                      />
+                    </svg>
+                    <p className='mb-2 text-xs text-gray-500'>
+                      <span className='font-semibold'>Click to upload</span> or
+                      drag and drop
+                    </p>
+                    <p className='text-center text-xs text-gray-500'>
+                      SVG, PNG, JPG or GIF (MAX. 800x400px)
+                    </p>
+                  </div>
+                )}
                 <input
                   id='dropzone-file'
                   type='file'
@@ -333,12 +345,19 @@ export default function ClientProfile() {
             <div className='grid grid-cols-2 gap-3'>
               <div className='space-y-1'>
                 <p>Size</p>
-                <input
+                <select
                   name='Size'
                   value={newProduct.Product_Measurement.Size}
                   onChange={handleSizeChange}
                   className='w-full px-1.5 py-1 text-gray-900 bg-gray-50 border border-gray-300 focus:ring-blue-500 focus:border-blue-500'
-                />
+                >
+                  <option value=''>Select Size</option>
+                  <option value='Extra Small'>Extra Small</option>
+                  <option value='Small'>Small</option>
+                  <option value='Medium'>Medium</option>
+                  <option value='Large'>Large</option>
+                  <option value='Extra Large'>Extra Large</option>
+                </select>
               </div>
               <div className='space-y-1'>
                 <p>Unit of Measurement</p>
@@ -352,7 +371,7 @@ export default function ClientProfile() {
             </div>
 
             {/* Display measurement fields based on the selected category */}
-            {newProduct.category && (
+            {newProduct.Category && ( // Updated to `Category`
               <div className='mt-4'>
                 <p className='text-lg font-medium'>Measurements</p>
                 {Object.entries(newProduct.Product_Measurement.Measurement).map(

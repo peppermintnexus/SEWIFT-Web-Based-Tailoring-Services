@@ -74,7 +74,7 @@ export default function SignUp() {
 
       await createAdminInFirestore(user);
       await handleEmailVerification(user);
-      navigate("/AdminHomepage");
+      navigate("/AdminJobOrder");
     } catch (err) {
       console.error("Error creating user:", err);
       setError("Failed to create an account.");

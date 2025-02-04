@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import LogoBlack from "/src/assets/images/LogoBlack.png";
 
-export default function AdminSidebar({ Tailor_Shop_Name }) {
+export default function AdminSidebar({ Tailor_Shop_Name, completeAddress }) {
   const [isDropdownVisible, setDropdownVisible] = useState(false);
   const [isSidebarVisible, setSidebarVisible] = useState(false);
 
@@ -52,7 +52,7 @@ export default function AdminSidebar({ Tailor_Shop_Name }) {
             <h1 className='truncate text-lg font-medium'>
               {Tailor_Shop_Name}
               <span className='truncate text-[#777777] font-normal block text-sm'>
-                Complete Address
+                {completeAddress || "Complete Address"}
               </span>
             </h1>
           </div>
