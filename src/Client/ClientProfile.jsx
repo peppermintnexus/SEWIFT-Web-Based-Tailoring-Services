@@ -34,6 +34,8 @@ export default function ClientProfile() {
     Skirt_Hips: "",
     Crotch: "",
     Pants_Length: "",
+    Pants_Waist: "",
+    Pants_Hips: "",
     Thigh: "",
     Knee: "",
     Ankle_Flare: "",
@@ -59,12 +61,12 @@ export default function ClientProfile() {
           if (docSnap.exists()) {
             const userProfile = docSnap.data();
             setUserData({
-              First_Name: user.displayName
-                ? user.displayName.split(" ")[0]
-                : userProfile.First_Name || "",
-              Last_Name: user.displayName
-                ? user.displayName.split(" ").slice(1).join(" ")
-                : userProfile.Last_Name || "",
+              First_Name:
+                userProfile.First_Name || user.displayName?.split(" ")[0] || "",
+              Last_Name:
+                userProfile.Last_Name ||
+                user.displayName?.split(" ").slice(1).join(" ") ||
+                "",
               Phone_Number: userProfile.Phone_Number || "",
               Complete_Address: userProfile.Complete_Address || "",
             });
@@ -134,328 +136,478 @@ export default function ClientProfile() {
 
   return (
     <div className='bg-[#F3F4F6] min-h-screen'>
-      <ClientHeader userName={First_Name || ""} />
+      <ClientHeader userName={userData.First_Name || ""} />
 
-      <div className='bg-white mx-72 mt-10 pb-5 rounded-t-xl shadow-lg'>
-        <div className='shadow-sm'>
-          <p className='px-5 py-3 text-2xl font-semibold'>My Profile</p>
-        </div>
-
-        <div>
-          <div className='px-7 pt-6 grid grid-cols-3 gap-10'>
-            <div className='mb-2'>
-              <label className='block mb-1 font-medium'>First Name</label>
-              <input
-                type='text'
-                name='firstName'
-                value={userData.First_Name}
-                onChange={handleInputChange}
-                disabled={!isEditing}
-                className='text-[#6F6F6F] border border-gray-300 rounded px-2 py-1'
-              />
+      <div className='container mx-auto px-4 sm:px-6 lg:px-8 py-8'>
+        <div className='max-w-4xl mx-auto space-y-8'>
+          <div className='bg-white rounded-lg shadow'>
+            <div className='px-6 py-5 border-b border-gray-200'>
+              <h1 className='text-2xl font-semibold text-gray-900'>
+                My Profile
+              </h1>
             </div>
-            <div className='mb-2'>
-              <label className='block mb-1 font-medium'>Last Name</label>
-              <input
-                type='text'
-                name='lastName'
-                value={userData.Last_Name}
-                onChange={handleInputChange}
-                disabled={!isEditing}
-                className='text-[#6F6F6F] border border-gray-300 rounded px-2 py-1'
-              />
-            </div>
-          </div>
 
-          <div className='px-7 pt-5 grid grid-cols-3 gap-10'>
-            <div className='mb-2'>
-              <label className='block mb-1 font-medium'>Complete Address</label>
-              <input
-                type='text'
-                name='address'
-                value={userData.Complete_Address}
-                onChange={handleInputChange}
-                disabled={!isEditing}
-                className='text-[#6F6F6F] border border-gray-300 rounded px-2 py-1'
-              />
-            </div>
-            <div className='mb-2'>
-              <label className='block mb-1 font-medium'>Phone</label>
-              <input
-                type='text'
-                name='phone'
-                value={userData.Phone_Number}
-                onChange={handleInputChange}
-                disabled={!isEditing}
-                className='text-[#6F6F6F] border border-gray-300 rounded px-2 py-1'
-              />
-            </div>
-          </div>
+            <div className='p-6 space-y-6'>
+              <div className='grid grid-cols-1 md:grid-cols-2 gap-6'>
+                <div>
+                  <label className='block text-sm font-medium text-gray-700 mb-2'>
+                    First Name
+                  </label>
+                  <input
+                    type='text'
+                    name='firstName'
+                    value={userData.First_Name}
+                    onChange={handleInputChange}
+                    disabled={!isEditing}
+                    className='w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none'
+                  />
+                </div>
 
-          <div className='space-x-4'>
-            <button
-              type='button'
-              onClick={() => setIsEditing(!isEditing)}
-              className='ml-7 mt-5 bg-[#171B1F] text-white w-20 py-2 rounded'
-            >
-              {isEditing ? "Cancel" : "Edit"}
-            </button>
-            {isEditing && (
-              <button
-                type='submit'
-                className='mt-4 bg-[#10aeb2] text-white w-20 py-2 rounded'
-              >
-                Save
-              </button>
-            )}
-          </div>
-
-          <div className='px-5 pt-7'>
-            <p className='text-xl font-medium'>Measurement Profile</p>
-            <p className='ml-2 mt-3 text-lg font-medium'>
-              Upper{" "}
-              <span className='text-gray-500 font-normal'>
-                - Blouse/Dress/Blazer
-              </span>
-            </p>
-
-            <div className='grid grid-cols-2 ml-2 mt-3'>
-              <div className='grid grid-rows-7'>
-                <div className='flex pb-2 pr-5 justify-between'>
-                  <p>Shoulder</p>
+                <div>
+                  <label className='block text-sm font-medium text-gray-700 mb-2'>
+                    Last Name
+                  </label>
                   <input
-                    name='shoulder'
-                    value={Measurement_Profile.Shoulder}
+                    type='text'
+                    name='lastName'
+                    value={userData.Last_Name}
                     onChange={handleInputChange}
-                    className='text-[#6F6F6F] text-center text-left w-24 h-5 border border-gray-300 px-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500'
-                  />
-                </div>
-                <div className='flex pb-2 pr-5 justify-between'>
-                  <p>Sleeve</p>
-                  <input
-                    name='sleeve'
-                    value={Measurement_Profile.Sleeve}
-                    onChange={handleInputChange}
-                    className='text-[#6F6F6F] text-center text-left w-24 h-5 border border-gray-300 px-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500'
-                  />
-                </div>
-                <div className='flex pb-2 pr-5 justify-between'>
-                  <p>Circumference</p>
-                  <input
-                    name='circumference'
-                    value={Measurement_Profile.Circumference}
-                    onChange={handleInputChange}
-                    className='text-[#6F6F6F] text-center text-left w-24 h-5 border border-gray-300 px-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500'
-                  />
-                </div>
-                <div className='flex pb-2 pr-5 justify-between'>
-                  <p>Figure</p>
-                  <input
-                    name='figure'
-                    value={Measurement_Profile.Figure}
-                    onChange={handleInputChange}
-                    className='text-[#6F6F6F] text-center text-left w-24 h-5 border border-gray-300 px-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500'
-                  />
-                </div>
-                <div className='flex pb-2 pr-5 justify-between'>
-                  <p>Blouse Length</p>
-                  <input
-                    name='blouseLength'
-                    value={Measurement_Profile.Blouse_Length}
-                    onChange={handleInputChange}
-                    className='text-[#6F6F6F] text-center text-left w-24 h-5 border border-gray-300 px-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500'
-                  />
-                </div>
-                <div className='flex pb-2 pr-5 justify-between'>
-                  <p>Dress Length</p>
-                  <input
-                    name='dressLength'
-                    value={Measurement_Profile.Dress_Length}
-                    onChange={handleInputChange}
-                    className='text-[#6F6F6F] text-center text-left w-24 h-5 border border-gray-300 px-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500'
-                  />
-                </div>
-                <div className='flex pb-2 pr-5 justify-between'>
-                  <p>Blouse Bust</p>
-                  <input
-                    name='blouseBust'
-                    value={Measurement_Profile.Blouse_Bust}
-                    onChange={handleInputChange}
-                    className='text-[#6F6F6F] text-center text-left w-24 h-5 border border-gray-300 px-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500'
+                    disabled={!isEditing}
+                    className='w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none'
                   />
                 </div>
               </div>
 
-              <div className='grid grid-rows-7'>
-                <div className='flex pb-2 pr-5 justify-between'>
-                  <p>Blouse Waist</p>
-                  <input
-                    name='blouseWaist'
-                    value={Measurement_Profile.Blouse_Waist}
-                    onChange={handleInputChange}
-                    className='text-[#6F6F6F] text-center text-left w-24 h-5 border border-gray-300 px-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500'
-                  />
-                </div>
-                <div className='flex pb-2 pr-5 justify-between'>
-                  <p>Blouse Hips</p>
-                  <input
-                    name='blouseHips'
-                    value={Measurement_Profile.Blouse_Hips}
-                    onChange={handleInputChange}
-                    className='text-[#6F6F6F] text-center text-left w-24 h-5 border border-gray-300 px-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500'
-                  />
-                </div>
-                <div className='flex pb-2 pr-5 justify-between'>
-                  <p>Front Chest</p>
-                  <input
-                    name='frontChest'
-                    value={Measurement_Profile.Front_Chest}
-                    onChange={handleInputChange}
-                    className='text-[#6F6F6F] text-center text-left w-24 h-5 border border-gray-300 px-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500'
-                  />
-                </div>
-                <div className='flex pb-2 pr-5 justify-between'>
-                  <p>Back Chest</p>
-                  <input
-                    name='backChest'
-                    value={Measurement_Profile.Back_Chest}
-                    onChange={handleInputChange}
-                    className='text-[#6F6F6F] text-center text-left w-24 h-5 border border-gray-300 px-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500'
-                  />
-                </div>
-                <div className='flex pb-2 pr-5 justify-between'>
-                  <p>Bust Point</p>
-                  <input
-                    name='bustPoint'
-                    value={Measurement_Profile.Bust_Point}
-                    onChange={handleInputChange}
-                    className='text-[#6F6F6F] text-center text-left w-24 h-5 border border-gray-300 px-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500'
-                  />
-                </div>
-                <div className='flex pb-2 pr-5 justify-between'>
-                  <p>Bust Distance</p>
-                  <input
-                    name='bustDistance'
-                    value={Measurement_Profile.Bust_Distance}
-                    onChange={handleInputChange}
-                    className='text-[#6F6F6F] text-center text-left w-24 h-5 border border-gray-300 px-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500'
-                  />
-                </div>
+              <div className='flex justify-end'>
+                <button
+                  type='button'
+                  onClick={() => setIsEditing(!isEditing)}
+                  className='text-white bg-gray-800 hover:bg-gray-900 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-gray-800 dark:hover:bg-gray-700 dark:border-gray-700'
+                >
+                  {isEditing ? "Cancel" : "Edit"}
+                </button>
+                {isEditing && (
+                  <button
+                    type='submit'
+                    className='text-white bg-blue-700 hover:bg-blue-800 focus:outline-none font-medium rounded-lg text-sm ml-3 px-5 py-2.5 dark:bg-gray-800 dark:hover:bg-gray-700 dark:border-gray-700'
+                  >
+                    Save Changes
+                  </button>
+                )}
               </div>
             </div>
           </div>
 
-          <div className='px-5 pt-3'>
-            <p className='ml-2 text-lg font-medium'>
-              Lower{" "}
-              <span className='text-gray-500 font-normal'>- Pants/Skirt</span>
-            </p>
-
-            <div className='ml-2 grid grid-cols-2 mt-3'>
-              <div className='grid grid-rows-5'>
-                <div className='flex pb-2 pr-5 justify-between'>
-                  <p>Skirt Length</p>
-                  <input
-                    name='skirtLength'
-                    value={Measurement_Profile.Skirt_Length}
-                    onChange={handleInputChange}
-                    className='text-[#6F6F6F] text-center text-left w-24 h-5 border border-gray-300 px-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500'
-                  />
-                </div>
-                <div className='flex pb-2 pr-5 justify-between'>
-                  <p>Skirt Waist</p>
-                  <input
-                    name='skirtWaist'
-                    value={Measurement_Profile.Skirt_Waist}
-                    onChange={handleInputChange}
-                    className='text-[#6F6F6F] text-center text-left w-24 h-5 border border-gray-300 px-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500'
-                  />
-                </div>
-                <div className='flex pb-2 pr-5 justify-between'>
-                  <p>Skirt Hips</p>
-                  <input
-                    name='skirtHips'
-                    value={Measurement_Profile.Skirt_Hips}
-                    onChange={handleInputChange}
-                    className='text-[#6F6F6F] text-center text-left w-24 h-5 border border-gray-300 px-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500'
-                  />
-                </div>
-                <div className='flex pb-2 pr-5 justify-between'>
-                  <p>Crotch</p>
-                  <input
-                    name='crotch'
-                    value={Measurement_Profile.Crotch}
-                    onChange={handleInputChange}
-                    className='text-[#6F6F6F] text-center text-left w-24 h-5 border border-gray-300 px-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500'
-                  />
-                </div>
-                <div className='flex pb-2 pr-5 justify-between'>
-                  <p>Pants Length</p>
-                  <input
-                    name='pantsLength'
-                    value={Measurement_Profile.Pants_Length}
-                    onChange={handleInputChange}
-                    className='text-[#6F6F6F] text-center text-left w-24 h-5 border border-gray-300 px-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500'
-                  />
-                </div>
-              </div>
-
-              <div className='grid grid-rows-5'>
-                <div className='flex pb-2 pr-5 justify-between'>
-                  <p>Knee</p>
-                  <input
-                    name='knee'
-                    value={Measurement_Profile.Knee}
-                    onChange={handleInputChange}
-                    className='text-[#6F6F6F] text-center text-left w-24 h-5 border border-gray-300 px-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500'
-                  />
-                </div>
-                <div className='flex pb-2 pr-5 justify-between'>
-                  <p>Ankle Flare</p>
-                  <input
-                    name='ankleFlare'
-                    value={Measurement_Profile.Ankle_Flare}
-                    onChange={handleInputChange}
-                    className='text-[#6F6F6F] text-center text-left w-24 h-5 border border-gray-300 px-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500'
-                  />
-                </div>
-                <div className='flex pb-2 pr-5 justify-between'>
-                  <p>Polo Length</p>
-                  <input
-                    name='poloLength'
-                    value={Measurement_Profile.Polo_Length}
-                    onChange={handleInputChange}
-                    className='text-[#6F6F6F] text-center text-left w-24 h-5 border border-gray-300 px-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500'
-                  />
-                </div>
-                <div className='flex pb-2 pr-5 justify-between'>
-                  <p>Polo Waist</p>
-                  <input
-                    name='poloWaist'
-                    value={Measurement_Profile.Polo_Waist}
-                    onChange={handleInputChange}
-                    className='text-[#6F6F6F] text-center text-left w-24 h-5 border border-gray-300 px-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500'
-                  />
-                </div>
-                <div className='flex pb-2 pr-5 justify-between'>
-                  <p>Polo Hips</p>
-                  <input
-                    name='poloHips'
-                    value={Measurement_Profile.Polo_Hips}
-                    onChange={handleInputChange}
-                    className='text-[#6F6F6F] text-center text-left w-24 h-5 border border-gray-300 px-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500'
-                  />
-                </div>
-              </div>
+          <div className='bg-white rounded-lg shadow'>
+            <div className='px-6 py-5 border-b border-gray-200'>
+              <h1 className='text-2xl font-semibold text-gray-900'>
+                Measurements
+              </h1>
             </div>
 
-            <div className='flex justify-end'>
-              <button
-                type='submit'
-                className='mt-4 bg-[#10aeb2] text-white px-6 py-2 rounded'
-              >
-                Save Measurements
-              </button>
+            <div className='px-9 py-6 space-y-6'>
+              <div className='grid grid-cols-1 md:grid-cols-2 gap-20'>
+                <div>
+                  <h1 className='bg-[#e0ecf9] pl-2 py-1 text-xl font-semibold mb-4'>
+                    Torso
+                  </h1>
+                  <div className='grid grid-cols-1 md:grid-cols-2 gap-6'>
+                    <div className='grid grid-rows-7'>
+                      <div>
+                        <label className='block text-sm font-medium text-[#7f7f7f] mb-2'>
+                          Shoulder
+                        </label>
+                        <input
+                          name='shoulder'
+                          value={Measurement_Profile.Shoulder}
+                          onChange={handleInputChange}
+                          className='text-center w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none'
+                          placeholder='cm'
+                        />
+                      </div>
+                      <div>
+                        <label className='block text-sm font-medium text-[#777777] mt-1 mb-2'>
+                          Circumference
+                        </label>
+                        <input
+                          name='circumference'
+                          value={Measurement_Profile.Circumference}
+                          onChange={handleInputChange}
+                          className='text-center w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none'
+                          placeholder='cm'
+                        />
+                      </div>
+                      <div>
+                        <label className='block text-sm font-medium text-[#777777] mt-1 mb-2'>
+                          Blouse Length
+                        </label>
+                        <input
+                          name='blouseLength'
+                          value={Measurement_Profile.Blouse_Length}
+                          onChange={handleInputChange}
+                          className='text-center w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none'
+                          placeholder='cm'
+                        />
+                      </div>
+                      <div>
+                        <label className='block text-sm font-medium text-[#777777] mt-1 mb-2'>
+                          Bust
+                        </label>
+                        <input
+                          name='blouseBust'
+                          value={Measurement_Profile.Blouse_Bust}
+                          onChange={handleInputChange}
+                          className='text-center w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none'
+                          placeholder='cm'
+                        />
+                      </div>
+                      <div>
+                        <label className='block text-sm font-medium text-[#777777] mt-1 mb-2'>
+                          Hips
+                        </label>
+                        <input
+                          name='blouseHips'
+                          value={Measurement_Profile.Blouse_Hips}
+                          onChange={handleInputChange}
+                          className='text-center w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none'
+                          placeholder='cm'
+                        />
+                      </div>
+                      <div>
+                        <label className='block text-sm font-medium text-[#777777] mt-1 mb-2'>
+                          Back Chest
+                        </label>
+                        <input
+                          name='backChest'
+                          value={Measurement_Profile.Back_Chest}
+                          onChange={handleInputChange}
+                          className='text-center w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none'
+                          placeholder='cm'
+                        />
+                      </div>
+                      <div>
+                        <label className='block text-sm font-medium text-[#777777] mt-1 mb-2'>
+                          Bust Distance
+                        </label>
+                        <input
+                          name='bustDistance'
+                          value={Measurement_Profile.Bust_Distance}
+                          onChange={handleInputChange}
+                          className='text-center w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none'
+                          placeholder='cm'
+                        />
+                      </div>
+                    </div>
+                    <div className='grid grid-rows-7'>
+                      <div>
+                        <label className='block text-sm font-medium text-[#777777] mb-2'>
+                          Sleeve
+                        </label>
+                        <input
+                          name='sleeve'
+                          value={Measurement_Profile.Sleeve}
+                          onChange={handleInputChange}
+                          className='text-center w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none'
+                          placeholder='cm'
+                        />
+                      </div>
+                      <div>
+                        <label className='block text-sm font-medium text-[#777777] mt-1 mb-2'>
+                          Figure
+                        </label>
+                        <input
+                          name='figure'
+                          value={Measurement_Profile.Figure}
+                          onChange={handleInputChange}
+                          className='text-center w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none'
+                          placeholder='cm'
+                        />
+                      </div>
+                      <div>
+                        <label className='block text-sm font-medium text-[#777777] mt-1 mb-2'>
+                          Dress Length
+                        </label>
+                        <input
+                          name='dressLength'
+                          value={Measurement_Profile.Dress_Length}
+                          onChange={handleInputChange}
+                          className='text-center w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none'
+                          placeholder='cm'
+                        />
+                      </div>
+                      <div>
+                        <label className='block text-sm font-medium text-[#777777] mt-1 mb-2'>
+                          Waist
+                        </label>
+                        <input
+                          name='blouseWaist'
+                          value={Measurement_Profile.Blouse_Waist}
+                          onChange={handleInputChange}
+                          className='text-center w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none'
+                          placeholder='cm'
+                        />
+                      </div>
+                      <div>
+                        <label className='block text-sm font-medium text-[#777777] mt-1 mb-2'>
+                          Front Chest
+                        </label>
+                        <input
+                          name='frontChest'
+                          value={Measurement_Profile.Front_Chest}
+                          onChange={handleInputChange}
+                          className='text-center w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none'
+                          placeholder='cm'
+                        />
+                      </div>
+                      <div>
+                        <label className='block text-sm font-medium text-[#777777] mt-1 mb-2'>
+                          Bust Point
+                        </label>
+                        <input
+                          name='bustPoint'
+                          value={Measurement_Profile.Bust_Point}
+                          onChange={handleInputChange}
+                          className='text-center w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none'
+                          placeholder='cm'
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  <h1 className='bg-[#e0ecf9] pl-2 py-1 text-xl font-semibold mt-4 mb-4'>
+                    Polo
+                  </h1>
+                  <div className='grid grid-cols-1 md:grid-cols-2 gap-6'>
+                    <div className='grid grid-rows-4'>
+                      <div>
+                        <label className='block text-sm font-medium text-[#777777] mb-2'>
+                          Shoulder
+                        </label>
+                        <input
+                          type='email'
+                          id='email'
+                          className='text-center w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none'
+                          placeholder='cm'
+                        />
+                      </div>
+                      <div>
+                        <label className='block text-sm font-medium text-[#777777] mt-1 mb-2'>
+                          Circumeference
+                        </label>
+                        <input
+                          type='email'
+                          id='email'
+                          className='text-center w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none'
+                          placeholder='cm'
+                        />
+                      </div>
+                      <div>
+                        <label className='block text-sm font-medium text-[#777777] mt-1 mb-2'>
+                          Waist
+                        </label>
+                        <input
+                          name='poloWaist'
+                          value={Measurement_Profile.Polo_Waist}
+                          onChange={handleInputChange}
+                          className='text-center w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none'
+                          placeholder='cm'
+                        />
+                      </div>
+                      <div>
+                        <label className='block text-sm font-medium text-[#777777] mt-1 mb-2'>
+                          Collar
+                        </label>
+                        <input
+                          className='text-center w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none'
+                          placeholder='cm'
+                        />
+                      </div>
+                    </div>
+                    <div className='grid grid-rows-4'>
+                      <div>
+                        <label className='block text-sm font-medium text-[#777777] mb-2'>
+                          Sleeve
+                        </label>
+                        <input
+                          className='text-center w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none'
+                          placeholder='cm'
+                        />
+                      </div>
+                      <div>
+                        <label className='block text-sm font-medium text-[#777777] mb-2'>
+                          Length
+                        </label>
+                        <input
+                          name='poloLength'
+                          value={Measurement_Profile.Polo_Length}
+                          onChange={handleInputChange}
+                          className='text-center w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none'
+                          placeholder='cm'
+                        />
+                      </div>
+
+                      <div>
+                        <label className='block text-sm font-medium text-[#777777] mb-2'>
+                          Hips
+                        </label>
+                        <input
+                          name='poloHips'
+                          value={Measurement_Profile.Polo_Hips}
+                          onChange={handleInputChange}
+                          className='text-center w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none'
+                          placeholder='cm'
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div>
+                  <h1 className='bg-[#e0ecf9] pl-2 py-1 text-xl font-semibold mb-4'>
+                    Skirt
+                  </h1>
+                  <div className='grid grid-cols-1 md:grid-cols-2 gap-6'>
+                    <div className='grid grid-rows-2'>
+                      <div>
+                        <label className='block text-sm font-medium text-[#777777] mb-2'>
+                          Length
+                        </label>
+                        <input
+                          name='skirtLength'
+                          value={Measurement_Profile.Skirt_Length}
+                          onChange={handleInputChange}
+                          className='text-center w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none'
+                          placeholder='cm'
+                        />
+                      </div>
+                      <div>
+                        <label className='block text-sm font-medium text-[#777777] mt-1 mb-2'>
+                          Hips
+                        </label>
+                        <input
+                          name='skirtHips'
+                          value={Measurement_Profile.Skirt_Hips}
+                          onChange={handleInputChange}
+                          className='text-center w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none'
+                          placeholder='cm'
+                        />
+                      </div>
+                    </div>
+                    <div>
+                      <label className='block text-sm font-medium text-[#777777] mb-2'>
+                        Waist
+                      </label>
+                      <input
+                        name='skirtWaist'
+                        value={Measurement_Profile.Skirt_Waist}
+                        onChange={handleInputChange}
+                        className='text-center w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none'
+                        placeholder='cm'
+                      />
+                    </div>
+                  </div>
+
+                  <h1 className='bg-[#e0ecf9] px-2 py-1 text-xl font-semibold mt-8 mb-1.5'>
+                    Pants
+                  </h1>
+                  <div className='grid grid-cols-1 md:grid-cols-2 gap-6'>
+                    <div className='grid grid-rows-4'>
+                      <div>
+                        <label className='block text-sm font-medium text-[#777777] mt-1 mb-2'>
+                          Crotch
+                        </label>
+                        <input
+                          name='crotch'
+                          value={Measurement_Profile.Crotch}
+                          onChange={handleInputChange}
+                          className='text-center w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none'
+                          placeholder='cm'
+                        />
+                      </div>
+                      <div>
+                        <label className='block text-sm font-medium text-[#777777] mt-1 mb-2'>
+                          Waist
+                        </label>
+                        <input
+                          name='pantsWaist'
+                          value={Measurement_Profile.Pants_Waist}
+                          onChange={handleInputChange}
+                          className='text-center w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none'
+                          placeholder='cm'
+                        />
+                      </div>
+                      <div>
+                        <label className='block text-sm font-medium text-[#777777] mt-1 mb-2'>
+                          Thigh
+                        </label>
+                        <input
+                          name='Thigh'
+                          className='text-center w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none'
+                          placeholder='cm'
+                        />
+                      </div>
+                      <div>
+                        <label className='block text-sm font-medium text-[#777777] mt-1 mb-2'>
+                          Ankle Flare
+                        </label>
+                        <input
+                          name='ankleFlare'
+                          value={Measurement_Profile.Ankle_Flare}
+                          onChange={handleInputChange}
+                          className='text-center w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none'
+                          placeholder='cm'
+                        />
+                      </div>
+                    </div>
+                    <div className='grid grid-rows-4'>
+                      <div>
+                        <label className='block text-sm font-medium text-[#777777] mt-1 mb-2'>
+                          Length
+                        </label>
+                        <input
+                          name='pantsLength'
+                          value={Measurement_Profile.Pants_Length}
+                          onChange={handleInputChange}
+                          className='text-center w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none'
+                          placeholder='cm'
+                        />
+                      </div>
+                      <div>
+                        <label className='block text-sm font-medium text-[#777777] mt-1 mb-2'>
+                          Hips
+                        </label>
+                        <input
+                          name='pantsHips'
+                          value={Measurement_Profile.Pants_Hips}
+                          onChange={handleInputChange}
+                          className='text-center w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none'
+                          placeholder='cm'
+                        />
+                      </div>
+                      <div>
+                        <label className='block text-sm font-medium text-[#777777] mt-1 mb-2'>
+                          Knee
+                        </label>
+                        <input
+                          name='knee'
+                          value={Measurement_Profile.Knee}
+                          onChange={handleInputChange}
+                          className='text-center w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none'
+                          placeholder='cm'
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div className='flex justify-end'>
+                <button
+                  type='submit'
+                  className='text-white bg-gray-800 hover:bg-gray-900 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-gray-800 dark:hover:bg-gray-700 dark:border-gray-700'
+                >
+                  Save Measurement
+                </button>
+              </div>
             </div>
           </div>
         </div>

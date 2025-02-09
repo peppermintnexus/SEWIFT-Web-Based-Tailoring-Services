@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { onAuthStateChanged, getIdToken } from "firebase/auth";
+import { onAuthStateChanged } from "firebase/auth";
 import { auth, db } from "../firebase";
 import { useNavigate } from "react-router-dom";
 import {
@@ -9,27 +9,39 @@ import {
   query,
   where,
   getDocs,
-} from "firebase/firestore"; // Add missing imports
+} from "firebase/firestore";
 import EmployeeSidebar from "/src/components/EmployeeSidebar";
 import EmployeeJoModal from "/src/components/EmployeeJoModal";
 
 export default function EmployeeJobOrder() {
   const [user, setUser] = useState(null);
-  const [token, setToken] = useState(null);
   const [jobOrders, setJobOrders] = useState([]);
   const [Tailor_Shop_Name, setTailorShopName] = useState("");
+  const [firstName, setFirstName] = useState("");
   const [selectedJobOrder, setSelectedJobOrder] = useState(null);
+  const [selectedCategory, setSelectedCategory] = useState("All");
   const navigate = useNavigate();
+
+  const handleUpdateStatus = (jobOrderNumber, newStatus) => {
+    setJobOrders((prevOrders) =>
+      prevOrders.map((order) =>
+        order.Job_Order_Number === jobOrderNumber
+          ? { ...order, Status: newStatus }
+          : order
+      )
+    );
+  };
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
       if (user) {
         setUser(user);
+        console.log("User UID:", user.uid);
 
         // Step 1: Query the Tailor_Shop_Employee subcollection by Tailor_ID
         const employeeQuery = query(
           collectionGroup(db, "Tailor_Shop_Employee"),
-          where("Tailor_ID", "==", user.uid) // Use your existing Tailor_ID field
+          where("Tailor_ID", "==", user.uid)
         );
 
         const querySnapshot = await getDocs(employeeQuery);
@@ -37,7 +49,14 @@ export default function EmployeeJobOrder() {
         if (!querySnapshot.empty) {
           const employeeDoc = querySnapshot.docs[0];
           const employeeData = employeeDoc.data();
+          console.log("Employee Data:", employeeData);
+          setFirstName(employeeData.name || "Employee Name");
+
           const Head_ID = employeeData.Head_ID;
+          if (!Head_ID) {
+            console.error("No Head_ID found for employee.");
+            return;
+          }
 
           // Step 2: Fetch the Head_ID document
           const headDocRef = doc(db, "Administrator", Head_ID);
@@ -63,6 +82,16 @@ export default function EmployeeJobOrder() {
     return () => unsubscribe();
   }, [navigate]);
 
+  // Debug: Log Order Types
+  useEffect(() => {
+    if (jobOrders.length > 0) {
+      console.log(
+        "Job Orders with Order Types:",
+        jobOrders.map((order) => order.Order_Type)
+      );
+    }
+  }, [jobOrders]);
+
   const handleJobOrderClick = (order) => {
     setSelectedJobOrder(order);
   };
@@ -71,35 +100,54 @@ export default function EmployeeJobOrder() {
     setSelectedJobOrder(null);
   };
 
+  const handleCategoryClick = (category) => {
+    setSelectedCategory(category);
+  };
+
+  // Filter job orders based on the selected category
+  const filteredJobOrders =
+    selectedCategory === "All"
+      ? jobOrders
+      : jobOrders.filter(
+          (order) =>
+            order.Order_Type?.toLowerCase() === selectedCategory.toLowerCase()
+        );
+
   if (!user) {
     return <div>Loading...</div>;
   }
 
   return (
     <div>
-      <EmployeeSidebar Tailor_Shop_Name={Tailor_Shop_Name} />
+      <EmployeeSidebar
+        firstName={firstName}
+        Tailor_Shop_Name={Tailor_Shop_Name}
+      />
 
-      <div className='px-6 py-4 sm:ml-64 bg-gray-100 dark:bg-gray-800 h-screen'>
+      <div className='px-6 py-4 sm:ml-64 bg-gray-100 dark:bg-gray-800'>
         <h1 className='text-2xl font-semibold mb-2'>Orders</h1>
         <div className='flex mb-2'>
-          {["All", "Pending", "Ongoing", "Finished", "Claimed", "Canceled"].map(
-            (status) => (
-              <button
-                key={status}
-                type='button'
-                className='py-2 px-4 me-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-00 hover:bg-gray-200 focus:z-10 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700'
-              >
-                {status}
-              </button>
-            )
-          )}
+          {["All", "Premade", "Customized", "Adjust"].map((status) => (
+            <button
+              key={status}
+              type='button'
+              onClick={() => handleCategoryClick(status)}
+              className={`py-2 px-4 me-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-200 focus:z-10 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700 ${
+                selectedCategory === status
+                  ? "bg-gray-200 dark:bg-gray-700"
+                  : ""
+              }`}
+            >
+              {status}
+            </button>
+          ))}
         </div>
         <div className='rounded-lg'>
-          <div className='grid mb-4'>
-            {jobOrders.length === 0 ? (
+          <div className='grid'>
+            {filteredJobOrders.length === 0 ? (
               <p className='text-gray-600'>No job orders found.</p>
             ) : (
-              jobOrders.map((order, index) => (
+              filteredJobOrders.map((order, index) => (
                 <div
                   key={index}
                   onClick={() => handleJobOrderClick(order)}
@@ -127,15 +175,15 @@ export default function EmployeeJobOrder() {
                         className={`px-2 py-1 text-xs font-medium rounded ${
                           order.Status === "Pending"
                             ? "bg-yellow-200 text-yellow-800"
-                            : order.Status === "Ongoing"
+                            : order.Status === "In Progress"
                             ? "bg-blue-200 text-blue-800"
-                            : order.Status === "Finished"
+                            : order.Status === "Completed"
                             ? "bg-green-200 text-green-800"
                             : order.Status === "Claimed"
                             ? "bg-indigo-200 text-indigo-800"
                             : order.Status === "Canceled"
                             ? "bg-red-200 text-red-800"
-                            : "bg-gray-200 text-gray-800"
+                            : "bg-yellow-200 text-yellow-800"
                         }`}
                       >
                         {order.Status}
@@ -167,6 +215,7 @@ export default function EmployeeJobOrder() {
           <EmployeeJoModal
             order={selectedJobOrder}
             onClose={closeJobOrderModal}
+            onUpdateStatus={handleUpdateStatus}
           />
         )}
       </div>

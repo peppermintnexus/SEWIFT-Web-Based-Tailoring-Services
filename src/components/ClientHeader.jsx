@@ -1,7 +1,5 @@
 import React, { useState } from "react";
 import LogoWhite from "/src/assets/images/LogoWhite.png";
-import UserProfile from "/src/assets/images/UserProfile.png";
-import ClientProfile from "/src/Client/ClientProfile.jsx";
 import { signOut } from "firebase/auth";
 import { auth } from "../firebase";
 import { useNavigate } from "react-router";
@@ -108,7 +106,7 @@ export default function ClientHeader({ userName }) {
             <div className='absolute right-0 mt-3 z-10 bg-white rounded-lg shadow w-36 dark:bg-gray-700 dark:divide-gray-600'>
               <div class='px-4 pt-3'>
                 {/* Login Name */}
-                <span class='block text-sm text-gray-900 dark:text-white'>
+                <span class='truncate block font-semibold text-sm text-gray-900 dark:text-white'>
                   {userName}
                 </span>
               </div>
@@ -129,7 +127,7 @@ export default function ClientHeader({ userName }) {
                     href='/ClientOrder'
                     className='block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white'
                   >
-                    View Orders
+                    Order Progress
                   </a>
                 </li>
                 <li>

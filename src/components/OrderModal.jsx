@@ -208,7 +208,7 @@ export default function OrderModal() {
           orderType === "customized" ? userMeasurements : clientMeasurements,
         Remarks: formData.get("message"),
         // Include the uploaded receipt image
-        Recepit_Image_Verification: receiptImage,
+        Receipt_Image_Verification: receiptImage,
         Client_Id: user.uid,
         Tailor_Shop_Id: selectedProduct.adminId,
         Status: "pending",

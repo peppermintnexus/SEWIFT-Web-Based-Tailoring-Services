@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import OrderModal from "../components/OrderModal";
 import ClientHeader from "/src/components/ClientHeader.jsx";
+import LoadingIndicator from "/src/components/LoadingIndicator.jsx";
 import { useNavigate } from "react-router-dom";
 import { onAuthStateChanged, getIdToken } from "firebase/auth";
 import { auth } from "../firebase";
@@ -176,11 +178,37 @@ export default function ClientHomepage() {
               Search
             </button>
           </div>
-        </form>
 
-        {/* Loading and error messages */}
-        {loading && <p className='mt-4 text-gray-600'>Searching...</p>}
-        {error && <p className='mt-4 text-red-500'>{error}</p>}
+          {/* Search results */}
+          <div>
+            {/* Loading and error messages */}
+            {loading && (
+              <div className='fixed inset-0 bg-white bg-opacity-90 flex items-center justify-center z-10'>
+                <LoadingIndicator />
+              </div>
+            )}
+            {error && <p className='mt-4 text-red-500'>{error}</p>}
+            {searchResults.map((product) => (
+              <Link
+                to={`/product-detail/${product.id}`}
+                key={product.id}
+                className='mt-3 block cursor-pointer hover:bg-gray-50  py-3 px-6 border border-gray-200'
+              >
+                <h3 className='text-lg font-semibold'>
+                  {product.Product_Name}
+                </h3>
+                <p className='text-sm text-gray-600'>{product.Description}</p>
+                <p className='text-sm text-gray-600'>Price: ₱{product.Price}</p>
+                <p className='text-sm text-gray-600'>
+                  Tailor Shop: {product.Tailor_Shop_Name}
+                </p>
+                <p className='text-sm text-gray-600'>
+                  Category: {product.Category}
+                </p>
+              </Link>
+            ))}
+          </div>
+        </form>
 
         {/* Category filter buttons */}
         <div className='pt-5 flex flex-wrap'>
@@ -200,23 +228,6 @@ export default function ClientHomepage() {
               </button>
             )
           )}
-        </div>
-
-        {/* Search results */}
-        <div className='mt-5'>
-          {searchResults.map((product) => (
-            <div key={product.id} className='p-4 border-b border-gray-200'>
-              <h3 className='text-lg font-semibold'>{product.Product_Name}</h3>
-              <p className='text-sm text-gray-600'>{product.Description}</p>
-              <p className='text-sm text-gray-600'>Price: ₱{product.Price}</p>
-              <p className='text-sm text-gray-600'>
-                Tailor Shop: {product.Tailor_Shop_Name}
-              </p>
-              <p className='text-sm text-gray-600'>
-                Category: {product.Category}
-              </p>
-            </div>
-          ))}
         </div>
 
         <div className='py-3 w-full'>

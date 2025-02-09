@@ -19,6 +19,7 @@ export default function EmployeesList() {
   const [name, setName] = useState("");
   const [token, setToken] = useState(null);
   const [Tailor_Shop_Name, setTailorShopName] = useState("");
+  const [Complete_Address, setCompleteAddress] = useState("");
   const [Tailor_Shop_Employee, setEmployees] = useState([]); // State for employees
   const navigate = useNavigate();
 
@@ -32,6 +33,7 @@ export default function EmployeesList() {
         if (userDoc.exists()) {
           setName(userDoc.data().name);
           setTailorShopName(userDoc.data().Tailor_Shop_Name);
+          setCompleteAddress(userDoc.data().Complete_Address);
         }
 
         setUser(user);
@@ -49,11 +51,24 @@ export default function EmployeesList() {
   // Function to fetch employees from Firestore
   const fetchEmployees = async (adminId) => {
     try {
-      const userDoc = await getDoc(doc(db, "Administrator", adminId));
-      if (userDoc.exists()) {
-        const employeesData = userDoc.data().Tailor_Shop_Employee || [];
-        setEmployees(employeesData);
-      }
+      // Reference to the subcollection
+      const employeesRef = collection(
+        db,
+        "Administrator",
+        adminId,
+        "Tailor_Shop_Employee"
+      );
+
+      // Get all documents from the subcollection
+      const querySnapshot = await getDocs(employeesRef);
+
+      // Extract employee data
+      const employeesData = querySnapshot.docs.map((doc) => ({
+        id: doc.id, // Include document ID
+        ...doc.data(),
+      }));
+
+      setEmployees(employeesData);
     } catch (error) {
       console.error("Error fetching employees:", error);
     }
@@ -65,7 +80,10 @@ export default function EmployeesList() {
 
   return (
     <div>
-      <AdminSidebar Tailor_Shop_Name={Tailor_Shop_Name || ""} />
+      <AdminSidebar
+        Tailor_Shop_Name={Tailor_Shop_Name || ""}
+        Complete_Address={Complete_Address || ""}
+      />
 
       <div class='p-4 sm:ml-64 bg-gray-100 dark:bg-gray-800 h-screen'>
         <h1 className='text-2xl font-semibold mb-2'>Employees</h1>
@@ -86,13 +104,17 @@ export default function EmployeesList() {
               </tr>
             </thead>
             <tbody>
-              {Tailor_Shop_Employee.map((Tailor_Shop_Employee, index) => (
-                <EmployeeModal
-                  key={Tailor_Shop_Employee.id}
-                  Tailor_Shop_Employee={Tailor_Shop_Employee}
-                  index={index}
-                />
-              ))}
+              {Tailor_Shop_Employee.length > 0 ? (
+                Tailor_Shop_Employee.map((employee) => (
+                  <EmployeeModal key={employee.id} employee={employee} />
+                ))
+              ) : (
+                <tr>
+                  <td className='px-6 py-4' colSpan='3'>
+                    No employees found
+                  </td>
+                </tr>
+              )}
             </tbody>
           </table>
         </div>

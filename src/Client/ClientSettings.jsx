@@ -11,7 +11,6 @@ import {
 } from "firebase/auth";
 import { doc, getDoc, setDoc } from "firebase/firestore";
 import { db } from "../firebase";
-import ClientProfile from "./ClientProfile";
 
 export default function ClientSettings() {
   const [user, setUser] = useState(null);
@@ -21,6 +20,8 @@ export default function ClientSettings() {
     First_Name: "",
     Last_Name: "",
     Email_Address: "",
+    Complete_Address: "",
+    Phone_Number: "",
   });
   const [currentPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
@@ -37,7 +38,6 @@ export default function ClientSettings() {
         const userDoc = await getDoc(doc(db, "Client", user.uid));
         if (userDoc.exists()) {
           setUserInfo(userDoc.data());
-          setFirstName(userDoc.data().First_Name);
         }
       } else {
         setUserToken(null);
@@ -46,6 +46,8 @@ export default function ClientSettings() {
 
     return () => unsubscribe();
   }, [auth]);
+
+  const fullName = `${userInfo.First_Name} ${userInfo.Last_Name}`.trim();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -58,7 +60,7 @@ export default function ClientSettings() {
   const reauthenticate = async (currentPassword) => {
     const user = auth.currentUser;
     const credential = EmailAuthProvider.credential(
-      user.email,
+      userInfo.Email_Address,
       currentPassword
     );
     return await reauthenticateWithCredential(user, credential);
@@ -72,9 +74,9 @@ export default function ClientSettings() {
         await reauthenticate(currentPassword);
 
         // Check if the email has changed
-        if (user.email !== userInfo.email) {
+        if (user.Email_Address !== userInfo.Email_Address) {
           // Update user email
-          await updateEmail(user, userInfo.email);
+          await updateEmail(user, userInfo.Email_Address);
 
           // Send email verification
           await sendEmailVerification(user);
@@ -84,7 +86,7 @@ export default function ClientSettings() {
         }
 
         // Update user data in Firestore
-        await setDoc(doc(db, "clientUsers", user.uid), userInfo, {
+        await setDoc(doc(db, "Client", user.uid), userInfo, {
           merge: true,
         });
         alert("Settings updated successfully!");
@@ -103,72 +105,122 @@ export default function ClientSettings() {
 
   return (
     <div className='bg-[#F3F4F6] min-h-screen'>
-      <ClientHeader userName={First_Name || ""} />
+      <ClientHeader userName={userInfo.First_Name || ""} />
 
-      <div className='bg-white mx-72 mt-10 pb-5 shadow-lg'>
-        <h1 className='px-7 py-3 text-xl font-medium'>Account Information</h1>
+      <div className='container mx-auto px-4 sm:px-6 lg:px-8 py-8'>
+        <div className='max-w-4xl mx-auto space-y-8'>
+          <div className='bg-white rounded-lg shadow'>
+            <div className='px-6 py-5 border-b border-gray-200'>
+              <h1 className='text-2xl font-semibold text-gray-900'>
+                Account Information
+              </h1>
+            </div>
 
-        <div className='border-t border-gray-100 mb-3' />
-        <div className='px-7 grid grid-cols-2'>
-          <div>
-            <h1 className='mb-2 font-medium'>First Name</h1>
-            <input
-              type='text'
-              name='firstName'
-              value={userInfo.firstName}
-              onChange={handleChange}
-              className='text-[#6F6F6F] bg-gray-50 border border-gray-300 text-gray-900 text-sm block w-64 p-1.5 dark:bg-gray-600 dark:border-gray-500 dark:text-white'
-            />
+            <div className='p-6 space-y-2'>
+              <div>
+                <label className='block text-sm font-medium text-gray-700 mb-1'>
+                  Name
+                </label>
+                <input
+                  name='fullName'
+                  value={fullName}
+                  onChange={handleChange}
+                  className='w-full bg-white'
+                  readonly
+                  disabled
+                />
+              </div>
+              <div className='grid grid-cols-2 md:grid-cols-2 gap-6'>
+                <div className='block'>
+                  <div>
+                    <label className='block text-sm font-medium text-gray-700 mb-2'>
+                      Email
+                    </label>
+                    <input
+                      name='Email_Address'
+                      value={userInfo.Email_Address}
+                      onChange={handleChange}
+                      className='w-full px-3 py-2 mb-2 border border-gray-300 rounded-md focus:outline-none'
+                    />
+                  </div>
+                  <div>
+                    <label className='block text-sm font-medium text-gray-700 mb-2'>
+                      Phone Number
+                    </label>
+                    <input
+                      name='Phone_Number'
+                      value={userInfo.Phone_Number}
+                      onChange={handleChange}
+                      className='w-full px-3 py-2 mb-2 border border-gray-300 rounded-md focus:outline-none'
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <div>
+                    <label className='block text-sm font-medium text-gray-700 mb-2'>
+                      Location
+                    </label>
+                    <input
+                      name='Complete_Address'
+                      value={userInfo.Complete_Address}
+                      onChange={handleChange}
+                      className='w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none'
+                    />
+                  </div>
+                </div>
+              </div>
+
+              <div className='flex justify-end'>
+                <button className='text-white bg-gray-800 hover:bg-gray-900 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-gray-800 dark:hover:bg-gray-700 dark:border-gray-700'>
+                  Save Changes
+                </button>
+              </div>
+            </div>
           </div>
-          <div>
-            <h1 className='mb-2 font-medium'>Last Name</h1>
-            <input
-              type='text'
-              name='lastName'
-              value={userInfo.lastName}
-              onChange={handleChange}
-              className='text-[#6F6F6F] bg-gray-50 border border-gray-300 text-gray-900 text-sm block w-64 p-1.5 dark:bg-gray-600 dark:border-gray-500 dark:text-white'
-            />
-          </div>
 
-          <div>
-            <h1 className='mt-4 mb-2 font-medium'>Email</h1>
-            <input
-              type='text'
-              name='email'
-              value={userInfo.email}
-              onChange={handleChange}
-              className='text-[#7f7f7f] bg-gray-50 border border-gray-300 text-gray-900 text-sm block w-64 p-1.5 dark:bg-gray-600 dark:border-gray-500 dark:text-white'
-            />
-            <button
-              type='button'
-              class='mt-5 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5  dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800'
-            >
-              Save
-            </button>
-          </div>
-        </div>
-      </div>
+          <div className='bg-white rounded-lg shadow'>
+            <div className='px-6 py-5 border-b border-gray-200'>
+              <h1 className='text-2xl font-semibold text-gray-900'>
+                Change Password
+              </h1>
+              <ul class='max-w-md space-y-1 text-gray-500 list-disc list-inside dark:text-gray-400'></ul>
+            </div>
 
-      <div className='bg-white mx-72 mt-5 pb-5 shadow-lg'>
-        <h1 className='px-7 py-3 text-xl font-medium'>Change Password</h1>
+            <div className='p-6 space-y-6'>
+              <div className='grid grid-cols-1 md:grid-cols-2 gap-6'>
+                <div>
+                  <label className='block text-sm font-medium text-gray-700 mb-2'>
+                    New Password
+                  </label>
+                  <input
+                    type='password'
+                    className='w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none'
+                    placeholder='••••••••'
+                  />
+                  <p className='pl-2 pt-0.5 text-xs italic text-[#7f7f7f]'>
+                    * Your password must be at least 10 characters *
+                  </p>
+                </div>
 
-        <div className='border-t border-gray-100 mb-3' />
-        <div className='px-7 grid grid-cols-2'>
-          <div>
-            <h1 className='mb-2 font-medium'>New Password</h1>
-            <input className='text-[#6F6F6F] bg-gray-50 border border-gray-300 text-gray-900 text-sm block w-64 p-1.5 dark:bg-gray-600 dark:border-gray-500 dark:text-white' />
+                <div>
+                  <label className='block text-sm font-medium text-gray-700 mb-2'>
+                    Confirm Password
+                  </label>
+                  <input
+                    type='password'
+                    className='w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none'
+                    placeholder='••••••••'
+                  />
+                </div>
+              </div>
 
-            <button
-              type='button'
-              class='mt-5 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5  dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800'
-            >
-              Reset Password
-            </button>
-          </div>
-          <div>
-            <h1 className='mb-2 font-medium'>Confirm Password</h1>
-            <input className='text-[#6F6F6F] bg-gray-50 border border-gray-300 text-gray-900 text-sm block w-64 p-1.5 dark:bg-gray-600 dark:border-gray-500 dark:text-white' />
+              <div className='flex justify-end'>
+                <button className='text-white bg-gray-800 hover:bg-gray-900 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-gray-800 dark:hover:bg-gray-700 dark:border-gray-700'>
+                  Reset Password
+                </button>
+              </div>
+            </div>
           </div>
         </div>
       </div>

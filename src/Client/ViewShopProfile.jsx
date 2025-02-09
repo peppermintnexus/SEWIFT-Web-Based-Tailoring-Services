@@ -77,34 +77,63 @@ export default function ViewShopProfile() {
         <div className='p-6 rounded-t-lg bg-white flex-1 w-full'>
           <div className='container w-full h-auto sm:h-screen bg-[#FEFEFE]'>
             {/* Shop Profile Section */}
-            <div className='flex flex-col sm:flex-row gap-3 col-span-2'>
-              <img
-                src={shop.imageUrl || "/src/assets/images/Sample.jpg"}
-                alt={shop.Tailor_Shop_Name}
-                className='w-full sm:w-48 h-48 object-cover rounded-lg'
-              />
-              <div className='justify-between flex flex-col'>
-                <h1 className='b-0.5 text-xl font-bold'>
-                  {shop.Tailor_Shop_Name}
-                </h1>
-                <Rating />
+            <div className='grid grid-cols-2'>
+              <div className='col-start-1'>
+                <img
+                  src={shop.imageUrl || "/src/assets/images/Sample.jpg"}
+                  alt={shop.Tailor_Shop_Name}
+                  className='w-full fit h-56 object-cover rounded-lg'
+                />
+              </div>
+              <div className='justify-between ml-5 flex flex-col'>
+                <div>
+                  <h1 className='b-0.5 text-xl font-bold'>
+                    {shop.Tailor_Shop_Name}
+                  </h1>
+                  <Rating />
+                </div>
 
-                <div className='space-y-1'>
+                <div className='space-y-4'>
                   {shop.openingHours && (
                     <div>
-                      <h1 className='text-md font-medium'>Opening Hours:</h1>
-                      <p className='text-[#2b3a47]'>{shop.openingHours}</p>
+                      <p className='text-[#2b3a47] font-semibold'>
+                        {shop.openingHours}
+                      </p>
                     </div>
                   )}
                   {shop.description && (
                     <div>
-                      <p className='text-[#2b3a47]'>{shop.description}</p>
+                      <p className='text-[#7f7f7f]'>{shop.description}</p>
                     </div>
                   )}
+
+                  <div className='mt-3 flex'>
+                    <svg
+                      className='w-5 h-5 mr-1'
+                      viewBox='0 0 24 24'
+                      fill='none'
+                      xmlns='http://www.w3.org/2000/svg'
+                    >
+                      <path
+                        d='M12 21C15.5 17.4 19 14.1764 19 10.2C19 6.22355 15.866 3 12 3C8.13401 3 5 6.22355 5 10.2C5 14.1764 8.5 17.4 12 21Z'
+                        stroke='#c3c3c3'
+                        stroke-width='2'
+                        stroke-linecap='round'
+                        stroke-linejoin='round'
+                      />
+                      <path
+                        d='M12 13C13.6569 13 15 11.6569 15 10C15 8.34315 13.6569 7 12 7C10.3431 7 9 8.34315 9 10C9 11.6569 10.3431 13 12 13Z'
+                        stroke='#c3c3c3'
+                        stroke-width='2'
+                        stroke-linecap='round'
+                        stroke-linejoin='round'
+                      />
+                    </svg>
+                    <label className='block font-normal text-[#c3c3c3] dark:text-gray-400'>
+                      {shop.Complete_Address || "Complete Address"}
+                    </label>
+                  </div>
                 </div>
-                <label className='block font-normal text-[#c3c3c3] dark:text-gray-400'>
-                  {shop.completeAddress || "Complete Address"}
-                </label>
               </div>
             </div>
 

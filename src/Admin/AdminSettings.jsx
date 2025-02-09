@@ -12,6 +12,7 @@ export default function AdminHomepage() {
   const [name, setName] = useState("");
   const [token, setToken] = useState(null);
   const [Tailor_Shop_Name, setTailorShopName] = useState("");
+  const [Complete_Address, setCompleteAddress] = useState("");
   const [isDropdownVisible, setIsDropdownVisible] = useState(false);
   const navigate = useNavigate();
 
@@ -25,6 +26,7 @@ export default function AdminHomepage() {
         if (userDoc.exists()) {
           setName(userDoc.data().name);
           setTailorShopName(userDoc.data().Tailor_Shop_Name);
+          setCompleteAddress(userDoc.data().Complete_Address);
         }
 
         setUser(user);
@@ -46,13 +48,16 @@ export default function AdminHomepage() {
 
   return (
     <div>
-      <AdminSidebar Tailor_Shop_Name={Tailor_Shop_Name || ""} />
+      <AdminSidebar
+        Tailor_Shop_Name={Tailor_Shop_Name || ""}
+        Complete_Address={Complete_Address || ""}
+      />
 
       <div class='p-4 sm:ml-64 bg-gray-100 dark:bg-gray-800 h-full'>
         <h1 className='text-2xl font-semibold mb-2'>Settings</h1>
 
         <div className='shadow w-full p-5 bg-white'>
-          <h1 className='text-xl'>Personal Information</h1>
+          <h1 className='text-xl'>Account Information</h1>
           <div className='border-t border-gray-100 mt-4 mb-3' />
           <div className='grid grid-cols-2 gap-9'>
             <div class='mb-3'>
@@ -60,24 +65,11 @@ export default function AdminHomepage() {
                 for='firstName'
                 class='block mb-2 text-sm font-medium text-gray-900 dark:text-white'
               >
-                First Name
+                Tailor Shop Name
               </label>
               <input
                 type='text'
                 id='firstName'
-                class='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
-              />
-            </div>
-            <div class='mb-3'>
-              <label
-                for='lastName'
-                class='block mb-2 text-sm font-medium text-gray-900 dark:text-white'
-              >
-                Last Name
-              </label>
-              <input
-                type='text'
-                id='lastName'
                 class='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
               />
             </div>

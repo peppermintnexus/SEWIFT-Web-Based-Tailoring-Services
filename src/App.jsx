@@ -15,8 +15,6 @@ import ClientSettings from "./Client/ClientSettings";
 import TailorShops from "./Client/TailorShops";
 import ViewShopProfile from "./Client/ViewShopProfile";
 import ClientOrder from "./Client/ClientOrder";
-
-import OrderRequest from "./Employee/OrderRequest";
 import EmployeeJobOrder from "./Employee/EmployeeJobOrder";
 import EmployeeTransactionHistory from "./Employee/EmployeeTransactionHistory";
 import EmployeeSettings from "./Employee/EmployeeSettings";
@@ -51,7 +49,6 @@ function App() {
       <Route path='/ViewShopProfile/:shopId' element={<ViewShopProfile />} />
       <Route path='/ClientOrder' element={<ClientOrder />} />
 
-      <Route path='/OrderRequest' element={<OrderRequest />} />
       <Route path='/EmployeeJobOrder' element={<EmployeeJobOrder />} />
       <Route
         path='/EmployeeTransactionHistory'

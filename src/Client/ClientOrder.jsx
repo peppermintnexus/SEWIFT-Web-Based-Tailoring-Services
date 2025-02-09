@@ -67,7 +67,7 @@ export default function ClientOrder() {
   }
 
   return (
-    <div className='min-h-screen bg-[#fefefe]'>
+    <div className='min-h-screen mb-6 bg-[#fefefe]'>
       <ClientHeader username={firstName || "Client"} />
 
       <h1 className='mx-7 my-6 text-4xl font-medium'>Order Progress</h1>

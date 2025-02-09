@@ -77,10 +77,13 @@ export default function AdminHomepage() {
   return (
     <div className='flex'>
       {/* Sidebar */}
-      <AdminSidebar Tailor_Shop_Name={Tailor_Shop_Name || "Tailor Shop Name"} />
+      <AdminSidebar
+        Tailor_Shop_Name={Tailor_Shop_Name || ""}
+        Complete_Address={Complete_Address || ""}
+      />
 
       {/* Main Content */}
-      <div className='p-4 sm:ml-64 bg-gray-100 dark:bg-gray-800 h-screen flex-1'>
+      <div className='p-4 sm:ml-64 bg-gray-100 dark:bg-gray-800 min-h-screen h-full flex-1'>
         <h1 className='text-2xl font-semibold mb-4'>Orders</h1>
 
         {/* Filter Buttons */}
