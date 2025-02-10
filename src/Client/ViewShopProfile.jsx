@@ -11,24 +11,25 @@ export default function ViewShopProfile() {
   const [products, setProducts] = useState([]);
   const [shop, setShop] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null); // Added error state
+  const [error, setError] = useState(null);
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [isModalVisible, setIsModalVisible] = useState(false);
 
   useEffect(() => {
     const fetchShopDetails = async () => {
-      setLoading(true); // Set loading to true before fetching
-      setError(null); // Reset error state
+      setLoading(true);
+      setError(null);
       try {
         const docRef = doc(db, "Administrator", shopId);
         const docSnap = await getDoc(docRef);
 
         if (docSnap.exists()) {
           setShop(docSnap.data());
-          // Fetch products after confirming shop exists
+          setIsModalVisible(true); // Automatically open modal when shop data is available
+
           const productsColRef = collection(
             db,
-            `Administrator/${shopId}/productList`
+            `Administrator/${shopId}/Product`
           );
           const productsSnapshot = await getDocs(productsColRef);
           const productsData = productsSnapshot.docs.map((doc) => ({
@@ -36,15 +37,12 @@ export default function ViewShopProfile() {
             ...doc.data(),
           }));
           setProducts(productsData);
-          console.log("Fetched products:", productsData); // Debug log
         } else {
-          console.log("No such document!");
-          setError("Shop not found"); // Set error message
+          setError("Shop not found");
           setProducts([]);
         }
       } catch (error) {
-        console.error("Error fetching data:", error);
-        setError("Failed to load shop details"); // Set error message
+        setError("Failed to load shop details");
         setProducts([]);
       } finally {
         setLoading(false);
@@ -61,7 +59,7 @@ export default function ViewShopProfile() {
   }
 
   if (error) {
-    return <div className='bg-[#FEFEFE] min-h-screen relative'>{error}</div>; // Display error message
+    return <div className='bg-[#FEFEFE] min-h-screen relative'>{error}</div>;
   }
 
   if (!shop) {
@@ -76,11 +74,10 @@ export default function ViewShopProfile() {
       <div className='h-full mx-4 sm:mx-10 md:mx-20 lg:mx-48 pt-10 flex'>
         <div className='p-6 rounded-t-lg bg-white flex-1 w-full'>
           <div className='container w-full h-auto sm:h-screen bg-[#FEFEFE]'>
-            {/* Shop Profile Section */}
             <div className='grid grid-cols-2'>
               <div className='col-start-1'>
                 <img
-                  src={shop.imageUrl || "/src/assets/images/Sample.jpg"}
+                  src={shop.imageUrl || "/src/assets/images/Placeholder.jpg"}
                   alt={shop.Tailor_Shop_Name}
                   className='w-full fit h-56 object-cover rounded-lg'
                 />
@@ -92,7 +89,6 @@ export default function ViewShopProfile() {
                   </h1>
                   <Rating />
                 </div>
-
                 <div className='space-y-4'>
                   {shop.openingHours && (
                     <div>
@@ -136,35 +132,19 @@ export default function ViewShopProfile() {
                 </div>
               </div>
             </div>
-
-            {/* Products Section */}
             <div className='border-t border-gray-100 mt-4 mb-4' />
             <h2 className='text-2xl font-bold mb-4'>Our Products</h2>
-            <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6'>
+            <div className=''>
               {products.map((product) => (
-                <div
-                  key={product.id}
-                  className='bg-white p-4 rounded-lg shadow-md'
-                >
-                  {/* Product content */}
-                  <h3 className='font-bold'>{product.name}</h3>{" "}
-                  {/* Assuming product has a name */}
-                  <p>{product.description}</p>{" "}
-                  {/* Assuming product has a description */}
-                  <button
-                    onClick={() => {
-                      setSelectedProduct(product);
-                      setIsModalVisible(true);
-                    }}
-                    className='bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600'
-                  >
-                    View Details
-                  </button>
+                <div key={product.id}>
+                  {() => {
+                    setSelectedProduct(product);
+                    setIsModalVisible(true);
+                  }}
                 </div>
               ))}
             </div>
-
-            {isModalVisible && selectedProduct && (
+            {isModalVisible && (
               <OrderModal
                 product={selectedProduct}
                 shopId={shopId}

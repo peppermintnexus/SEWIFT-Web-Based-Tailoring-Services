@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import ClientHeader from "/src/components/ClientHeader.jsx";
-import Sample from "/src/assets/images/Sample.jpg";
+import Placeholder from "/src/assets/images/Placeholder.jpg";
 import { db } from "/src/firebase";
 import Rating from "/src/components/Rating";
 import { collection, getDocs } from "firebase/firestore";
@@ -71,7 +71,7 @@ export default function TailorShops() {
                 <div className='max-w-sm h-full bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700'>
                   <img
                     className='rounded-t-lg object-cover w-full h-48'
-                    src={shop.imageUrl || Sample}
+                    src={shop.imageUrl || Placeholder}
                     alt='Tailor Shop'
                   />
                   <div className='p-4'>

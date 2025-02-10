@@ -210,26 +210,6 @@ export default function ClientHomepage() {
           </div>
         </form>
 
-        {/* Category filter buttons */}
-        <div className='pt-5 flex flex-wrap'>
-          {["Shirt", "Blouse", "Blazer", "Skirt", "Pants", "Polo"].map(
-            (category) => (
-              <button
-                key={category}
-                type='button'
-                className={`py-2.5 px-5 me-2 mb-2 text-sm font-medium rounded-full border ${
-                  selectedCategory === category
-                    ? "bg-blue-700 text-white hover:bg-blue-800"
-                    : "bg-white text-gray-900 hover:bg-gray-100"
-                }`}
-                onClick={() => handleCategoryFilter(category)}
-              >
-                {category}
-              </button>
-            )
-          )}
-        </div>
-
         <div className='py-3 w-full'>
           <OrderModal
             products={searchResults}

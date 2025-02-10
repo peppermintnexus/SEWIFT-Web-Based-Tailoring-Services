@@ -90,20 +90,24 @@ export default function SignUp() {
               <p className='block mb-1 text-sm font-medium text-gray-900 dark:text-white'>
                 Tailor Shop Name
               </p>
-              <Textbox
+              <input
                 name='Tailor_Shop_Name'
                 value={formData.Tailor_Shop_Name}
                 onChange={(e) => handleInputChange(e)}
+                className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg 
+                         focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5'
               />
             </div>
             <div>
               <p className='block mb-1 text-sm font-medium text-gray-900 dark:text-white'>
                 Complete Address
               </p>
-              <Textbox
+              <input
                 name='Complete_Address'
                 value={formData.Complete_Address}
                 onChange={(e) => handleInputChange(e)}
+                className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg 
+                         focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5'
               />
             </div>
           </div>
@@ -112,44 +116,56 @@ export default function SignUp() {
               <p className='block mb-1 text-sm font-medium text-gray-900 dark:text-white'>
                 Phone Number
               </p>
-              <Textbox
+              <input
                 name='Phone_Number'
                 value={formData.Phone_Number}
                 onChange={(e) => handleInputChange(e)}
+                className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg 
+                         focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5'
               />
             </div>
-            <div>
-              <p className='block mb-1 text-sm font-medium text-gray-900 dark:text-white'>
-                Email Address
-              </p>
-              <Textbox
-                name='Email'
-                value={formData.Email}
-                onChange={(e) => handleInputChange(e)}
-              />
-            </div>
+          </div>
+          <div className='mb-2'>
+            <p className='block mb-1 text-sm font-medium text-gray-900 dark:text-white'>
+              Email Address
+            </p>
+            <input
+              name='Email'
+              value={formData.Email}
+              onChange={(e) => handleInputChange(e)}
+              className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg 
+                         focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5'
+            />
           </div>
           <div className='grid grid-cols-2 gap-7 mb-2'>
             <div>
               <p className='block mb-1 text-sm font-medium text-gray-900 dark:text-white'>
                 Password
               </p>
-              <Textbox
+              <input
                 name='Password'
                 value={formData.Password}
                 onChange={(e) => handleInputChange(e)}
                 type='password'
+                placeholder='••••••••'
+                className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg 
+                         focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5'
+                required
               />
             </div>
             <div>
               <p className='block mb-1 text-sm font-medium text-gray-900 dark:text-white'>
                 Confirm Password
               </p>
-              <Textbox
+              <input
                 name='Confirm_Password'
                 value={formData.Confirm_Password}
                 onChange={(e) => handleInputChange(e)}
                 type='password'
+                placeholder='••••••••'
+                className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg 
+                         focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5'
+                required
               />
             </div>
           </div>

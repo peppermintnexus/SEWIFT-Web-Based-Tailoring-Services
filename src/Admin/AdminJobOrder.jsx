@@ -88,20 +88,18 @@ export default function AdminHomepage() {
 
         {/* Filter Buttons */}
         <div className='flex mb-4 gap-2 flex-wrap'>
-          {["All", "Pending", "Ongoing", "Finished", "Claimed", "Canceled"].map(
-            (status) => (
-              <button
-                key={status}
-                type='button'
-                onClick={() => handleFilterChange(status)}
-                className={`py-2 px-4 text-sm font-medium text-gray-900 bg-white rounded-lg border 
+          {["All", "Premade", "Customized", "Adjust"].map((status) => (
+            <button
+              key={status}
+              type='button'
+              onClick={() => handleFilterChange(status)}
+              className={`py-2 px-4 text-sm font-medium text-gray-900 bg-white rounded-lg border 
                   ${filter === status ? "bg-blue-300" : "hover:bg-gray-200"} 
                   focus:outline-none`}
-              >
-                {status}
-              </button>
-            )
-          )}
+            >
+              {status}
+            </button>
+          ))}
         </div>
 
         {/* Job Orders Listing */}

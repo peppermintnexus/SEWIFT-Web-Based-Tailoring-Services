@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import ClientHeader from "/src/components/ClientHeader.jsx";
-import SchoolBlouse from "/src/assets/images/SchoolBlouse.jpg";
+import SchoolSkirt from "/src/assets/images/SchoolSkirt.jpg";
 import { useNavigate } from "react-router";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth, db } from "../firebase";
@@ -79,9 +79,9 @@ export default function ClientOrder() {
           >
             <div className='flex items-center'>
               <img
-                src={SchoolBlouse}
+                src={SchoolSkirt}
                 className='object-cover w-40 h-40'
-                alt='School Blouse'
+                alt='School Skirt'
               />
               <div className='pl-7'>
                 <label className='block text-xl font-medium'>

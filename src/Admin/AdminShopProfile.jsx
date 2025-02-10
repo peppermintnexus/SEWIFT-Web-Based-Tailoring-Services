@@ -3,6 +3,7 @@ import AdminSidebar from "../components/AdminSidebar";
 import ProductModal from "../components/ProductModal";
 import Rating from "/src/components/Rating";
 import Placeholder from "/src/assets/images/Placeholder.jpg";
+import SchoolSkirt from "/src/assets/images/SchoolSkirt.jpg";
 import { auth } from "../firebase";
 import { useNavigate } from "react-router-dom";
 import {

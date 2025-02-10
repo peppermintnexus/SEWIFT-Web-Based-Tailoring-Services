@@ -84,26 +84,30 @@ export default function SignUp() {
   return (
     <div className='flex justify-center items-center'>
       <form onSubmit={handleSignUp}>
-        <div className='w-full h-90 px-1 overflow-hidden box-border'>
+        <div className='h-90 px-1 overflow-hidden box-border'>
           <div className='grid grid-cols-2 gap-7 mb-2'>
             <div>
               <p className='block mb-1 text-sm font-medium text-gray-900 dark:text-white'>
                 First Name
               </p>
-              <Textbox
+              <input
                 name='firstName'
                 value={formData.firstName}
                 onChange={(e) => handleInputChange(e)}
+                className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg 
+                         focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5'
               />
             </div>
             <div>
               <p className='block mb-1 text-sm font-medium text-gray-900 dark:text-white'>
                 Last Name
               </p>
-              <Textbox
+              <input
                 name='lastName'
                 value={formData.lastName}
                 onChange={(e) => handleInputChange(e)}
+                className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg 
+                         focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5'
               />
             </div>
           </div>
@@ -112,20 +116,24 @@ export default function SignUp() {
               <p className='block mb-1 text-sm font-medium text-gray-900 dark:text-white'>
                 Complete Address
               </p>
-              <Textbox
+              <input
                 name='completeAddress'
                 value={formData.completeAddress}
                 onChange={(e) => handleInputChange(e)}
+                className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg 
+                         focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5'
               />
             </div>
             <div>
               <p className='block mb-1 text-sm font-medium text-gray-900 dark:text-white'>
                 Phone Number
               </p>
-              <Textbox
+              <input
                 name='phoneNumber'
                 value={formData.phoneNumber}
                 onChange={(e) => handleInputChange(e)}
+                className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg 
+                         focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5'
               />
             </div>
           </div>
@@ -133,10 +141,12 @@ export default function SignUp() {
             <p className='block mb-1 text-sm font-medium text-gray-900 dark:text-white'>
               Email Address
             </p>
-            <Textbox
+            <input
               name='email'
               value={formData.email}
               onChange={(e) => handleInputChange(e)}
+              className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg 
+                         focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5'
             />
           </div>
           <div className='grid grid-cols-2 gap-7 mb-2'>
@@ -144,22 +154,26 @@ export default function SignUp() {
               <p className='block mb-1 text-sm font-medium text-gray-900 dark:text-white'>
                 Password
               </p>
-              <Textbox
+              <input
                 name='password'
                 value={formData.password}
                 onChange={(e) => handleInputChange(e)}
                 placeholder='••••••••'
+                className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg 
+                         focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5'
               />
             </div>
             <div>
               <p className='block mb-1 text-sm font-medium text-gray-900 dark:text-white'>
                 Confirm Password
               </p>
-              <Textbox
+              <input
                 name='confirmPassword'
                 value={formData.confirmPassword}
                 onChange={(e) => handleInputChange(e)}
                 placeholder='••••••••'
+                className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg 
+                         focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5'
               />
             </div>
           </div>

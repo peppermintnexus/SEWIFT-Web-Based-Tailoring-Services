@@ -134,10 +134,12 @@ export default function SignUp() {
         <div className='w-full px-1 overflow-hidden box-border'>
           <div className='mb-2'>
             <p className='block mb-1 text-sm font-medium text-gray-900'>Name</p>
-            <Textbox
+            <input
               name='name'
               value={formData.name}
               onChange={handleInputChange}
+              className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg 
+                         focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5'
             />
           </div>
 
@@ -150,7 +152,8 @@ export default function SignUp() {
                 name='tailorShopName'
                 value={formData.tailorShopName}
                 onChange={handleInputChange}
-                className='w-full border rounded-lg p-2'
+                className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg 
+                         focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5'
                 required
               >
                 <option value=''>Select a Shop</option>
@@ -166,10 +169,12 @@ export default function SignUp() {
               <p className='block mb-1 text-sm font-medium text-gray-900'>
                 Phone Number
               </p>
-              <Textbox
+              <input
                 name='phoneNumber'
                 value={formData.phoneNumber}
                 onChange={handleInputChange}
+                className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg 
+                         focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5'
               />
             </div>
           </div>
@@ -178,11 +183,13 @@ export default function SignUp() {
             <p className='block mb-1 text-sm font-medium text-gray-900'>
               Email Address
             </p>
-            <Textbox
+            <input
               name='email'
               type='email'
               value={formData.email}
               onChange={handleInputChange}
+              className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg 
+                         focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5'
             />
           </div>
 
@@ -191,22 +198,30 @@ export default function SignUp() {
               <p className='block mb-1 text-sm font-medium text-gray-900'>
                 Password
               </p>
-              <Textbox
+              <input
                 name='password'
                 type='password'
+                placeholder='••••••••'
                 value={formData.password}
                 onChange={handleInputChange}
+                className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg 
+                         focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5'
+                required
               />
             </div>
             <div>
               <p className='block mb-1 text-sm font-medium text-gray-900'>
                 Confirm Password
               </p>
-              <Textbox
+              <input
                 name='confirmPassword'
                 type='password'
+                placeholder='••••••••'
                 value={formData.confirmPassword}
                 onChange={handleInputChange}
+                className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg 
+                         focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5'
+                required
               />
             </div>
           </div>

@@ -124,7 +124,7 @@ export default function EmployeeJobOrder() {
         Tailor_Shop_Name={Tailor_Shop_Name}
       />
 
-      <div className='px-6 py-4 sm:ml-64 bg-gray-100 dark:bg-gray-800'>
+      <div className='px-6 py-4 sm:ml-64 bg-gray-100 dark:bg-gray-800 min-h-screen'>
         <h1 className='text-2xl font-semibold mb-2'>Orders</h1>
         <div className='flex mb-2'>
           {["All", "Premade", "Customized", "Adjust"].map((status) => (

@@ -238,6 +238,8 @@ export default function ClientProfile() {
 
               <p>Price</p>
               <input
+                type='number'
+                min='0'
                 name='Price'
                 value={newProduct.Price}
                 onChange={handleInputChange}

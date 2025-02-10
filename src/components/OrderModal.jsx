@@ -1,6 +1,6 @@
 //OrderModal.jsx
 import React, { useEffect, useState } from "react";
-import SchoolBlouse from "/src/assets/images/SchoolBlouse.jpg";
+import Placeholder from "/src/assets/images/Placeholder.jpg";
 import { db } from "../firebase";
 import {
   collection,
@@ -295,7 +295,7 @@ export default function OrderModal() {
   };
 
   return (
-    <div className='grid grid-cols-5 gap-4'>
+    <div className='grid grid-cols-5 gap-5'>
       {products.map((product) => (
         <button
           key={product.Product_ID}
@@ -303,8 +303,8 @@ export default function OrderModal() {
           onClick={() => toggleModal(product)}
         >
           <img
-            className='p-3 rounded-t-lg object-cover w-full h-52'
-            src={product.Photo_of_Product || SchoolBlouse}
+            className='p-2 rounded-t-lg object-cover w-full h-52'
+            src={product.Photo_of_Product || Placeholder}
             alt={product.Product_Name}
           />
           <div className='px-4 py-3'>
@@ -399,13 +399,15 @@ export default function OrderModal() {
                         {selectedProduct.tailorShopName}{" "}
                       </label>
                     </div>
-                    <div className='text-[#7f7f7f]'>Description</div>
                   </div>
 
                   <form
                     className='pt-2 overflow-y-auto max-h-[59vh] pr-2'
                     onSubmit={handleSubmit}
                   >
+                    <div className='text-[#7f7f7f] mb-4'>
+                      {selectedProduct.Description}
+                    </div>
                     <div className='gap-3 grid grid-cols-3'>
                       <div>
                         <label
