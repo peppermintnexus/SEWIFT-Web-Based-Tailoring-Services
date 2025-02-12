@@ -1,6 +1,5 @@
-//OrderModal.jsx
 import React, { useEffect, useState } from "react";
-import Placeholder from "/src/assets/images/Placeholder.jpg";
+import SchoolBlouse from "/src/assets/images/SchoolBlouse.jpg";
 import { db } from "../firebase";
 import {
   collection,
@@ -13,6 +12,9 @@ import {
 } from "firebase/firestore";
 import { auth } from "../firebase";
 import { onAuthStateChanged } from "firebase/auth";
+import emailjs from "@emailjs/browser";
+
+emailjs.init("ctn-kzvtxyyiPma5K");
 
 const categoryFields = {
   Blouse: [
@@ -56,6 +58,7 @@ const categoryFields = {
 
 export default function OrderModal() {
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const [clientName, setClientName] = useState("");
   const [products, setProducts] = useState([]);
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [orderType, setOrderType] = useState("premade");
@@ -64,10 +67,9 @@ export default function OrderModal() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [productMeasurements, setProductMeasurements] = useState({});
   const [userMeasurements, setUserMeasurements] = useState({});
-
-  // New state for receipt image upload
   const [receiptImage, setReceiptImage] = useState("");
   const [receiptPreview, setReceiptPreview] = useState(null);
+  const [adminEmail, setAdminEmail] = useState("");
 
   // Fetch products from Firestore
   useEffect(() => {
@@ -126,6 +128,7 @@ export default function OrderModal() {
           const clientDoc = await getDoc(doc(db, "Client", user.uid));
           if (clientDoc.exists()) {
             setClientMeasurements(clientDoc.data().measurements || {});
+            setClientName(clientDoc.data().First_Name || "Client");
           }
 
           // Fetch product measurements
@@ -154,9 +157,19 @@ export default function OrderModal() {
   }, [selectedProduct, user]);
 
   // Toggle modal visibility
-  const toggleModal = (product) => {
+  const toggleModal = async (product) => {
     setSelectedProduct(product);
     setIsModalVisible(!isModalVisible);
+
+    try {
+      const adminDoc = await getDoc(doc(db, "Administrator", product.adminId));
+      if (adminDoc.exists()) {
+        setAdminEmail(adminDoc.data().Email);
+        console.log("Admin Email:", adminDoc.data().Email);
+      }
+    } catch (error) {
+      console.error("Error fetching admin email:", error);
+    }
   };
 
   // Handle order type change
@@ -197,7 +210,7 @@ export default function OrderModal() {
 
     try {
       const formData = new FormData(event.target);
-      // Create order data using snake case for field names
+
       const orderData = {
         Product_Id: selectedProduct.id,
         Product_Name: selectedProduct.Product_Name,
@@ -207,12 +220,11 @@ export default function OrderModal() {
         Measurements:
           orderType === "customized" ? userMeasurements : clientMeasurements,
         Remarks: formData.get("message"),
-        // Include the uploaded receipt image
         Receipt_Image_Verification: receiptImage,
         Client_Id: user.uid,
         Tailor_Shop_Id: selectedProduct.adminId,
         Status: "pending",
-        Created_At: new Date(),
+        Order_Date: new Date(),
       };
 
       // 1. Update Administrator document by adding the order to the Order_List array field
@@ -224,10 +236,27 @@ export default function OrderModal() {
       // 2. Create a document in the Client's Orders subcollection
       await addDoc(collection(db, "Client", user.uid, "Orders"), orderData);
 
-      alert("Order submitted successfully!");
+      const emailParams = {
+        to_email: adminEmail,
+        product_name: selectedProduct.Product_Name,
+        client_name: clientName || "Client",
+        order_type: orderType,
+        size: formData.get("size"),
+        remarks: formData.get("message"),
+        tailor_shop_name: selectedProduct.tailorShopName,
+        order_date: new Date().toLocaleDateString(),
+      };
+
+      console.log("Email Params:", emailParams);
+
+      await emailjs.send("service_3v21zqa", "template_rqiso1o", emailParams);
+
+      alert(
+        "Order submitted successfully! An email has been sent to the administrator."
+      );
       setIsModalVisible(false);
     } catch (error) {
-      console.error("Error submitting order:", error);
+      console.error("Error submitting order or sending email:", error);
       alert("Failed to submit order. Please try again.");
     } finally {
       setIsSubmitting(false);
@@ -295,7 +324,7 @@ export default function OrderModal() {
   };
 
   return (
-    <div className='grid grid-cols-5 gap-5'>
+    <div className='grid grid-cols-5 gap-4'>
       {products.map((product) => (
         <button
           key={product.Product_ID}
@@ -303,8 +332,8 @@ export default function OrderModal() {
           onClick={() => toggleModal(product)}
         >
           <img
-            className='p-2 rounded-t-lg object-cover w-full h-52'
-            src={product.Photo_of_Product || Placeholder}
+            className='p-3 rounded-t-lg object-cover w-full h-52'
+            src={product.Photo_of_Product || SchoolBlouse}
             alt={product.Product_Name}
           />
           <div className='px-4 py-3'>
@@ -399,15 +428,13 @@ export default function OrderModal() {
                         {selectedProduct.tailorShopName}{" "}
                       </label>
                     </div>
+                    <div className='text-[#7f7f7f]'>Description</div>
                   </div>
 
                   <form
                     className='pt-2 overflow-y-auto max-h-[59vh] pr-2'
                     onSubmit={handleSubmit}
                   >
-                    <div className='text-[#7f7f7f] mb-4'>
-                      {selectedProduct.Description}
-                    </div>
                     <div className='gap-3 grid grid-cols-3'>
                       <div>
                         <label

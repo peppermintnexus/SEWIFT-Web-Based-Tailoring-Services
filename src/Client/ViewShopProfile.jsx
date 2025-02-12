@@ -133,28 +133,30 @@ export default function ViewShopProfile() {
               </div>
             </div>
             <div className='border-t border-gray-100 mt-4 mb-4' />
-            <h2 className='text-2xl font-bold mb-4'>Our Products</h2>
-            <div className=''>
-              {products.map((product) => (
-                <div key={product.id}>
-                  {() => {
-                    setSelectedProduct(product);
-                    setIsModalVisible(true);
+            <div className='pb-10'>
+              <h2 className='text-2xl font-bold mb-4'>Our Products</h2>
+              <div>
+                {products.map((product) => (
+                  <div key={product.id}>
+                    {() => {
+                      setSelectedProduct(product);
+                      setIsModalVisible(true);
+                    }}
+                  </div>
+                ))}
+              </div>
+              {isModalVisible && (
+                <OrderModal
+                  product={selectedProduct}
+                  shopId={shopId}
+                  shopName={shop.Tailor_Shop_Name}
+                  onClose={() => {
+                    setIsModalVisible(false);
+                    setSelectedProduct(null);
                   }}
-                </div>
-              ))}
+                />
+              )}
             </div>
-            {isModalVisible && (
-              <OrderModal
-                product={selectedProduct}
-                shopId={shopId}
-                shopName={shop.Tailor_Shop_Name}
-                onClose={() => {
-                  setIsModalVisible(false);
-                  setSelectedProduct(null);
-                }}
-              />
-            )}
           </div>
         </div>
       </div>
