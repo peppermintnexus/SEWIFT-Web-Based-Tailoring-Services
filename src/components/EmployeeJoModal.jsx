@@ -29,6 +29,7 @@ export default function EmployeeJoModal({ order, onClose, onUpdateStatus }) {
     if (onUpdateStatus) {
       onUpdateStatus(order.Job_Order_Number, status);
     }
+    onClose();
   };
 
   const toggleImageZoom = () => {
@@ -44,7 +45,12 @@ export default function EmployeeJoModal({ order, onClose, onUpdateStatus }) {
       <div className='sm:mx-96 py-3 px-4 bg-white rounded-lg'>
         <div className='flex justify-between'>
           <label className='pl-2 text-xl font-semibold'>
-            JO <span>{order.Job_Order_Number || ""}</span>
+            JO{" "}
+            <span>
+              {order.Job_Order_Number
+                ? order.Job_Order_Number.toString().padStart(4, "0")
+                : ""}
+            </span>
           </label>
           <div className='rounded-lg items-center font-medium px-3 bg-[#ffdd94]'>
             <label className='text-xs'>{status}</label>

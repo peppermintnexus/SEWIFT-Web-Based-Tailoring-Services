@@ -30,10 +30,10 @@ export default function SewiftHomepage() {
       </div>
 
       <div className='p-4 sm:p-10 bg-[#FEFEFE]'>
-        <h1 className='text-center text-3xl font-bold'>
+        <h1 className='text-center text-3xl mb-5 font-bold'>
           Order Apparels from Tailor Shops
         </h1>
-        <img src={ViewSample} />
+        <img src={ViewSample} className=' shadow' />
       </div>
 
       <div className='p-4 sm:p-14 bg-[#171B1F]'>

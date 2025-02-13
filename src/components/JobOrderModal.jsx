@@ -1,19 +1,15 @@
+// JobOrderModal.jsx
 import React, { useEffect, useState } from "react";
 import { doc, getDoc } from "firebase/firestore";
 import { db } from "../firebase";
 
-let jobOrderCounter = 1;
-
 export default function JobOrderModal({ order, onClose, adminId }) {
   const [employeeName, setEmployeeName] = useState("");
   const [clientName, setClientName] = useState("N/A");
-  const [jobOrderNumber, setJobOrderNumber] = useState("0001");
 
   // Debug: Detailed logging
   useEffect(() => {
     console.log("Full order object:", order);
-    console.log("Order_List exists?", !!order?.Order_List);
-    console.log("Order_List type:", typeof order?.Order_List);
   }, [order]);
 
   useEffect(() => {
@@ -38,14 +34,10 @@ export default function JobOrderModal({ order, onClose, adminId }) {
       }
     };
 
-    // Modified client name handling
+    // Handle client name retrieval from the order object
     if (order) {
-      // First check if Order_List exists and is an array
       if (Array.isArray(order.Order_List) && order.Order_List.length > 0) {
         const firstItem = order.Order_List[0];
-        console.log("First Order_List item:", firstItem);
-
-        // Try common property name variations
         const name =
           firstItem.Client_Name || firstItem.clientName || firstItem.name;
         if (name) {
@@ -53,13 +45,9 @@ export default function JobOrderModal({ order, onClose, adminId }) {
         } else {
           console.warn("Client name not found in first item:", firstItem);
         }
-      }
-      // If Order_List is missing but client name exists directly on order
-      else if (order.Client_Name) {
+      } else if (order.Client_Name) {
         setClientName(order.Client_Name);
-      }
-      // Fallback if Order_List is undefined
-      else {
+      } else {
         console.warn("Order_List is undefined or empty");
         setClientName("N/A");
       }
@@ -73,7 +61,12 @@ export default function JobOrderModal({ order, onClose, adminId }) {
       <div className='w-72 py-3 px-4 bg-white rounded-lg'>
         <div className='flex justify-between'>
           <label className='pl-2 text-xl font-semibold dark:text-gray-400'>
-            JO <span>{jobOrderNumber}</span>
+            JO{" "}
+            <span>
+              {order.Job_Order_Number
+                ? order.Job_Order_Number.toString().padStart(4, "0")
+                : ""}
+            </span>
           </label>
           <div className='rounded-lg items-center font-medium px-3 bg-[#ffdd94] dark:text-gray-400'>
             <label className='text-xs'>{order.Stage || "Pending"}</label>

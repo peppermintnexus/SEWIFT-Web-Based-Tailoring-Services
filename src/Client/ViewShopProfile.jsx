@@ -69,11 +69,11 @@ export default function ViewShopProfile() {
   }
 
   return (
-    <div className='bg-[#20262B]'>
+    <div className='bg-[#20262B] min-h-screen '>
       <ClientHeader />
-      <div className='h-full mx-4 sm:mx-10 md:mx-20 lg:mx-48 pt-10 flex'>
+      <div className='mx-4 sm:mx-10 md:mx-20 lg:mx-26 pt-10 flex'>
         <div className='p-6 rounded-t-lg bg-white flex-1 w-full'>
-          <div className='container w-full h-auto sm:h-screen bg-[#FEFEFE]'>
+          <div className='container w-full bg-[#FEFEFE]'>
             <div className='grid grid-cols-2'>
               <div className='col-start-1'>
                 <img

@@ -1,3 +1,4 @@
+// EmployeeJobOrder.jsx
 import React, { useEffect, useState } from "react";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth, db } from "../firebase";
@@ -68,10 +69,29 @@ export default function EmployeeJobOrder() {
 
             // Step 3: Extract Order_List (array of maps)
             const orders = headData.Order_List || [];
-            setJobOrders(orders);
 
-            // Debug: Log the retrieved orders
-            console.log("Fetched Orders:", orders);
+            // Auto-assign job order numbers if they aren’t provided
+            let maxJobOrderNumber = orders.reduce(
+              (max, order) =>
+                order.Job_Order_Number && order.Job_Order_Number > max
+                  ? order.Job_Order_Number
+                  : max,
+              0
+            );
+
+            const ordersWithNumbers = orders.map((order) => {
+              if (!order.Job_Order_Number) {
+                maxJobOrderNumber += 1;
+                return { ...order, Job_Order_Number: maxJobOrderNumber };
+              }
+              return order;
+            });
+
+            setJobOrders(ordersWithNumbers);
+            console.log(
+              "Fetched Orders with Job Order Numbers:",
+              ordersWithNumbers
+            );
           }
         }
       } else {

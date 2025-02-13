@@ -1,3 +1,4 @@
+// AdminJobOrder.jsx
 import React, { useState, useEffect } from "react";
 import AdminSidebar from "/src/components/AdminSidebar";
 import JobOrderModal from "/src/components/JobOrderModal";
@@ -32,8 +33,29 @@ export default function AdminHomepage() {
           setName(data.name);
           setTailorShopName(data.Tailor_Shop_Name);
           setCompleteAddress(data.Complete_Address || "");
+
           // Read the Order_List array from the admin document
-          setJobOrders(data.Order_List || []);
+          const orders = data.Order_List || [];
+
+          // Determine max existing job order number
+          let maxJobOrderNumber = orders.reduce(
+            (max, order) =>
+              order.Job_Order_Number && order.Job_Order_Number > max
+                ? order.Job_Order_Number
+                : max,
+            0
+          );
+
+          // For orders missing a job order number, assign one sequentially
+          const ordersWithNumbers = orders.map((order) => {
+            if (!order.Job_Order_Number) {
+              maxJobOrderNumber += 1;
+              return { ...order, Job_Order_Number: maxJobOrderNumber };
+            }
+            return order;
+          });
+
+          setJobOrders(ordersWithNumbers);
         }
         setUser(user);
       } else {
