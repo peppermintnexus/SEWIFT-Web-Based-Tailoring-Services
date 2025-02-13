@@ -10,6 +10,7 @@ import {
   query,
   where,
   getDocs,
+  updateDoc,
 } from "firebase/firestore";
 import EmployeeSidebar from "/src/components/EmployeeSidebar";
 import EmployeeJoModal from "/src/components/EmployeeJoModal";
@@ -21,16 +22,41 @@ export default function EmployeeJobOrder() {
   const [firstName, setFirstName] = useState("");
   const [selectedJobOrder, setSelectedJobOrder] = useState(null);
   const [selectedCategory, setSelectedCategory] = useState("All");
+  // Save Head_ID so we can update the orders in Firestore later
+  const [headID, setHeadID] = useState(null);
   const navigate = useNavigate();
 
-  const handleUpdateStatus = (jobOrderNumber, newStatus) => {
-    setJobOrders((prevOrders) =>
-      prevOrders.map((order) =>
-        order.Job_Order_Number === jobOrderNumber
-          ? { ...order, Status: newStatus }
-          : order
-      )
+  // Handler to update status (and Firestore) for a job order.
+  const handleUpdateStatus = async (jobOrderNumber, newStatus) => {
+    // Create an updated orders array from local state.
+    const updatedJobOrders = jobOrders.map((order) =>
+      order.Job_Order_Number === jobOrderNumber
+        ? { ...order, Status: newStatus }
+        : order
     );
+
+    // Update Firestore with the new Order_List array.
+    if (headID) {
+      try {
+        const headDocRef = doc(db, "Administrator", headID);
+        await updateDoc(headDocRef, {
+          Order_List: updatedJobOrders,
+        });
+      } catch (error) {
+        console.error("Error updating order status:", error);
+      }
+    }
+
+    // If the order is now Completed or Canceled, remove it from active orders.
+    if (newStatus === "Completed" || newStatus === "Canceled") {
+      setJobOrders((prevOrders) =>
+        prevOrders.filter((order) => order.Job_Order_Number !== jobOrderNumber)
+      );
+      closeJobOrderModal();
+    } else {
+      // Otherwise, simply update the local orders state.
+      setJobOrders(updatedJobOrders);
+    }
   };
 
   useEffect(() => {
@@ -39,7 +65,7 @@ export default function EmployeeJobOrder() {
         setUser(user);
         console.log("User UID:", user.uid);
 
-        // Step 1: Query the Tailor_Shop_Employee subcollection by Tailor_ID
+        // Query the Tailor_Shop_Employee subcollection by Tailor_ID
         const employeeQuery = query(
           collectionGroup(db, "Tailor_Shop_Employee"),
           where("Tailor_ID", "==", user.uid)
@@ -58,8 +84,10 @@ export default function EmployeeJobOrder() {
             console.error("No Head_ID found for employee.");
             return;
           }
+          // Save Head_ID to state for future Firestore updates.
+          setHeadID(Head_ID);
 
-          // Step 2: Fetch the Head_ID document
+          // Fetch the Head_ID document from Administrator collection.
           const headDocRef = doc(db, "Administrator", Head_ID);
           const headDoc = await getDoc(headDocRef);
 
@@ -67,10 +95,10 @@ export default function EmployeeJobOrder() {
             const headData = headDoc.data();
             setTailorShopName(headData.Tailor_Shop_Name || "Tailor Shop Name");
 
-            // Step 3: Extract Order_List (array of maps)
+            // Extract Order_List (array of maps)
             const orders = headData.Order_List || [];
 
-            // Auto-assign job order numbers if they aren’t provided
+            // Auto-assign job order numbers if they aren’t provided.
             let maxJobOrderNumber = orders.reduce(
               (max, order) =>
                 order.Job_Order_Number && order.Job_Order_Number > max
@@ -102,16 +130,6 @@ export default function EmployeeJobOrder() {
     return () => unsubscribe();
   }, [navigate]);
 
-  // Debug: Log Order Types
-  useEffect(() => {
-    if (jobOrders.length > 0) {
-      console.log(
-        "Job Orders with Order Types:",
-        jobOrders.map((order) => order.Order_Type)
-      );
-    }
-  }, [jobOrders]);
-
   const handleJobOrderClick = (order) => {
     setSelectedJobOrder(order);
   };
@@ -124,14 +142,17 @@ export default function EmployeeJobOrder() {
     setSelectedCategory(category);
   };
 
-  // Filter job orders based on the selected category
-  const filteredJobOrders =
+  // Filter job orders based on the selected category and exclude orders that are already Completed/Canceled.
+  const filteredJobOrders = (
     selectedCategory === "All"
       ? jobOrders
       : jobOrders.filter(
           (order) =>
             order.Order_Type?.toLowerCase() === selectedCategory.toLowerCase()
-        );
+        )
+  ).filter(
+    (order) => order.Status !== "Completed" && order.Status !== "Canceled"
+  );
 
   if (!user) {
     return <div>Loading...</div>;

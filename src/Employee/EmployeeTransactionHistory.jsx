@@ -109,9 +109,9 @@ export default function EmployeeTransactionHistory() {
     setSelectedJobOrder(null);
   };
 
-  // Filter job orders to show only those with status "Completed" or "Canceled"
+  // Filter job orders to hide those with "Pending" or "In Progress" status
   const filteredJobOrders = jobOrders.filter(
-    (order) => order.Status === "Completed" || order.Status === "Canceled"
+    (order) => order.Status !== "Pending" && order.Status !== "In Progress"
   );
 
   if (!user) {
