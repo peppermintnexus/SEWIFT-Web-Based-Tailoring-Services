@@ -28,35 +28,53 @@ export default function EmployeeJobOrder() {
 
   // Handler to update status (and Firestore) for a job order.
   const handleUpdateStatus = async (jobOrderNumber, newStatus) => {
-    // Create an updated orders array from local state.
-    const updatedJobOrders = jobOrders.map((order) =>
-      order.Job_Order_Number === jobOrderNumber
-        ? { ...order, Status: newStatus }
-        : order
-    );
+    const updatedJobOrders = jobOrders.map((order) => {
+      if (order.Job_Order_Number === jobOrderNumber) {
+        return { ...order, Status: newStatus };
+      }
+      return order;
+    });
 
-    // Update Firestore with the new Order_List array.
     if (headID) {
       try {
+        // 1. Update Administrator's Order_List
         const headDocRef = doc(db, "Administrator", headID);
         await updateDoc(headDocRef, {
           Order_List: updatedJobOrders,
+          Tailor_Shop_Name: Tailor_Shop_Name,
         });
+
+        // 2. Find the updated order to get clientId and orderId
+        const updatedOrder = updatedJobOrders.find(
+          (order) => order.Job_Order_Number === jobOrderNumber
+        );
+
+        // 3. Update Client's Orders subcollection if IDs exist
+        if (updatedOrder && updatedOrder.clientId && updatedOrder.orderId) {
+          const clientOrderRef = doc(
+            db,
+            "Client",
+            updatedOrder.clientId,
+            "Orders",
+            updatedOrder.orderId
+          );
+          await updateDoc(clientOrderRef, { Status: newStatus });
+        }
       } catch (error) {
-        console.error("Error updating order status:", error);
+        console.error("Firestore update error:", error);
       }
     }
 
-    // If the order is now Completed or Canceled, remove it from active orders.
+    // Update local state
     if (newStatus === "Completed" || newStatus === "Canceled") {
       setJobOrders((prevOrders) =>
         prevOrders.filter((order) => order.Job_Order_Number !== jobOrderNumber)
       );
-      closeJobOrderModal();
     } else {
-      // Otherwise, simply update the local orders state.
       setJobOrders(updatedJobOrders);
     }
+
+    closeJobOrderModal();
   };
 
   useEffect(() => {
@@ -239,11 +257,7 @@ export default function EmployeeJobOrder() {
                     </p>
                     <p className='text-sm text-gray-500 mt-1'>
                       Created at:{" "}
-                      {order.Created_At
-                        ? new Date(
-                            order.Created_At.seconds * 1000
-                          ).toLocaleString()
-                        : "N/A"}
+                      {order.Order_Date?.toDate().toLocaleDateString() || "N/A"}
                     </p>
                   </div>
                 </div>
@@ -257,6 +271,7 @@ export default function EmployeeJobOrder() {
             order={selectedJobOrder}
             onClose={closeJobOrderModal}
             onUpdateStatus={handleUpdateStatus}
+            Tailor_Shop_Name={Tailor_Shop_Name}
           />
         )}
       </div>

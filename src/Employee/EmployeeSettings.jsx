@@ -43,7 +43,7 @@ export default function EmployeeSettings() {
   return (
     <div>
       <EmployeeSidebar />
-      <div className='p-4 sm:ml-64 bg-gray-100 dark:bg-gray-800 h-full'>
+      <div className='p-4 sm:ml-64 bg-gray-100 dark:bg-gray-800 min-h-screen'>
         <h1 className='text-2xl font-semibold mb-2'>Settings</h1>
 
         <div className='shadow w-full p-5 bg-white'>
@@ -80,6 +80,37 @@ export default function EmployeeSettings() {
             <div>
               <label className='block mb-2 text-sm font-medium text-gray-900 dark:text-white'>
                 Email Address
+              </label>
+              <input
+                type='text'
+                value={employee?.Email_Address || ""}
+                readOnly
+                className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
+              />
+            </div>
+          </div>
+        </div>
+
+        <div className='shadow w-full mt-5 p-5 bg-white'>
+          <h1 className='text-xl'>Change Password</h1>
+          <div className='border-t border-gray-100 mt-4 mb-3' />
+
+          <div className='grid grid-cols-2 gap-9'>
+            <div className='mb-6'>
+              <label className='block mb-2 text-sm font-medium text-gray-900 dark:text-white'>
+                New Password
+              </label>
+              <input
+                type='text'
+                value={employee?.Phone_Number || ""}
+                readOnly
+                className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
+              />
+            </div>
+
+            <div>
+              <label className='block mb-2 text-sm font-medium text-gray-900 dark:text-white'>
+                Confirm Password
               </label>
               <input
                 type='text'

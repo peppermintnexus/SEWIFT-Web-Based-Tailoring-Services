@@ -1,5 +1,5 @@
 import React from "react";
-import SchoolSkirt from "/src/assets/images/SchoolSkirt.jpg";
+import Placeholder from "/src/assets/images/Placeholder.jpg";
 import { useNavigate } from "react-router";
 
 export default function ProductModal({ product, index }) {
@@ -18,7 +18,7 @@ export default function ProductModal({ product, index }) {
         <div className='text-left grid grid-cols-2'>
           <div>
             <img
-              src={SchoolSkirt}
+              src={product.Photo_of_Product || Placeholder}
               className='p-3 rounded-t-lg object-cover w-fit h-fit'
               alt={product.Product_Name}
             />

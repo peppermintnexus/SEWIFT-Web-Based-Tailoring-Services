@@ -12,7 +12,6 @@ import {
   getDocs,
 } from "firebase/firestore";
 import EmployeeSidebar from "/src/components/EmployeeSidebar";
-import EmployeeJoModal from "/src/components/EmployeeJoModal";
 
 export default function EmployeeTransactionHistory() {
   const [user, setUser] = useState(null);
@@ -20,77 +19,35 @@ export default function EmployeeTransactionHistory() {
   const [Tailor_Shop_Name, setTailorShopName] = useState("");
   const [firstName, setFirstName] = useState("");
   const [selectedJobOrder, setSelectedJobOrder] = useState(null);
+  const [selectedCategory, setSelectedCategory] = useState("All");
   const navigate = useNavigate();
-
-  const handleUpdateStatus = (jobOrderNumber, newStatus) => {
-    setJobOrders((prevOrders) =>
-      prevOrders.map((order) =>
-        order.Job_Order_Number === jobOrderNumber
-          ? { ...order, Status: newStatus }
-          : order
-      )
-    );
-  };
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
       if (user) {
         setUser(user);
-        console.log("User UID:", user.uid);
 
-        // Query the Tailor_Shop_Employee subcollection by Tailor_ID
         const employeeQuery = query(
           collectionGroup(db, "Tailor_Shop_Employee"),
           where("Tailor_ID", "==", user.uid)
         );
-
         const querySnapshot = await getDocs(employeeQuery);
 
         if (!querySnapshot.empty) {
           const employeeDoc = querySnapshot.docs[0];
           const employeeData = employeeDoc.data();
-          console.log("Employee Data:", employeeData);
           setFirstName(employeeData.name || "Employee Name");
-
           const Head_ID = employeeData.Head_ID;
-          if (!Head_ID) {
-            console.error("No Head_ID found for employee.");
-            return;
-          }
 
-          // Fetch the Head_ID document
+          if (!Head_ID) return;
+
           const headDocRef = doc(db, "Administrator", Head_ID);
           const headDoc = await getDoc(headDocRef);
 
           if (headDoc.exists()) {
             const headData = headDoc.data();
             setTailorShopName(headData.Tailor_Shop_Name || "Tailor Shop Name");
-
-            // Extract Order_List (array of maps)
-            const orders = headData.Order_List || [];
-
-            // Auto-assign job order numbers if they aren’t provided
-            let maxJobOrderNumber = orders.reduce(
-              (max, order) =>
-                order.Job_Order_Number && order.Job_Order_Number > max
-                  ? order.Job_Order_Number
-                  : max,
-              0
-            );
-
-            const ordersWithNumbers = orders.map((order) => {
-              if (!order.Job_Order_Number) {
-                maxJobOrderNumber += 1;
-                return { ...order, Job_Order_Number: maxJobOrderNumber };
-              }
-              return order;
-            });
-
-            setJobOrders(ordersWithNumbers);
-            console.log(
-              "Fetched Orders with Job Order Numbers:",
-              ordersWithNumbers
-            );
+            setJobOrders(headData.Order_List || []);
           }
         }
       } else {
@@ -101,22 +58,22 @@ export default function EmployeeTransactionHistory() {
     return () => unsubscribe();
   }, [navigate]);
 
-  const handleJobOrderClick = (order) => {
-    setSelectedJobOrder(order);
+  const handleCategoryClick = (category) => {
+    setSelectedCategory(category);
   };
 
-  const closeJobOrderModal = () => {
-    setSelectedJobOrder(null);
-  };
-
-  // Filter job orders to hide those with "Pending" or "In Progress" status
-  const filteredJobOrders = jobOrders.filter(
-    (order) => order.Status !== "Pending" && order.Status !== "In Progress"
+  const filteredJobOrders = (
+    selectedCategory === "All"
+      ? jobOrders
+      : jobOrders.filter(
+          (order) =>
+            order.Order_Type?.toLowerCase() === selectedCategory.toLowerCase()
+        )
+  ).filter(
+    (order) => order.Status === "Completed" || order.Status === "Canceled"
   );
 
-  if (!user) {
-    return <div>Loading...</div>;
-  }
+  if (!user) return <div>Loading...</div>;
 
   return (
     <div>
@@ -124,9 +81,22 @@ export default function EmployeeTransactionHistory() {
         firstName={firstName}
         Tailor_Shop_Name={Tailor_Shop_Name}
       />
-
       <div className='px-6 py-4 sm:ml-64 bg-gray-100 dark:bg-gray-800 min-h-screen'>
         <h1 className='text-2xl font-semibold mb-2'>Transaction History</h1>
+        <div className='flex mb-2'>
+          {["All", "Premade", "Customized", "Adjust"].map((category) => (
+            <button
+              key={category}
+              type='button'
+              onClick={() => handleCategoryClick(category)}
+              className={`py-2 px-4 me-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-200 ${
+                selectedCategory === category ? "bg-gray-200" : ""
+              }`}
+            >
+              {category}
+            </button>
+          ))}
+        </div>
         <div className='rounded-lg'>
           <div className='grid'>
             {filteredJobOrders.length === 0 ? (
@@ -135,8 +105,7 @@ export default function EmployeeTransactionHistory() {
               filteredJobOrders.map((order, index) => (
                 <div
                   key={index}
-                  onClick={() => handleJobOrderClick(order)}
-                  className='mb-3 flex rounded-lg gap-4 shadow bg-white border dark:bg-white-800 p-4 cursor-pointer hover:bg-gray-100'
+                  className='mb-3 flex rounded-lg gap-4 shadow bg-white border p-4'
                 >
                   <div className='w-24 h-24 flex-shrink-0'>
                     {order.Photo_of_Product ? (
@@ -160,9 +129,7 @@ export default function EmployeeTransactionHistory() {
                         className={`px-2 py-1 text-xs font-medium rounded ${
                           order.Status === "Completed"
                             ? "bg-green-200 text-green-800"
-                            : order.Status === "Canceled"
-                            ? "bg-red-200 text-red-800"
-                            : "bg-yellow-200 text-yellow-800"
+                            : "bg-red-200 text-red-800"
                         }`}
                       >
                         {order.Status}
@@ -177,11 +144,7 @@ export default function EmployeeTransactionHistory() {
                     </p>
                     <p className='text-sm text-gray-500 mt-1'>
                       Created at:{" "}
-                      {order.Created_At
-                        ? new Date(
-                            order.Created_At.seconds * 1000
-                          ).toLocaleString()
-                        : "N/A"}
+                      {order.Order_Date?.toDate().toLocaleDateString() || "N/A"}
                     </p>
                   </div>
                 </div>
@@ -189,14 +152,6 @@ export default function EmployeeTransactionHistory() {
             )}
           </div>
         </div>
-
-        {selectedJobOrder && (
-          <EmployeeJoModal
-            order={selectedJobOrder}
-            onClose={closeJobOrderModal}
-            onUpdateStatus={handleUpdateStatus}
-          />
-        )}
       </div>
     </div>
   );

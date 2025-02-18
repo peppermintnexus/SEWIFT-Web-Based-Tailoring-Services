@@ -3,7 +3,6 @@ import AdminSidebar from "../components/AdminSidebar";
 import ProductModal from "../components/ProductModal";
 import Rating from "/src/components/Rating";
 import Placeholder from "/src/assets/images/Placeholder.jpg";
-import SchoolSkirt from "/src/assets/images/SchoolSkirt.jpg";
 import { auth } from "../firebase";
 import { useNavigate } from "react-router-dom";
 import {
@@ -19,6 +18,7 @@ export default function AdminShopProfile() {
   const [user, setUser] = useState(null);
   const [name, setName] = useState("");
   const [token, setToken] = useState(null);
+  const [selectedProduct, setSelectedProduct] = useState({});
   const [Tailor_Shop_Name, setTailorShopName] = useState("");
   const [Complete_Address, setCompleteAddress] = useState("");
   const [openingHours, setOpeningHours] = useState("");
@@ -92,7 +92,11 @@ export default function AdminShopProfile() {
         <div className='shadow w-full p-5 bg-white'>
           <div className='grid grid-cols-3'>
             <div className='col-span-2 flex'>
-              <img src={Placeholder} className='w-48 h-48' alt='Tailor Shop' />
+              <img
+                src={selectedProduct.Photo_of_Product || Placeholder}
+                className='w-48 h-48'
+                alt='Tailor Shop'
+              />
               <div className='flex flex-col ml-5 justify-between'>
                 <div>
                   <h1 className='text-xl font-medium'>{Tailor_Shop_Name}</h1>

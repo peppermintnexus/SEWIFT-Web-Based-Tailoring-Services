@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import SchoolBlouse from "/src/assets/images/SchoolBlouse.jpg";
+import Placeholder from "/src/assets/images/Placeholder.jpg";
 import { db } from "../firebase";
 import {
   collection,
@@ -221,20 +221,33 @@ export default function OrderModal() {
           orderType === "customized" ? userMeasurements : clientMeasurements,
         Remarks: formData.get("message"),
         Receipt_Image_Verification: receiptImage,
-        Client_Id: user.uid,
+        Photo_of_Product: selectedProduct.Photo_of_Product,
+        Client_Id: user.uid, // Include clientId
+        Client_Name: clientName,
+        Client_Email: user.email,
         Tailor_Shop_Id: selectedProduct.adminId,
         Status: "pending",
         Order_Date: new Date(),
       };
 
-      // 1. Update Administrator document by adding the order to the Order_List array field
+      // 1. Create a document in the Client's Orders subcollection and get its ID
+      const clientOrderRef = await addDoc(
+        collection(db, "Client", user.uid, "Orders"),
+        orderData
+      );
+      const orderId = clientOrderRef.id;
+
+      // 2. Update Administrator's Order_List with clientId and orderId
+      const adminOrderData = {
+        ...orderData,
+        clientId: user.uid, // Explicitly include clientId
+        orderId: orderId, // Include the Client's Orders document ID
+      };
+
       const adminRef = doc(db, "Administrator", selectedProduct.adminId);
       await updateDoc(adminRef, {
-        Order_List: arrayUnion(orderData),
+        Order_List: arrayUnion(adminOrderData),
       });
-
-      // 2. Create a document in the Client's Orders subcollection
-      await addDoc(collection(db, "Client", user.uid, "Orders"), orderData);
 
       const emailParams = {
         to_email: adminEmail,
@@ -333,7 +346,7 @@ export default function OrderModal() {
         >
           <img
             className='p-3 rounded-t-lg object-cover w-full h-52'
-            src={product.Photo_of_Product || SchoolBlouse}
+            src={product.Photo_of_Product || Placeholder}
             alt={product.Product_Name}
           />
           <div className='px-4 py-3'>
@@ -379,7 +392,7 @@ export default function OrderModal() {
               <div className='grid grid-cols-2'>
                 <div>
                   <img
-                    src={selectedProduct.Photo_of_Product || SchoolBlouse}
+                    src={selectedProduct.Photo_of_Product || Placeholder}
                     className='rounded-t-lg object-cover w-fit h-fit'
                     alt={selectedProduct.Product_Name}
                   />

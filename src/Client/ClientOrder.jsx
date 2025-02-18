@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import ClientHeader from "/src/components/ClientHeader.jsx";
-import SchoolSkirt from "/src/assets/images/SchoolSkirt.jpg";
+import Placeholder from "/src/assets/images/Placeholder.jpg";
 import { useNavigate } from "react-router";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth, db } from "../firebase";
@@ -15,6 +15,7 @@ import {
 export default function ClientOrder() {
   const [user, setUser] = useState(null);
   const [firstName, setFirstName] = useState("");
+  const [selectedProduct, setSelectedProduct] = useState([]);
   const [orders, setOrders] = useState([]);
   const navigate = useNavigate();
 
@@ -79,7 +80,7 @@ export default function ClientOrder() {
           >
             <div className='flex items-center'>
               <img
-                src={SchoolSkirt}
+                src={order.Photo_of_Product || Placeholder}
                 className='object-cover w-40 h-40'
                 alt='School Skirt'
               />
@@ -95,10 +96,7 @@ export default function ClientOrder() {
                 </label>
                 <label className='block text-[#7f7f7f]'>
                   Date Ordered:{" "}
-                  {order.Created_At?.toDate().toLocaleDateString() || "N/A"}
-                </label>
-                <label className='block text-[#7f7f7f]'>
-                  Date Progress: {order.Date_Progress || "N/A"}
+                  {order.Order_Date?.toDate().toLocaleDateString() || "N/A"}
                 </label>
               </div>
             </div>
