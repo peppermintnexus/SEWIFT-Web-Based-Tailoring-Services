@@ -1,7 +1,6 @@
 import { Route, Routes } from "react-router-dom";
 import SewiftHomepage from "./MainHomepage/SewiftHomepage";
 import About from "./MainHomepage/About";
-
 import Contact from "./MainHomepage/Contact";
 import SignUp from "./Authentication/SignUp/SignUp";
 import ClientSignUp from "./Authentication/SignUp/ClientSignUp";
