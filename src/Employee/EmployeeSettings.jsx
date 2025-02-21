@@ -89,6 +89,11 @@ export default function EmployeeSettings() {
               />
             </div>
           </div>
+          <div className='mt-6 justify-self-end'>
+            <button className='text-white text-sm px-4 rounded-lg py-3 bg-[#111827] font-medium'>
+              Edit
+            </button>
+          </div>
         </div>
 
         <div className='shadow w-full mt-5 p-5 bg-white'>
@@ -119,6 +124,11 @@ export default function EmployeeSettings() {
                 className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
               />
             </div>
+          </div>
+          <div className='mt-6 justify-self-end'>
+            <button className='text-white text-sm px-4 rounded-lg py-3 bg-[#111827] font-medium'>
+              Reset Password
+            </button>
           </div>
         </div>
       </div>

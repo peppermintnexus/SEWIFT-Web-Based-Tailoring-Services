@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import Textbox from "/src/components/Textbox.jsx";
 import {
   createUserWithEmailAndPassword,
   browserSessionPersistence,
@@ -26,9 +25,33 @@ export default function SignUp() {
   const db = getFirestore();
   const auth = getAuth();
 
+  const capitalizeFirstLetter = (str) => {
+    return str.charAt(0).toUpperCase() + str.slice(1);
+  };
+
   // Textbox
   const handleInputChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+    let newValue = value;
+
+    // Capitalize the first letter for firstName, lastName, and completeAddress fields
+    if (
+      name === "firstName" ||
+      name === "lastName" ||
+      name === "completeAddress"
+    ) {
+      newValue = capitalizeFirstLetter(value);
+    }
+
+    // Allow only numeric input for phoneNumber field and limit to 11 digits
+    if (name === "phoneNumber") {
+      newValue = value.replace(/[^0-9]/g, ""); // Remove non-numeric characters
+      if (newValue.length > 11) {
+        newValue = newValue.slice(0, 11); // Limit to 11 digits
+      }
+    }
+
+    setFormData({ ...formData, [name]: newValue });
   };
 
   const createUserInFirestore = async (user, formData) => {
@@ -58,6 +81,19 @@ export default function SignUp() {
   // Form
   const handleSignUp = async (e) => {
     e.preventDefault();
+
+    // Check if password is exactly 10 characters long
+    if (formData.password.length !== 10) {
+      window.alert("Password must be exactly 10 characters long.");
+      return;
+    }
+
+    // Check if phone number is exactly 11 digits long
+    if (formData.phoneNumber.length !== 11) {
+      window.alert("Phone number must be exactly 11 digits.");
+      return;
+    }
+
     try {
       if (formData.password !== formData.confirmPassword) {
         setError("Passwords do not match");
@@ -96,6 +132,7 @@ export default function SignUp() {
                 onChange={(e) => handleInputChange(e)}
                 className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg 
                          focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5'
+                required
               />
             </div>
             <div>
@@ -108,6 +145,7 @@ export default function SignUp() {
                 onChange={(e) => handleInputChange(e)}
                 className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg 
                          focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5'
+                required
               />
             </div>
           </div>
@@ -122,6 +160,7 @@ export default function SignUp() {
                 onChange={(e) => handleInputChange(e)}
                 className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg 
                          focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5'
+                required
               />
             </div>
             <div>
@@ -129,11 +168,14 @@ export default function SignUp() {
                 Phone Number
               </p>
               <input
+                type='tel'
                 name='phoneNumber'
                 value={formData.phoneNumber}
                 onChange={(e) => handleInputChange(e)}
+                maxLength={11} // Enforce maximum length of 11 digits
                 className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg 
                          focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5'
+                required
               />
             </div>
           </div>
@@ -147,6 +189,7 @@ export default function SignUp() {
               onChange={(e) => handleInputChange(e)}
               className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg 
                          focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5'
+              required
             />
           </div>
           <div className='grid grid-cols-2 gap-7 mb-2'>
@@ -158,9 +201,11 @@ export default function SignUp() {
                 name='password'
                 value={formData.password}
                 onChange={(e) => handleInputChange(e)}
+                type='password'
                 placeholder='••••••••'
                 className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg 
                          focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5'
+                required
               />
             </div>
             <div>
@@ -171,9 +216,11 @@ export default function SignUp() {
                 name='confirmPassword'
                 value={formData.confirmPassword}
                 onChange={(e) => handleInputChange(e)}
+                type='password'
                 placeholder='••••••••'
                 className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg 
                          focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5'
+                required
               />
             </div>
           </div>

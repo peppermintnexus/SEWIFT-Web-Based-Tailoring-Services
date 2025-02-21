@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import Textbox from "/src/components/Textbox.jsx";
 import { useNavigate } from "react-router";
 import { getFirestore, doc, setDoc } from "firebase/firestore";
 import {
@@ -26,11 +25,33 @@ export default function SignUp() {
   const db = getFirestore();
   const auth = getAuth();
 
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prevData) => ({ ...prevData, [name]: value }));
+  // Function to capitalize the first letter of a string
+  const capitalizeFirstLetter = (str) => {
+    return str.charAt(0).toUpperCase() + str.slice(1);
   };
 
+  // Handle input changes
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    let newValue = value;
+
+    // Capitalize the first letter for Tailor_Shop_Name and Complete_Address fields
+    if (name === "Tailor_Shop_Name" || name === "Complete_Address") {
+      newValue = capitalizeFirstLetter(value);
+    }
+
+    // Allow only numeric input for Phone_Number field and limit to 11 digits
+    if (name === "Phone_Number") {
+      newValue = value.replace(/[^0-9]/g, ""); // Remove non-numeric characters
+      if (newValue.length > 11) {
+        newValue = newValue.slice(0, 11); // Limit to 11 digits
+      }
+    }
+
+    setFormData((prevData) => ({ ...prevData, [name]: newValue }));
+  };
+
+  // Create admin in Firestore
   const createAdminInFirestore = async (user) => {
     try {
       const adminRef = doc(db, "Administrator", user.uid);
@@ -47,6 +68,7 @@ export default function SignUp() {
     }
   };
 
+  // Handle email verification
   const handleEmailVerification = async (user) => {
     try {
       await sendEmailVerification(user);
@@ -56,15 +78,33 @@ export default function SignUp() {
     }
   };
 
+  // Handle form submission
   const handleSignUp = async (e) => {
     e.preventDefault();
-    if (formData.Password !== formData.Confirm_Password) {
-      setError("Passwords do not match");
+
+    // Check if password is exactly 10 characters long
+    if (formData.Password.length !== 10) {
+      window.alert("Password must be exactly 10 characters long.");
+      return;
+    }
+
+    // Check if phone number is exactly 11 digits long
+    if (formData.Phone_Number.length !== 11) {
+      window.alert("Phone number must be exactly 11 digits.");
       return;
     }
 
     try {
+      // Check if passwords match
+      if (formData.Password !== formData.Confirm_Password) {
+        setError("Passwords do not match");
+        return;
+      }
+
+      // Set session persistence
       await setPersistence(auth, browserSessionPersistence);
+
+      // Create user with email and password
       const userCredential = await createUserWithEmailAndPassword(
         auth,
         formData.Email,
@@ -72,8 +112,13 @@ export default function SignUp() {
       );
       const user = userCredential.user;
 
+      // Create admin in Firestore
       await createAdminInFirestore(user);
+
+      // Send email verification
       await handleEmailVerification(user);
+
+      // Navigate to the AdminJobOrder page
       navigate("/AdminJobOrder");
     } catch (err) {
       console.error("Error creating user:", err);
@@ -96,6 +141,7 @@ export default function SignUp() {
                 onChange={(e) => handleInputChange(e)}
                 className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg 
                          focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5'
+                required
               />
             </div>
             <div>
@@ -108,6 +154,7 @@ export default function SignUp() {
                 onChange={(e) => handleInputChange(e)}
                 className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg 
                          focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5'
+                required
               />
             </div>
           </div>
@@ -117,11 +164,14 @@ export default function SignUp() {
                 Phone Number
               </p>
               <input
+                type='tel'
                 name='Phone_Number'
                 value={formData.Phone_Number}
                 onChange={(e) => handleInputChange(e)}
+                maxLength={11} // Enforce maximum length of 11 digits
                 className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg 
                          focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5'
+                required
               />
             </div>
           </div>
@@ -134,7 +184,8 @@ export default function SignUp() {
               value={formData.Email}
               onChange={(e) => handleInputChange(e)}
               className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg 
-                         focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5'
+                       focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5'
+              required
             />
           </div>
           <div className='grid grid-cols-2 gap-7 mb-2'>

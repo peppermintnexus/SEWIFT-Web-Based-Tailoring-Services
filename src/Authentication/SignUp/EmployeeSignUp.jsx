@@ -51,9 +51,30 @@ export default function SignUp() {
     fetchShopNames();
   }, [firestore]);
 
+  // Function to capitalize the first letter of a string
+  const capitalizeFirstLetter = (str) => {
+    return str.charAt(0).toUpperCase() + str.slice(1);
+  };
+
+  // Handle input changes
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setFormData((prevData) => ({ ...prevData, [name]: value }));
+    let newValue = value;
+
+    // Capitalize the first letter for the name field
+    if (name === "name") {
+      newValue = capitalizeFirstLetter(value);
+    }
+
+    // Allow only numeric input for phoneNumber field and limit to 11 digits
+    if (name === "phoneNumber") {
+      newValue = value.replace(/[^0-9]/g, ""); // Remove non-numeric characters
+      if (newValue.length > 11) {
+        newValue = newValue.slice(0, 11); // Limit to 11 digits
+      }
+    }
+
+    setFormData((prevData) => ({ ...prevData, [name]: newValue }));
   };
 
   const createUserInFirestore = async (user) => {
@@ -104,13 +125,30 @@ export default function SignUp() {
 
   const handleSignUp = async (e) => {
     e.preventDefault();
-    if (formData.password !== formData.confirmPassword) {
-      setError("Passwords do not match");
+
+    // Check if password is exactly 10 characters long
+    if (formData.password.length !== 10) {
+      window.alert("Password must be exactly 10 characters long.");
+      return;
+    }
+
+    // Check if phone number is exactly 11 digits long
+    if (formData.phoneNumber.length !== 11) {
+      window.alert("Phone number must be exactly 11 digits.");
       return;
     }
 
     try {
+      // Check if passwords match
+      if (formData.password !== formData.confirmPassword) {
+        setError("Passwords do not match");
+        return;
+      }
+
+      // Set session persistence
       await setPersistence(firebaseAuth, browserSessionPersistence);
+
+      // Create user with email and password
       const userCredential = await createUserWithEmailAndPassword(
         firebaseAuth,
         formData.email,
@@ -118,9 +156,14 @@ export default function SignUp() {
       );
 
       const user = userCredential.user;
+
+      // Create user in Firestore
       await createUserInFirestore(user);
+
+      // Send email verification
       await handleEmailVerification(user);
 
+      // Navigate to the EmployeeJobOrder page
       navigate("/EmployeeJobOrder");
     } catch (error) {
       console.error("Signup error:", error);
@@ -140,6 +183,7 @@ export default function SignUp() {
               onChange={handleInputChange}
               className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg 
                          focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5'
+              required
             />
           </div>
 
@@ -170,11 +214,14 @@ export default function SignUp() {
                 Phone Number
               </p>
               <input
+                type='tel'
                 name='phoneNumber'
                 value={formData.phoneNumber}
                 onChange={handleInputChange}
+                maxLength={11} // Enforce maximum length of 11 digits
                 className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg 
                          focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5'
+                required
               />
             </div>
           </div>
@@ -190,6 +237,7 @@ export default function SignUp() {
               onChange={handleInputChange}
               className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg 
                          focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5'
+              required
             />
           </div>
 
@@ -225,8 +273,6 @@ export default function SignUp() {
               />
             </div>
           </div>
-
-          {error && <p className='text-red-500 text-sm mb-2'>{error}</p>}
 
           <div className='text-center mt-7 mb-3'>
             <button
