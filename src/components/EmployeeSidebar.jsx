@@ -100,7 +100,7 @@ export default function EmployeeSidebar() {
         aria-label='Sidebar'
       >
         <div className='h-full px-3 py-4 overflow-y-auto bg-white-50 dark:bg-white-800'>
-          <a href='/AdminOrders'>
+          <a href='/EmployeeJobOrder'>
             <img
               src={LogoBlack}
               className='mt-3 h-14 place-self-center'

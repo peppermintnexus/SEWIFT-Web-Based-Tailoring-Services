@@ -1,62 +1,35 @@
-// AdminJobOrder.jsx
 import React, { useState, useEffect } from "react";
 import AdminSidebar from "/src/components/AdminSidebar";
 import JobOrderModal from "/src/components/JobOrderModal";
 import { useNavigate } from "react-router";
-import { onAuthStateChanged, getIdToken } from "firebase/auth";
+import { onAuthStateChanged } from "firebase/auth";
 import { auth, db } from "../firebase";
 import { getDoc, doc } from "firebase/firestore";
 
-export default function AdminHomepage() {
+export default function AdminOrders() {
   const [user, setUser] = useState(null);
-  const [name, setName] = useState("");
-  const [token, setToken] = useState(null);
   const [Tailor_Shop_Name, setTailorShopName] = useState("");
   const [Complete_Address, setCompleteAddress] = useState("");
   const [jobOrders, setJobOrders] = useState([]);
-  const [filter, setFilter] = useState("All");
   const [selectedJobOrder, setSelectedJobOrder] = useState(null);
-  const [isDropdownVisible, setIsDropdownVisible] = useState(false);
+  const [selectedCategory, setSelectedCategory] = useState("All");
+  const [currentPage, setCurrentPage] = useState(1);
+  const [ordersPerPage] = useState(10); // Number of orders per page
   const navigate = useNavigate();
 
-  // Authenticate admin and fetch their data including job orders
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
       if (user) {
-        const userToken = await getIdToken(user);
-        setToken(userToken);
+        const adminDocRef = doc(db, "Administrator", user.uid);
+        const adminDoc = await getDoc(adminDocRef);
 
-        // Fetch admin document from Firestore
-        const userDoc = await getDoc(doc(db, "Administrator", user.uid));
-        if (userDoc.exists()) {
-          const data = userDoc.data();
-          setName(data.name);
-          setTailorShopName(data.Tailor_Shop_Name);
-          setCompleteAddress(data.Complete_Address || "");
-
-          // Read the Order_List array from the admin document
-          const orders = data.Order_List || [];
-
-          // Determine max existing job order number
-          let maxJobOrderNumber = orders.reduce(
-            (max, order) =>
-              order.Job_Order_Number && order.Job_Order_Number > max
-                ? order.Job_Order_Number
-                : max,
-            0
-          );
-
-          // For orders missing a job order number, assign one sequentially
-          const ordersWithNumbers = orders.map((order) => {
-            if (!order.Job_Order_Number) {
-              maxJobOrderNumber += 1;
-              return { ...order, Job_Order_Number: maxJobOrderNumber };
-            }
-            return order;
-          });
-
-          setJobOrders(ordersWithNumbers);
+        if (adminDoc.exists()) {
+          const adminData = adminDoc.data();
+          setTailorShopName(adminData.Tailor_Shop_Name || "Tailor Shop Name");
+          setCompleteAddress(adminData.Complete_Address || "Address Not Set");
+          setJobOrders(adminData.Order_List || []);
         }
+
         setUser(user);
       } else {
         navigate("/AdminLogin");
@@ -66,28 +39,50 @@ export default function AdminHomepage() {
     return () => unsubscribe();
   }, [navigate]);
 
-  // Toggle dropdown (if needed for further controls)
-  const toggleDropdown = () => {
-    setIsDropdownVisible(!isDropdownVisible);
+  const handleCategoryClick = (category) => {
+    setSelectedCategory(category);
+    setCurrentPage(1); // Reset to the first page when category changes
   };
 
-  // Update the filter state when a filter button is clicked
-  const handleFilterChange = (newFilter) => {
-    setFilter(newFilter);
-  };
-
-  // Filter job orders based on the selected filter
+  // Filter orders based on selected category and exclude Completed/Canceled orders
   const filteredJobOrders =
-    filter === "All"
-      ? jobOrders
-      : jobOrders.filter((order) => order.Status === filter);
+    selectedCategory === "All"
+      ? jobOrders.filter(
+          (order) => order.Status !== "Completed" && order.Status !== "Canceled"
+        )
+      : jobOrders.filter(
+          (order) =>
+            order.Order_Type?.toLowerCase() ===
+              selectedCategory.toLowerCase() &&
+            order.Status !== "Completed" &&
+            order.Status !== "Canceled"
+        );
 
-  // When a job order card is clicked, show the modal with details
+  // Pagination logic
+  const indexOfLastOrder = currentPage * ordersPerPage;
+  const indexOfFirstOrder = indexOfLastOrder - ordersPerPage;
+  const currentOrders = filteredJobOrders.slice(
+    indexOfFirstOrder,
+    indexOfLastOrder
+  );
+  const totalPages = Math.ceil(filteredJobOrders.length / ordersPerPage);
+
+  const handlePreviousPage = () => {
+    if (currentPage > 1) setCurrentPage(currentPage - 1);
+  };
+
+  const handleNextPage = () => {
+    if (currentPage < totalPages) setCurrentPage(currentPage + 1);
+  };
+
+  const handlePageChange = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  };
+
   const handleJobOrderClick = (order) => {
     setSelectedJobOrder(order);
   };
 
-  // Close the job order modal
   const closeJobOrderModal = () => {
     setSelectedJobOrder(null);
   };
@@ -108,96 +103,149 @@ export default function AdminHomepage() {
       <div className='p-4 sm:ml-64 bg-gray-100 dark:bg-gray-800 min-h-screen h-full flex-1'>
         <h1 className='text-2xl font-semibold mb-4'>Orders</h1>
 
-        {/* Filter Buttons */}
-        <div className='flex mb-4 gap-2 flex-wrap'>
-          {["All", "Premade", "Customized", "Adjust"].map((status) => (
-            <button
-              key={status}
-              type='button'
-              onClick={() => handleFilterChange(status)}
-              className={`py-2 px-4 text-sm font-medium text-gray-900 bg-white rounded-lg border 
-              ${filter === status ? "bg-blue-300" : "hover:bg-gray-200"} 
-              focus:outline-none`}
+        <div className='flex items-center justify-between'>
+          {/* Display Category-Specific Messages */}
+          {selectedCategory === "All" && (
+            <div className='mb-4'>
+              <p className='text-sm text-gray-700 dark:text-gray-300'>
+                You have a total of <strong>{filteredJobOrders.length}</strong>{" "}
+                orders.
+              </p>
+            </div>
+          )}
+          {selectedCategory === "Premade" && (
+            <div className='mb-4'>
+              <p className='text-sm text-gray-700 dark:text-gray-300'>
+                You have{" "}
+                <strong>
+                  {
+                    filteredJobOrders.filter(
+                      (order) => order.Order_Type === "premade"
+                    ).length
+                  }
+                </strong>{" "}
+                Premade orders.
+              </p>
+            </div>
+          )}
+          {selectedCategory === "Customized" && (
+            <div className='mb-4'>
+              <p className='text-sm text-gray-700 dark:text-gray-300'>
+                You have{" "}
+                <strong>
+                  {
+                    filteredJobOrders.filter(
+                      (order) => order.Order_Type === "customized"
+                    ).length
+                  }
+                </strong>{" "}
+                customized orders.
+              </p>
+            </div>
+          )}
+          {selectedCategory === "Adjust" && (
+            <div className='mb-4'>
+              <p className='text-sm text-gray-700 dark:text-gray-300'>
+                You have{" "}
+                <strong>
+                  {
+                    filteredJobOrders.filter(
+                      (order) => order.Order_Type === "adjust"
+                    ).length
+                  }
+                </strong>{" "}
+                adjust orders.
+              </p>
+            </div>
+          )}
+
+          {/* Dropdown for Category Selection */}
+          <div className='mb-4 flex items-center gap-4'>
+            <select
+              onChange={(e) => handleCategoryClick(e.target.value)}
+              value={selectedCategory}
+              className='py-2 px-4 text-sm font-medium text-gray-900 bg-white rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:focus:ring-blue-500'
             >
-              {status}
-            </button>
-          ))}
+              {["All", "Premade", "Customized", "Adjust"].map((status) => (
+                <option key={status} value={status}>
+                  {status}
+                </option>
+              ))}
+            </select>
+          </div>
         </div>
 
-        {/* Job Orders Table */}
-        <div className='overflow-x-auto'>
-          <table className='min-w-full bg-white rounded-lg shadow'>
-            <thead>
-              <tr className='bg-gray-200'>
-                <th className='px-4 py-2 text-left'>Product Name</th>
-                <th className='px-4 py-2 text-center'>Status</th>
-                <th className='px-4 py-2 text-center'>Order Type</th>
-                <th className='px-4 py-2 text-center'>Quantity</th>
-                <th className='px-4 py-2 text-center'>Size</th>
-                <th className='px-4 py-2 text-center'>Created At</th>
+        {/* Orders Table */}
+        <div className='rounded-lg overflow-x-auto'>
+          <table className='w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400'>
+            <thead className='text-xs text-white uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400'>
+              <tr className='bg-[#20262B]'>
+                <th className='px-6 py-3 text-left'>Job Order Number</th>
+                <th className='py-3 text-center'>Product</th>
+                <th className='py-3 text-center'>Order Type</th>
+                <th className='py-3 text-center'>Order Date</th>
+                <th className='py-3 text-center'>Status</th>
               </tr>
             </thead>
             <tbody>
-              {filteredJobOrders.length === 0 ? (
-                <tr>
+              {currentOrders.length === 0 ? (
+                <tr className='bg-white border-b dark:bg-gray-800 dark:border-gray-700 border-gray-200 hover:bg-gray-50 dark:hover:bg-gray-600'>
                   <td
-                    colSpan='7'
-                    className='px-4 py-2 text-center text-gray-600'
+                    colSpan='5'
+                    className='px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white'
                   >
-                    No job orders found for this filter.
+                    No job orders found.
                   </td>
                 </tr>
               ) : (
-                filteredJobOrders.map((order, index) => (
+                currentOrders.map((order, index) => (
                   <tr
                     key={index}
                     onClick={() => handleJobOrderClick(order)}
-                    className='cursor-pointer hover:bg-gray-100'
+                    className='cursor-pointer bg-white border-b dark:bg-gray-800 dark:border-gray-700 border-gray-200 hover:bg-gray-50 dark:hover:bg-gray-600'
                   >
+                    {/* Job Order Number column */}
+                    <td className='px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white'>
+                      JO{" "}
+                      {order.Job_Order_Number
+                        ? order.Job_Order_Number.toString().padStart(4, "0")
+                        : ""}
+                    </td>
+
                     {/* Product Name column */}
-                    <td className='px-4 py-2'>
+                    <td className='text-center py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white'>
                       {order.Product_Name || "Untitled Order"}
                     </td>
 
+                    {/* Order Type column */}
+                    <td className='px-4 py-2 text-center align-middle capitalize'>
+                      {order.Order_Type || "N/A"}
+                    </td>
+
+                    {/* Order Date column */}
+                    <td className='text-center py-2 text-center align-middle'>
+                      {order.Order_Date?.toDate().toLocaleDateString() || "N/A"}
+                    </td>
+
                     {/* Status column */}
-                    <td className='px-4 py-2 text-center align-middle'>
+                    <td className='text-center py-2 text-center align-middle'>
                       <span
-                        className={`px-2 py-1 text-xs font-medium rounded ${
+                        className={`text-center px-2 py-1 text-xs font-medium rounded capitalize ${
                           order.Status === "Pending"
                             ? "bg-yellow-200 text-yellow-800"
-                            : order.Status === "Ongoing"
+                            : order.Status === "In Progress"
                             ? "bg-blue-200 text-blue-800"
-                            : order.Status === "Finished"
+                            : order.Status === "Completed"
                             ? "bg-green-200 text-green-800"
                             : order.Status === "Claimed"
                             ? "bg-indigo-200 text-indigo-800"
                             : order.Status === "Canceled"
                             ? "bg-red-200 text-red-800"
-                            : "bg-gray-200 text-gray-800"
+                            : "bg-yellow-200 text-yellow-800"
                         }`}
                       >
                         {order.Status}
                       </span>
-                    </td>
-
-                    {/* Order Type column */}
-                    <td className='px-4 py-2 text-center align-middle'>
-                      {order.Order_Type || "N/A"}
-                    </td>
-
-                    {/* Quantity column */}
-                    <td className='px-4 py-2 text-center align-middle'>
-                      {order.Quantity || "N/A"}
-                    </td>
-
-                    {/* Size column */}
-                    <td className='px-4 py-2 text-center align-middle'>
-                      {order.Size || "N/A"}
-                    </td>
-
-                    {/* Created At column */}
-                    <td className='px-4 py-2 text-center align-middle'>
-                      {order.Order_Date?.toDate().toLocaleDateString() || "N/A"}
                     </td>
                   </tr>
                 ))
@@ -205,6 +253,85 @@ export default function AdminHomepage() {
             </tbody>
           </table>
         </div>
+
+        {/* Pagination */}
+        <nav aria-label='Page navigation example'>
+          <ul className='mt-3 flex items-center -space-x-px h-8 text-sm'>
+            {/* Previous Button */}
+            <li>
+              <button
+                onClick={handlePreviousPage}
+                disabled={currentPage === 1}
+                className='flex items-center justify-center px-3 h-8 ms-0 leading-tight text-gray-500 bg-white border border-e-0 border-gray-300 rounded-s-lg hover:bg-gray-100 hover:text-gray-700 disabled:opacity-50 disabled:cursor-not-allowed'
+              >
+                <span className='sr-only'>Previous</span>
+                <svg
+                  className='w-2.5 h-2.5 rtl:rotate-180'
+                  aria-hidden='true'
+                  xmlns='http://www.w3.org/2000/svg'
+                  fill='none'
+                  viewBox='0 0 6 10'
+                >
+                  <path
+                    stroke='currentColor'
+                    strokeLinecap='round'
+                    strokeLinejoin='round'
+                    strokeWidth='2'
+                    d='M5 1 1 5l4 4'
+                  />
+                </svg>
+              </button>
+            </li>
+
+            {/* Page Numbers */}
+            {Array.from({ length: totalPages }, (_, index) => {
+              const pageNumber = index + 1;
+              const isCurrentPage = currentPage === pageNumber;
+
+              return (
+                <li key={pageNumber}>
+                  <button
+                    onClick={() => handlePageChange(pageNumber)}
+                    className={`flex items-center justify-center px-3 h-8 leading-tight ${
+                      isCurrentPage
+                        ? "z-10 text-blue-600 border border-blue-300 bg-blue-50 hover:bg-blue-100 hover:text-blue-700"
+                        : "text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700"
+                    }`}
+                    aria-current={isCurrentPage ? "page" : undefined}
+                  >
+                    {pageNumber}
+                  </button>
+                </li>
+              );
+            })}
+
+            {/* Next Button */}
+            <li>
+              <button
+                onClick={handleNextPage}
+                disabled={currentPage === totalPages}
+                className='flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 rounded-e-lg hover:bg-gray-100 hover:text-gray-700 disabled:opacity-50 disabled:cursor-not-allowed'
+              >
+                <span className='sr-only'>Next</span>
+                <svg
+                  className='w-2.5 h-2.5 rtl:rotate-180'
+                  aria-hidden='true'
+                  xmlns='http://www.w3.org/2000/svg'
+                  fill='none'
+                  viewBox='0 0 6 10'
+                >
+                  <path
+                    stroke='currentColor'
+                    strokeLinecap='round'
+                    strokeLinejoin='round'
+                    strokeWidth='2'
+                    d='m1 9 4-4-4-4'
+                  />
+                </svg>
+              </button>
+            </li>
+          </ul>
+        </nav>
 
         {/* Job Order Modal */}
         {selectedJobOrder && (

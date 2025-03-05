@@ -24,7 +24,7 @@ export default function EmployeeJobOrder() {
   const [headID, setHeadID] = useState(null);
   const [currentPage, setCurrentPage] = useState(1); // Pagination state
   const navigate = useNavigate();
-  const ordersPerPage = 12; // Orders per page
+  const ordersPerPage = 10; // Orders per page
 
   // Handler to update status (and Firestore) for a job order.
   const handleUpdateStatus = async (jobOrderNumber, newStatus) => {
@@ -211,7 +211,8 @@ export default function EmployeeJobOrder() {
           {selectedCategory === "All" && (
             <div className='mb-4'>
               <p className='text-sm text-gray-700 dark:text-gray-300'>
-                You have <strong>{filteredJobOrders.length}</strong> orders.
+                You have a total of <strong>{filteredJobOrders.length}</strong>{" "}
+                orders.
               </p>
             </div>
           )}
@@ -226,7 +227,7 @@ export default function EmployeeJobOrder() {
                     ).length
                   }
                 </strong>{" "}
-                premade orders.
+                Premade orders.
               </p>
             </div>
           )}
@@ -279,7 +280,7 @@ export default function EmployeeJobOrder() {
 
         {/* Orders Table */}
         <div className='rounded-lg overflow-x-auto'>
-          <table className='w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400'>
+          <table className='w-full  text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400'>
             <thead className='text-xs text-white uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400'>
               <tr className='bg-[#20262B]'>
                 <th className='px-6 py-3 text-left'>Job Order Number</th>
@@ -332,7 +333,7 @@ export default function EmployeeJobOrder() {
                     {/* Status column */}
                     <td className='text-center py-2 text-center align-middle'>
                       <span
-                        className={`text-center px-2 py-1 text-xs font-medium rounded ${
+                        className={`text-center px-2 py-1 text-xs font-medium rounded capitalize ${
                           order.Status === "Pending"
                             ? "bg-yellow-200 text-yellow-800"
                             : order.Status === "In Progress"
@@ -357,22 +358,83 @@ export default function EmployeeJobOrder() {
         </div>
 
         {/* Pagination */}
-        <div className='flex justify-end mt-4 gap-2'>
-          <button
-            onClick={handlePreviousPage}
-            disabled={currentPage === 1}
-            className='px-4 py-2 text-sm font-medium text-gray-900 bg-white rounded-lg border border-gray-200 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed'
-          >
-            Previous
-          </button>
-          <button
-            onClick={handleNextPage}
-            disabled={currentPage === totalPages}
-            className='px-4 py-2 text-sm font-medium text-gray-900 bg-white rounded-lg border border-gray-200 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed'
-          >
-            Next
-          </button>
-        </div>
+        <nav aria-label='Page navigation example'>
+          <ul className='mt-3 flex items-center -space-x-px h-8 text-sm'>
+            {/* Previous Button */}
+            <li>
+              <button
+                onClick={handlePreviousPage}
+                disabled={currentPage === 1}
+                className='flex items-center justify-center px-3 h-8 ms-0 leading-tight text-gray-500 bg-white border border-e-0 border-gray-300 rounded-s-lg hover:bg-gray-100 hover:text-gray-700 disabled:opacity-50 disabled:cursor-not-allowed'
+              >
+                <span className='sr-only'>Previous</span>
+                <svg
+                  className='w-2.5 h-2.5 rtl:rotate-180'
+                  aria-hidden='true'
+                  xmlns='http://www.w3.org/2000/svg'
+                  fill='none'
+                  viewBox='0 0 6 10'
+                >
+                  <path
+                    stroke='currentColor'
+                    strokeLinecap='round'
+                    strokeLinejoin='round'
+                    strokeWidth='2'
+                    d='M5 1 1 5l4 4'
+                  />
+                </svg>
+              </button>
+            </li>
+
+            {/* Page Numbers */}
+            {Array.from({ length: totalPages }, (_, index) => {
+              const pageNumber = index + 1;
+              const isCurrentPage = currentPage === pageNumber;
+
+              return (
+                <li key={pageNumber}>
+                  <button
+                    onClick={() => handlePageChange(pageNumber)}
+                    className={`flex items-center justify-center px-3 h-8 leading-tight ${
+                      isCurrentPage
+                        ? "z-10 text-blue-600 border border-blue-300 bg-blue-50 hover:bg-blue-100 hover:text-blue-700"
+                        : "text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700"
+                    }`}
+                    aria-current={isCurrentPage ? "page" : undefined}
+                  >
+                    {pageNumber}
+                  </button>
+                </li>
+              );
+            })}
+
+            {/* Next Button */}
+            <li>
+              <button
+                onClick={handleNextPage}
+                disabled={currentPage === totalPages}
+                className='flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 rounded-e-lg hover:bg-gray-100 hover:text-gray-700 disabled:opacity-50 disabled:cursor-not-allowed'
+              >
+                <span className='sr-only'>Next</span>
+                <svg
+                  className='w-2.5 h-2.5 rtl:rotate-180'
+                  aria-hidden='true'
+                  xmlns='http://www.w3.org/2000/svg'
+                  fill='none'
+                  viewBox='0 0 6 10'
+                >
+                  <path
+                    stroke='currentColor'
+                    strokeLinecap='round'
+                    strokeLinejoin='round'
+                    strokeWidth='2'
+                    d='m1 9 4-4-4-4'
+                  />
+                </svg>
+              </button>
+            </li>
+          </ul>
+        </nav>
 
         {selectedJobOrder && (
           <EmployeeJoModal

@@ -10,6 +10,9 @@ export default function EmployeeJoModal({
   const [clientName, setClientName] = useState("N/A");
   const [clientEmail, setClientEmail] = useState("N/A");
   const [measurements, setMeasurements] = useState("N/A");
+  const [productName, setProductName] = useState("N/A");
+  const [orderType, setOrderType] = useState("N/A");
+  const [quantity, setQuantity] = useState("N/A");
   const [remarks, setRemarks] = useState(order?.Remarks || ""); // State for remarks
   const [status, setStatus] = useState(order?.Status || "Pending");
   const [isImageZoomed, setIsImageZoomed] = useState(false); // State for image zoom
@@ -21,7 +24,9 @@ export default function EmployeeJoModal({
   useEffect(() => {
     if (order) {
       setClientName(order.Client_Name || "N/A");
-
+      setProductName(order.Product_Name || "N/A");
+      setOrderType(order.Order_Type || "N/A");
+      setQuantity(order.Quantity || "N/A");
       setClientEmail(order.Client_Email || "N/A");
 
       if (order.Measurements) {
@@ -107,7 +112,8 @@ export default function EmployeeJoModal({
 
   return (
     <div className='fixed top-0 right-0 left-0 z-50 flex items-center justify-center w-full h-full overflow-y-auto overflow-x-hidden bg-black bg-opacity-50'>
-      <div className='w-80 py-4 px-5 bg-white rounded-lg'>
+      <div className='w-full max-w-md sm:mx-96 py-4 px-5 bg-white rounded-lg max-h-[500px] overflow-y-auto'>
+        {/* Header */}
         <div className='flex justify-between'>
           <label className='pl-2 text-xl font-semibold'>
             JO{" "}
@@ -117,25 +123,54 @@ export default function EmployeeJoModal({
                 : ""}
             </span>
           </label>
-          <div className='rounded-lg items-center font-medium px-3 bg-[#cccccc]'>
-            <label className='text-xs'>{status}</label>
+          <div
+            className={`text-center px-2 py-1 text-xs font-medium rounded ${
+              order.Status === "Pending"
+                ? "bg-yellow-200 text-yellow-800"
+                : order.Status === "In Progress"
+                ? "bg-blue-200 text-blue-800"
+                : order.Status === "Completed"
+                ? "bg-green-200 text-green-800"
+                : order.Status === "Claimed"
+                ? "bg-indigo-200 text-indigo-800"
+                : order.Status === "Canceled"
+                ? "bg-red-200 text-red-800"
+                : "bg-yellow-200 text-yellow-800"
+            }`}
+          >
+            <label className='text-xs capitalize'>{status}</label>
           </div>
         </div>
+
+        {/* Divider */}
         <div className='border-t border-gray-100 mt-3 mb-3' />
+
+        {/* Content */}
         <div className='pl-2 text-[#A3A3A3]'>
-          <p>Client Name: {clientName}</p>
-          <p>Client Email: {clientEmail}</p>
+          <div className='grid grid-cols-2 mb-3 '>
+            <p className='font-semibold'>{productName}</p>
+            <p className='font-semibold capitalize'>{orderType}</p>
+            <p className='font-semibold'>{quantity} pcs.</p>
+          </div>
+          <p>Client: {clientName}</p>
+          <p>Email: {clientEmail}</p>
           <p>Measurements: {measurements}</p>
+
+          {/* Remarks */}
           <div className='mt-3'>
             <label>Remarks:</label>
             <textarea
               value={remarks}
               onChange={handleRemarksChange}
-              className='w-full mt-1 p-2 border rounded resize-none'
-              placeholder='Enter remarks...'
+              className='w-full mt-1 p-2 italic resize-none'
+              placeholder='No remarks'
               disabled
             />
           </div>
+
+          <p>Reference Number</p>
+
+          {/* Receipt Image */}
           <div className='mt-2'>
             <p className='mb-1'>Receipt:</p>
             {order.Receipt_Image_Verification ? (
@@ -164,6 +199,8 @@ export default function EmployeeJoModal({
             )}
           </div>
         </div>
+
+        {/* Update Status */}
         <div className='mt-3'>
           <label className='block text-sm font-medium text-gray-700'>
             Update Status:
@@ -179,6 +216,8 @@ export default function EmployeeJoModal({
             <option value='Canceled'>Canceled</option>
           </select>
         </div>
+
+        {/* Buttons */}
         <div className='flex justify-between mt-4'>
           <button
             onClick={onClose}
