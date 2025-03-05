@@ -88,23 +88,26 @@ export default function MainLogin() {
   return (
     <div className='min-h-screen place-items-center flex justify-center bg-[#20262B]'>
       <div className='w-full max-w-sm p-4 bg-white border border-gray-200 rounded-lg shadow sm:p-6 md:p-8'>
-        <div className='flex justify-end'>
-          <a href='/'>
-            <button className='flex bg-[#fefefe] rounded-full'>
-              <img
-                src={StickerClose}
-                className='w-10 p-2 rounded-full hover:bg-[#f6f6f6]'
-                alt='Close'
-              />
-            </button>
-          </a>
-        </div>
-        <form className='space-y-5' onSubmit={handleLogin}>
+        <div className='flex grid grid-cols-2 justify-end'>
           <div className='flex items-center'>
             <h5 className='text-xl font-medium text-gray-900'>
               Log in to Sewift
             </h5>
           </div>
+          <div className='justify-self-end'>
+            <a href='/'>
+              <button className='flex bg-[#fefefe] rounded-full'>
+                <img
+                  src={StickerClose}
+                  className='w-10 p-2 rounded-full hover:bg-[#f6f6f6]'
+                  alt='Close'
+                />
+              </button>
+            </a>
+          </div>
+        </div>
+        <form className='space-y-5' onSubmit={handleLogin}>
+          <div className='flex items-center'></div>
 
           <div>
             <label

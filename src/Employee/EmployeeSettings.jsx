@@ -1,6 +1,15 @@
 import React, { useState, useEffect } from "react";
-import { db } from "../firebase";
-import { doc, getDoc } from "firebase/firestore";
+import { onAuthStateChanged } from "firebase/auth";
+import { auth, db } from "../firebase";
+import { useNavigate } from "react-router-dom";
+import {
+  doc,
+  getDoc,
+  collectionGroup,
+  query,
+  where,
+  getDocs,
+} from "firebase/firestore";
 import EmployeeSidebar from "/src/components/EmployeeSidebar";
 
 export default function EmployeeSettings() {
@@ -9,40 +18,51 @@ export default function EmployeeSettings() {
     Phone_Number: "",
     Email_Address: "",
   });
+  const [user, setUser] = useState(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
-    const fetchEmployeeData = async () => {
-      const adminID = "Administrator"; // Replace with actual admin ID
-      const employeeID = "Tailor_Shop_Employee"; // Replace with actual employee ID
+    const unsubscribe = onAuthStateChanged(auth, async (user) => {
+      if (user) {
+        setUser(user);
+        console.log("User UID:", user.uid);
 
-      const employeeRef = doc(
-        db,
-        "Administrator",
-        adminID,
-        "Tailor_Shop_Employee",
-        employeeID
-      );
+        // Query the Tailor_Shop_Employee subcollection by Tailor_ID
+        const employeeQuery = query(
+          collectionGroup(db, "Tailor_Shop_Employee"),
+          where("Tailor_ID", "==", user.uid)
+        );
 
-      try {
-        const employeeSnap = await getDoc(employeeRef);
+        const querySnapshot = await getDocs(employeeQuery);
 
-        if (employeeSnap.exists()) {
-          console.log("Employee Data:", employeeSnap.data()); // ✅ Debugging
-          setEmployee(employeeSnap.data());
-        } else {
-          console.log("No such employee!");
+        if (!querySnapshot.empty) {
+          const employeeDoc = querySnapshot.docs[0];
+          const employeeData = employeeDoc.data();
+          console.log("Employee Data:", employeeData);
+
+          // Set the employee data in the state
+          setEmployee({
+            Name: employeeData.Name || "",
+            Phone_Number: employeeData.Phone_Number || "",
+            Email_Address: employeeData.Email_Address || "",
+          });
         }
-      } catch (error) {
-        console.error("Error fetching employee data:", error);
+      } else {
+        navigate("/EmployeeLogin");
       }
-    };
+    });
 
-    fetchEmployeeData();
-  }, []);
+    return () => unsubscribe();
+  }, [navigate]);
+
+  if (!user) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <div>
-      <EmployeeSidebar />
+      <EmployeeSidebar firstName={employee.Name} />
+
       <div className='p-4 sm:ml-64 bg-gray-100 dark:bg-gray-800 min-h-screen'>
         <h1 className='text-2xl font-semibold mb-2'>Settings</h1>
 
@@ -57,7 +77,7 @@ export default function EmployeeSettings() {
               </label>
               <input
                 type='text'
-                value={employee?.Name || ""}
+                value={employee.Name}
                 readOnly
                 className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
               />
@@ -71,7 +91,7 @@ export default function EmployeeSettings() {
               </label>
               <input
                 type='text'
-                value={employee?.Phone_Number || ""}
+                value={employee.Phone_Number}
                 readOnly
                 className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
               />
@@ -83,7 +103,7 @@ export default function EmployeeSettings() {
               </label>
               <input
                 type='text'
-                value={employee?.Email_Address || ""}
+                value={employee.Email_Address}
                 readOnly
                 className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
               />
@@ -106,9 +126,8 @@ export default function EmployeeSettings() {
                 New Password
               </label>
               <input
-                type='text'
-                value={employee?.Phone_Number || ""}
-                readOnly
+                type='password'
+                placeholder='New Password'
                 className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
               />
             </div>
@@ -118,9 +137,8 @@ export default function EmployeeSettings() {
                 Confirm Password
               </label>
               <input
-                type='text'
-                value={employee?.Email_Address || ""}
-                readOnly
+                type='password'
+                placeholder='Confirm Password'
                 className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
               />
             </div>

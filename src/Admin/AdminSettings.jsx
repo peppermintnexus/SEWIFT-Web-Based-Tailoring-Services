@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import AdminSidebar from "/src/components/AdminSidebar";
-import AdminHeader from "/src/components/AdminHeader";
 import { useNavigate } from "react-router";
 import { onAuthStateChanged, getIdToken } from "firebase/auth";
 import { auth } from "../firebase";
@@ -12,6 +11,8 @@ export default function AdminHomepage() {
   const [name, setName] = useState("");
   const [token, setToken] = useState(null);
   const [Tailor_Shop_Name, setTailorShopName] = useState("");
+  const [Email, setEmail] = useState("");
+  const [Phone_Number, setPhoneNumber] = useState("");
   const [Complete_Address, setCompleteAddress] = useState("");
   const [isDropdownVisible, setIsDropdownVisible] = useState(false);
   const navigate = useNavigate();
@@ -27,6 +28,8 @@ export default function AdminHomepage() {
           setName(userDoc.data().name);
           setTailorShopName(userDoc.data().Tailor_Shop_Name);
           setCompleteAddress(userDoc.data().Complete_Address);
+          setEmail(userDoc.data().Email);
+          setPhoneNumber(userDoc.data().Phone_Number);
         }
 
         setUser(user);
@@ -68,6 +71,21 @@ export default function AdminHomepage() {
                 Tailor Shop Name
               </label>
               <input
+                value={Tailor_Shop_Name}
+                type='text'
+                id='firstName'
+                class='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
+              />
+            </div>
+            <div class='mb-3'>
+              <label
+                for='firstName'
+                class='block mb-2 text-sm font-medium text-gray-900 dark:text-white'
+              >
+                Email
+              </label>
+              <input
+                value={Email}
                 type='text'
                 id='firstName'
                 class='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
@@ -80,9 +98,10 @@ export default function AdminHomepage() {
                 for='default-input'
                 class='block mb-2 text-sm font-medium text-gray-900 dark:text-white'
               >
-                Email
+                Complete Address
               </label>
               <input
+                value={Complete_Address}
                 type='text'
                 id='email'
                 class='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
@@ -96,6 +115,7 @@ export default function AdminHomepage() {
                 Phone Number
               </label>
               <input
+                value={Phone_Number}
                 type='text'
                 id='Phone Number'
                 class='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'

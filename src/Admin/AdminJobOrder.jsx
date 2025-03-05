@@ -116,85 +116,94 @@ export default function AdminHomepage() {
               type='button'
               onClick={() => handleFilterChange(status)}
               className={`py-2 px-4 text-sm font-medium text-gray-900 bg-white rounded-lg border 
-                  ${filter === status ? "bg-blue-300" : "hover:bg-gray-200"} 
-                  focus:outline-none`}
+              ${filter === status ? "bg-blue-300" : "hover:bg-gray-200"} 
+              focus:outline-none`}
             >
               {status}
             </button>
           ))}
         </div>
 
-        {/* Job Orders Listing */}
-        <div className='grid grid-cols-1 gap-4'>
-          {filteredJobOrders.length === 0 ? (
-            <p className='text-gray-600'>
-              No job orders found for this filter.
-            </p>
-          ) : (
-            filteredJobOrders.map((order, index) => (
-              <div
-                key={index}
-                onClick={() => handleJobOrderClick(order)}
-                className='p-4 bg-white rounded-lg shadow cursor-pointer hover:bg-gray-100 flex gap-4'
-              >
-                {/* Photo section */}
-                <div className='w-24 h-24 flex-shrink-0'>
-                  {order.Photo_of_Product ? (
-                    <img
-                      src={order.Photo_of_Product}
-                      alt={order.Product_Name}
-                      className='object-cover w-full h-full rounded'
-                    />
-                  ) : (
-                    <div className='w-full h-full bg-gray-200 rounded flex items-center justify-center text-xs text-gray-500'>
-                      No Image
-                    </div>
-                  )}
-                </div>
-
-                {/* Details section */}
-                <div className='flex flex-col flex-grow'>
-                  <div className='flex justify-between items-center'>
-                    <h2 className='text-lg font-semibold'>
+        {/* Job Orders Table */}
+        <div className='overflow-x-auto'>
+          <table className='min-w-full bg-white rounded-lg shadow'>
+            <thead>
+              <tr className='bg-gray-200'>
+                <th className='px-4 py-2 text-left'>Product Name</th>
+                <th className='px-4 py-2 text-center'>Status</th>
+                <th className='px-4 py-2 text-center'>Order Type</th>
+                <th className='px-4 py-2 text-center'>Quantity</th>
+                <th className='px-4 py-2 text-center'>Size</th>
+                <th className='px-4 py-2 text-center'>Created At</th>
+              </tr>
+            </thead>
+            <tbody>
+              {filteredJobOrders.length === 0 ? (
+                <tr>
+                  <td
+                    colSpan='7'
+                    className='px-4 py-2 text-center text-gray-600'
+                  >
+                    No job orders found for this filter.
+                  </td>
+                </tr>
+              ) : (
+                filteredJobOrders.map((order, index) => (
+                  <tr
+                    key={index}
+                    onClick={() => handleJobOrderClick(order)}
+                    className='cursor-pointer hover:bg-gray-100'
+                  >
+                    {/* Product Name column */}
+                    <td className='px-4 py-2'>
                       {order.Product_Name || "Untitled Order"}
-                    </h2>
-                    <span
-                      className={`px-2 py-1 text-xs font-medium rounded ${
-                        order.Status === "Pending"
-                          ? "bg-yellow-200 text-yellow-800"
-                          : order.Status === "Ongoing"
-                          ? "bg-blue-200 text-blue-800"
-                          : order.Status === "Finished"
-                          ? "bg-green-200 text-green-800"
-                          : order.Status === "Claimed"
-                          ? "bg-indigo-200 text-indigo-800"
-                          : order.Status === "Canceled"
-                          ? "bg-red-200 text-red-800"
-                          : "bg-gray-200 text-gray-800"
-                      }`}
-                    >
-                      {order.Status}
-                    </span>
-                  </div>
-                  <p className='text-sm text-gray-700 mt-2'>
-                    Order Type: {order.Order_Type || "N/A"}
-                  </p>
-                  <p className='text-sm text-gray-700'>
-                    Quantity: {order.Quantity || "N/A"} &nbsp; | &nbsp; Size:{" "}
-                    {order.Size || "N/A"}
-                  </p>
-                  <p className='text-sm text-gray-500 mt-1'>
-                    Created at:{" "}
-                    {order.Created_At
-                      ? new Date(
-                          order.Created_At.seconds * 1000
-                        ).toLocaleString()
-                      : "N/A"}
-                  </p>
-                </div>
-              </div>
-            ))
-          )}
+                    </td>
+
+                    {/* Status column */}
+                    <td className='px-4 py-2 text-center align-middle'>
+                      <span
+                        className={`px-2 py-1 text-xs font-medium rounded ${
+                          order.Status === "Pending"
+                            ? "bg-yellow-200 text-yellow-800"
+                            : order.Status === "Ongoing"
+                            ? "bg-blue-200 text-blue-800"
+                            : order.Status === "Finished"
+                            ? "bg-green-200 text-green-800"
+                            : order.Status === "Claimed"
+                            ? "bg-indigo-200 text-indigo-800"
+                            : order.Status === "Canceled"
+                            ? "bg-red-200 text-red-800"
+                            : "bg-gray-200 text-gray-800"
+                        }`}
+                      >
+                        {order.Status}
+                      </span>
+                    </td>
+
+                    {/* Order Type column */}
+                    <td className='px-4 py-2 text-center align-middle'>
+                      {order.Order_Type || "N/A"}
+                    </td>
+
+                    {/* Quantity column */}
+                    <td className='px-4 py-2 text-center align-middle'>
+                      {order.Quantity || "N/A"}
+                    </td>
+
+                    {/* Size column */}
+                    <td className='px-4 py-2 text-center align-middle'>
+                      {order.Size || "N/A"}
+                    </td>
+
+                    {/* Created At column */}
+                    <td className='px-4 py-2 text-center align-middle'>
+                      {order.Order_Date?.toDate().toLocaleDateString() || "N/A"}
+                    </td>
+                  </tr>
+                ))
+              )}
+            </tbody>
+          </table>
         </div>
 
         {/* Job Order Modal */}

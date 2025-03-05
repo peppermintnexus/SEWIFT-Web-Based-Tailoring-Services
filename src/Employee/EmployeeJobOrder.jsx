@@ -1,4 +1,3 @@
-// EmployeeJobOrder.jsx
 import React, { useEffect, useState } from "react";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth, db } from "../firebase";
@@ -22,9 +21,10 @@ export default function EmployeeJobOrder() {
   const [firstName, setFirstName] = useState("");
   const [selectedJobOrder, setSelectedJobOrder] = useState(null);
   const [selectedCategory, setSelectedCategory] = useState("All");
-  // Save Head_ID so we can update the orders in Firestore later
   const [headID, setHeadID] = useState(null);
+  const [currentPage, setCurrentPage] = useState(1); // Pagination state
   const navigate = useNavigate();
+  const ordersPerPage = 12; // Orders per page
 
   // Handler to update status (and Firestore) for a job order.
   const handleUpdateStatus = async (jobOrderNumber, newStatus) => {
@@ -158,6 +158,7 @@ export default function EmployeeJobOrder() {
 
   const handleCategoryClick = (category) => {
     setSelectedCategory(category);
+    setCurrentPage(1); // Reset to the first page when the category changes
   };
 
   // Filter job orders based on the selected category and exclude orders that are already Completed/Canceled.
@@ -172,6 +173,25 @@ export default function EmployeeJobOrder() {
     (order) => order.Status !== "Completed" && order.Status !== "Canceled"
   );
 
+  // Pagination logic
+  const totalPages = Math.ceil(filteredJobOrders.length / ordersPerPage);
+  const currentOrders = filteredJobOrders.slice(
+    (currentPage - 1) * ordersPerPage,
+    currentPage * ordersPerPage
+  );
+
+  const handleNextPage = () => {
+    if (currentPage < totalPages) {
+      setCurrentPage(currentPage + 1);
+    }
+  };
+
+  const handlePreviousPage = () => {
+    if (currentPage > 1) {
+      setCurrentPage(currentPage - 1);
+    }
+  };
+
   if (!user) {
     return <div>Loading...</div>;
   }
@@ -185,53 +205,134 @@ export default function EmployeeJobOrder() {
 
       <div className='px-6 py-4 sm:ml-64 bg-gray-100 dark:bg-gray-800 min-h-screen'>
         <h1 className='text-2xl font-semibold mb-2'>Orders</h1>
-        <div className='flex mb-2'>
-          {["All", "Premade", "Customized", "Adjust"].map((status) => (
-            <button
-              key={status}
-              type='button'
-              onClick={() => handleCategoryClick(status)}
-              className={`py-2 px-4 me-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-200 focus:z-10 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700 ${
-                selectedCategory === status
-                  ? "bg-gray-200 dark:bg-gray-700"
-                  : ""
-              }`}
+
+        <div className='flex items-center justify-between'>
+          {/* Display Category-Specific Messages */}
+          {selectedCategory === "All" && (
+            <div className='mb-4'>
+              <p className='text-sm text-gray-700 dark:text-gray-300'>
+                You have <strong>{filteredJobOrders.length}</strong> orders.
+              </p>
+            </div>
+          )}
+          {selectedCategory === "Premade" && (
+            <div className='mb-4'>
+              <p className='text-sm text-gray-700 dark:text-gray-300'>
+                You have{" "}
+                <strong>
+                  {
+                    filteredJobOrders.filter(
+                      (order) => order.Order_Type === "premade"
+                    ).length
+                  }
+                </strong>{" "}
+                premade orders.
+              </p>
+            </div>
+          )}
+          {selectedCategory === "Customized" && (
+            <div className='mb-4'>
+              <p className='text-sm text-gray-700 dark:text-gray-300'>
+                You have{" "}
+                <strong>
+                  {
+                    filteredJobOrders.filter(
+                      (order) => order.Order_Type === "customized"
+                    ).length
+                  }
+                </strong>{" "}
+                customized orders.
+              </p>
+            </div>
+          )}
+          {selectedCategory === "Adjust" && (
+            <div className='mb-4'>
+              <p className='text-sm text-gray-700 dark:text-gray-300'>
+                You have{" "}
+                <strong>
+                  {
+                    filteredJobOrders.filter(
+                      (order) => order.Order_Type === "adjust"
+                    ).length
+                  }
+                </strong>{" "}
+                adjust orders.
+              </p>
+            </div>
+          )}
+
+          {/* Dropdown for Category Selection */}
+          <div className='mb-4 flex items-center gap-4'>
+            <select
+              onChange={(e) => handleCategoryClick(e.target.value)}
+              value={selectedCategory}
+              className='py-2 px-4 text-sm font-medium text-gray-900 bg-white rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:focus:ring-blue-500'
             >
-              {status}
-            </button>
-          ))}
+              {["All", "Premade", "Customized", "Adjust"].map((status) => (
+                <option key={status} value={status}>
+                  {status}
+                </option>
+              ))}
+            </select>
+          </div>
         </div>
-        <div className='rounded-lg'>
-          <div className='grid'>
-            {filteredJobOrders.length === 0 ? (
-              <p className='text-gray-600'>No job orders found.</p>
-            ) : (
-              filteredJobOrders.map((order, index) => (
-                <div
-                  key={index}
-                  onClick={() => handleJobOrderClick(order)}
-                  className='mb-3 flex rounded-lg gap-4 shadow bg-white border dark:bg-white-800 p-4 cursor-pointer hover:bg-gray-100'
-                >
-                  <div className='w-24 h-24 flex-shrink-0'>
-                    {order.Photo_of_Product ? (
-                      <img
-                        src={order.Photo_of_Product}
-                        alt={order.Product_Name}
-                        className='object-cover w-full h-full rounded'
-                      />
-                    ) : (
-                      <div className='w-full h-full bg-gray-200 rounded flex items-center justify-center text-xs text-gray-500'>
-                        No Image
-                      </div>
-                    )}
-                  </div>
-                  <div className='flex flex-col flex-grow'>
-                    <div className='flex justify-between items-center'>
-                      <h2 className='text-lg font-semibold'>
-                        {order.Product_Name || "Untitled Order"}
-                      </h2>
+
+        {/* Orders Table */}
+        <div className='rounded-lg overflow-x-auto'>
+          <table className='w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400'>
+            <thead className='text-xs text-white uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400'>
+              <tr className='bg-[#20262B]'>
+                <th className='px-6 py-3 text-left'>Job Order Number</th>
+                <th className='py-3 text-center'>Product</th>
+                <th className='py-3 text-center'>Order Type</th>
+                <th className='py-3 text-center'>Order Date</th>
+                <th className='py-3 text-center'>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              {currentOrders.length === 0 ? (
+                <tr className='bg-white border-b dark:bg-gray-800 dark:border-gray-700 border-gray-200 hover:bg-gray-50 dark:hover:bg-gray-600'>
+                  <td
+                    colSpan='7'
+                    className='px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white'
+                  >
+                    No job orders found.
+                  </td>
+                </tr>
+              ) : (
+                currentOrders.map((order, index) => (
+                  <tr
+                    key={index}
+                    onClick={() => handleJobOrderClick(order)}
+                    className='cursor-pointer bg-white border-b dark:bg-gray-800 dark:border-gray-700 border-gray-200 hover:bg-gray-50 dark:hover:bg-gray-600'
+                  >
+                    {/* Job Order column */}
+                    <td className='px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white'>
+                      JO{" "}
+                      {order.Job_Order_Number
+                        ? order.Job_Order_Number.toString().padStart(4, "0")
+                        : ""}
+                    </td>
+
+                    {/* Product Name column */}
+                    <td className='text-center py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white'>
+                      {order.Product_Name || "Untitled Order"}
+                    </td>
+
+                    {/* Order Type column */}
+                    <td className='px-4 py-2 text-center align-middle'>
+                      {order.Order_Type || "N/A"}
+                    </td>
+
+                    {/* Created At column */}
+                    <td className='text-center py-2 text-center align-middle'>
+                      {order.Order_Date?.toDate().toLocaleDateString() || "N/A"}
+                    </td>
+
+                    {/* Status column */}
+                    <td className='text-center py-2 text-center align-middle'>
                       <span
-                        className={`px-2 py-1 text-xs font-medium rounded ${
+                        className={`text-center px-2 py-1 text-xs font-medium rounded ${
                           order.Status === "Pending"
                             ? "bg-yellow-200 text-yellow-800"
                             : order.Status === "In Progress"
@@ -247,23 +348,30 @@ export default function EmployeeJobOrder() {
                       >
                         {order.Status}
                       </span>
-                    </div>
-                    <p className='text-sm text-gray-700 mt-2'>
-                      Order Type: {order.Order_Type || "N/A"}
-                    </p>
-                    <p className='text-sm text-gray-700'>
-                      Quantity: {order.Quantity || "N/A"} &nbsp; | &nbsp; Size:{" "}
-                      {order.Size || "N/A"}
-                    </p>
-                    <p className='text-sm text-gray-500 mt-1'>
-                      Created at:{" "}
-                      {order.Order_Date?.toDate().toLocaleDateString() || "N/A"}
-                    </p>
-                  </div>
-                </div>
-              ))
-            )}
-          </div>
+                    </td>
+                  </tr>
+                ))
+              )}
+            </tbody>
+          </table>
+        </div>
+
+        {/* Pagination */}
+        <div className='flex justify-end mt-4 gap-2'>
+          <button
+            onClick={handlePreviousPage}
+            disabled={currentPage === 1}
+            className='px-4 py-2 text-sm font-medium text-gray-900 bg-white rounded-lg border border-gray-200 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed'
+          >
+            Previous
+          </button>
+          <button
+            onClick={handleNextPage}
+            disabled={currentPage === totalPages}
+            className='px-4 py-2 text-sm font-medium text-gray-900 bg-white rounded-lg border border-gray-200 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed'
+          >
+            Next
+          </button>
         </div>
 
         {selectedJobOrder && (

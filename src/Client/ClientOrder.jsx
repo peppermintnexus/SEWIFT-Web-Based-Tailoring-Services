@@ -100,14 +100,6 @@ export default function ClientOrder() {
                 </label>
               </div>
             </div>
-            <div>
-              <button
-                onClick={() => handleCancel(order.id)}
-                className='px-5 py-2 bg-red-500 text-white rounded-lg mr-5 shadow'
-              >
-                Cancel
-              </button>
-            </div>
           </div>
         ))}
       </div>
