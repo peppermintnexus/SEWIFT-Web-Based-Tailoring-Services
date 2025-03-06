@@ -5,6 +5,7 @@ import { useNavigate } from "react-router";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth, db } from "../firebase";
 import { getDoc, doc } from "firebase/firestore";
+import moment from "moment"; // Import moment for date comparison
 
 export default function AdminOrders() {
   const [user, setUser] = useState(null);
@@ -15,6 +16,7 @@ export default function AdminOrders() {
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [currentPage, setCurrentPage] = useState(1);
   const [ordersPerPage] = useState(10); // Number of orders per page
+  const [selectedDate, setSelectedDate] = useState(null); // State for selected date
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -39,24 +41,49 @@ export default function AdminOrders() {
     return () => unsubscribe();
   }, [navigate]);
 
+  // Function to handle category clicks
   const handleCategoryClick = (category) => {
     setSelectedCategory(category);
     setCurrentPage(1); // Reset to the first page when category changes
   };
 
-  // Filter orders based on selected category and exclude Completed/Canceled orders
-  const filteredJobOrders =
-    selectedCategory === "All"
-      ? jobOrders.filter(
-          (order) => order.Status !== "Completed" && order.Status !== "Canceled"
-        )
-      : jobOrders.filter(
-          (order) =>
-            order.Order_Type?.toLowerCase() ===
-              selectedCategory.toLowerCase() &&
-            order.Status !== "Completed" &&
-            order.Status !== "Canceled"
-        );
+  // Filter orders based on selected category, date, and exclude Completed/Canceled orders
+  const filteredJobOrders = jobOrders.filter((order) => {
+    const orderDate = order.Order_Date?.toDate();
+    const isDateMatch = selectedDate
+      ? moment(orderDate).isSame(selectedDate, "day")
+      : true;
+
+    if (selectedCategory === "All") {
+      return (
+        order.Status !== "Completed" &&
+        order.Status !== "Canceled" &&
+        isDateMatch
+      );
+    } else if (selectedCategory === "Pending") {
+      return order.Status === "Pending" && isDateMatch;
+    } else if (selectedCategory === "In Progress") {
+      return order.Status === "In Progress" && isDateMatch;
+    } else {
+      return (
+        order.Order_Type?.toLowerCase() === selectedCategory.toLowerCase() &&
+        order.Status !== "Completed" &&
+        order.Status !== "Canceled" &&
+        isDateMatch
+      );
+    }
+  });
+
+  // Calculate counts for each category
+  const totalOrders = jobOrders.filter(
+    (order) => order.Status !== "Completed" && order.Status !== "Canceled"
+  ).length;
+  const pendingOrders = jobOrders.filter(
+    (order) => order.Status === "Pending"
+  ).length;
+  const inProgressOrders = jobOrders.filter(
+    (order) => order.Status === "In Progress"
+  ).length;
 
   // Pagination logic
   const indexOfLastOrder = currentPage * ordersPerPage;
@@ -92,91 +119,45 @@ export default function AdminOrders() {
   }
 
   return (
-    <div className='flex'>
-      {/* Sidebar */}
+    <div>
       <AdminSidebar
         Tailor_Shop_Name={Tailor_Shop_Name || ""}
         Complete_Address={Complete_Address || ""}
       />
 
-      {/* Main Content */}
-      <div className='p-4 sm:ml-64 bg-gray-100 dark:bg-gray-800 min-h-screen h-full flex-1'>
-        <h1 className='text-2xl font-semibold mb-4'>Orders</h1>
+      <div className='px-6 py-4 sm:ml-64 bg-gray-100 dark:bg-gray-800 min-h-screen'>
+        <h1 className='text-2xl font-semibold mb-2'>Orders</h1>
 
-        <div className='flex items-center justify-between'>
-          {/* Display Category-Specific Messages */}
-          {selectedCategory === "All" && (
-            <div className='mb-4'>
-              <p className='text-sm text-gray-700 dark:text-gray-300'>
-                You have a total of <strong>{filteredJobOrders.length}</strong>{" "}
-                orders.
-              </p>
-            </div>
-          )}
-          {selectedCategory === "Premade" && (
-            <div className='mb-4'>
-              <p className='text-sm text-gray-700 dark:text-gray-300'>
-                You have{" "}
-                <strong>
-                  {
-                    filteredJobOrders.filter(
-                      (order) => order.Order_Type === "premade"
-                    ).length
-                  }
-                </strong>{" "}
-                Premade orders.
-              </p>
-            </div>
-          )}
-          {selectedCategory === "Customized" && (
-            <div className='mb-4'>
-              <p className='text-sm text-gray-700 dark:text-gray-300'>
-                You have{" "}
-                <strong>
-                  {
-                    filteredJobOrders.filter(
-                      (order) => order.Order_Type === "customized"
-                    ).length
-                  }
-                </strong>{" "}
-                customized orders.
-              </p>
-            </div>
-          )}
-          {selectedCategory === "Adjust" && (
-            <div className='mb-4'>
-              <p className='text-sm text-gray-700 dark:text-gray-300'>
-                You have{" "}
-                <strong>
-                  {
-                    filteredJobOrders.filter(
-                      (order) => order.Order_Type === "adjust"
-                    ).length
-                  }
-                </strong>{" "}
-                adjust orders.
-              </p>
-            </div>
-          )}
-
-          {/* Dropdown for Category Selection */}
-          <div className='mb-4 flex items-center gap-4'>
-            <select
-              onChange={(e) => handleCategoryClick(e.target.value)}
-              value={selectedCategory}
-              className='py-2 px-4 text-sm font-medium text-gray-900 bg-white rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:focus:ring-blue-500'
-            >
-              {["All", "Premade", "Customized", "Adjust"].map((status) => (
-                <option key={status} value={status}>
-                  {status}
-                </option>
-              ))}
-            </select>
+        {/* Category Buttons */}
+        <div className='flex gap-4 mb-4'>
+          <div
+            onClick={() => handleCategoryClick("All")}
+            className='flex-1 p-4 bg-white dark:bg-gray-700 rounded-lg shadow cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-600 transition-all'
+          >
+            <h3 className='text-lg font-semibold'>Total Orders</h3>
+            <p className='text-2xl'>{totalOrders}</p>
+          </div>
+          <div
+            onClick={() => handleCategoryClick("Pending")}
+            className='flex-1 p-4 text-yellow-800 bg-yellow-100 dark:bg-gray-700 rounded-lg shadow cursor-pointer hover:bg-yellow-200 dark:hover:bg-gray-600'
+          >
+            <h3 className='text-lg font-semibold'>Pending Orders</h3>
+            <p className='text-2xl'>{pendingOrders}</p>
+          </div>
+          <div
+            onClick={() => handleCategoryClick("In Progress")}
+            className='flex-1 p-4 text-blue-900 bg-blue-100 dark:bg-gray-700 rounded-lg shadow cursor-pointer hover:bg-blue-200 dark:hover:bg-gray-600'
+          >
+            <h3 className='text-lg font-semibold'>In Progress Orders</h3>
+            <p className='text-2xl'>{inProgressOrders}</p>
           </div>
         </div>
 
         {/* Orders Table */}
-        <div className='rounded-lg overflow-x-auto'>
+        <div
+          className='rounded-lg overflow-x-auto bg-white'
+          style={{ height: "400px", overflowY: "auto" }}
+        >
           <table className='w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400'>
             <thead className='text-xs text-white uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400'>
               <tr className='bg-[#20262B]'>
@@ -232,16 +213,16 @@ export default function AdminOrders() {
                       <span
                         className={`text-center px-2 py-1 text-xs font-medium rounded capitalize ${
                           order.Status === "Pending"
-                            ? "bg-yellow-200 text-yellow-800"
+                            ? ""
                             : order.Status === "In Progress"
-                            ? "bg-blue-200 text-blue-800"
+                            ? ""
                             : order.Status === "Completed"
-                            ? "bg-green-200 text-green-800"
+                            ? ""
                             : order.Status === "Claimed"
-                            ? "bg-indigo-200 text-indigo-800"
+                            ? ""
                             : order.Status === "Canceled"
-                            ? "bg-red-200 text-red-800"
-                            : "bg-yellow-200 text-yellow-800"
+                            ? ""
+                            : ""
                         }`}
                       >
                         {order.Status}

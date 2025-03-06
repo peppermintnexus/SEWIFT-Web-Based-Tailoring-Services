@@ -9,6 +9,7 @@ import {
   addDoc,
   updateDoc,
   arrayUnion,
+  increment,
 } from "firebase/firestore";
 import { auth } from "../firebase";
 import { onAuthStateChanged } from "firebase/auth";
@@ -210,6 +211,13 @@ export default function OrderModal() {
 
     try {
       const formData = new FormData(event.target);
+      const quantity = parseInt(formData.get("quantity"), 10);
+
+      //Validate quantity
+      if (quantity > selectedProduct.Stock) {
+        alert("Quantity exceeds available stock");
+        return;
+      }
 
       const orderData = {
         Product_Id: selectedProduct.id,
@@ -221,7 +229,6 @@ export default function OrderModal() {
           orderType === "customized" ? userMeasurements : clientMeasurements,
         Remarks: formData.get("message"),
         Receipt_Image_Verification: receiptImage,
-        Photo_of_Product: selectedProduct.Photo_of_Product,
         Client_Id: user.uid, // Include clientId
         Client_Name: clientName,
         Client_Email: user.email,
@@ -229,6 +236,18 @@ export default function OrderModal() {
         Status: "pending",
         Order_Date: new Date(),
       };
+
+      const productRef = doc(
+        db,
+        "Administrator",
+        selectedProduct.adminId,
+        "Product",
+        selectedProduct.id
+      );
+
+      await updateDoc(productRef, {
+        Stock: increment(-quantity),
+      });
 
       // 1. Create a document in the Client's Orders subcollection and get its ID
       const clientOrderRef = await addDoc(
@@ -341,7 +360,9 @@ export default function OrderModal() {
       {products.map((product) => (
         <button
           key={product.Product_ID}
-          className='text-left w-full bg-white border border-gray-200 rounded-lg shadow-sm dark:bg-gray-800 dark:border-gray-700'
+          className={`text-left w-full bg-white border border-gray-200 rounded-lg shadow-sm dark:bg-gray-800 dark:border-gray-700' ${
+            product.Stock <= 0 ? "opacity-50 cursor-not-allowed" : ""
+          }`}
           onClick={() => toggleModal(product)}
         >
           <img
@@ -358,6 +379,15 @@ export default function OrderModal() {
             </p>
             <p className='font-normal text-gray-700 dark:text-gray-400'>
               Price: ₱{product.Price}
+            </p>
+            <p
+              className={`font-normal ${
+                product.Stock > 0 ? "text-green-600" : "text-red-600"
+              }`}
+            >
+              {product.Stock > 0
+                ? `Available: ${product.Stock}`
+                : "Out of Stock"}
             </p>
           </div>
         </button>
@@ -401,7 +431,15 @@ export default function OrderModal() {
                   <label className='text-xl font-medium'>
                     {selectedProduct.Product_Name}{" "}
                   </label>
-                  <span className='block text-[#22B14C]'>Available</span>
+                  <span
+                    className={`block ${
+                      selectedProduct.Stock > 0
+                        ? "text-[#22B14C]"
+                        : "text-red-600"
+                    }`}
+                  >
+                    {selectedProduct.Stock > 0 ? "Available" : "Out of Stock"}
+                  </span>
                   <div className='flex flex-col'>
                     <div className='flex items-center'>
                       <svg
@@ -441,7 +479,9 @@ export default function OrderModal() {
                         {selectedProduct.tailorShopName}{" "}
                       </label>
                     </div>
-                    <div className='text-[#7f7f7f]'>Description</div>
+                    <div className='text-[#7f7f7f]'>
+                      {selectedProduct.Description}{" "}
+                    </div>
                   </div>
 
                   <form
@@ -458,13 +498,14 @@ export default function OrderModal() {
                         </label>
                         <input
                           min={1}
-                          max={10}
+                          max={selectedProduct.Stock}
                           type='number'
                           id='quantity'
                           name='quantity'
                           className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-1.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500'
                           required
                           placeholder='-'
+                          disabled={selectedProduct.Stock <= 0}
                         ></input>
                       </div>
                       <div>
@@ -530,33 +571,6 @@ export default function OrderModal() {
                       className='block px-1.5 py-1 w-full text-sm text-gray-900 bg-gray-50 border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 resize-none'
                       placeholder='Enter remarks here...'
                     ></textarea>
-
-                    {/* New: Receipt Image Upload Field */}
-                    <div className='mt-3'>
-                      <label
-                        htmlFor='receipt-upload'
-                        className='block text-sm font-medium text-gray-900'
-                      >
-                        Upload Receipt Verification
-                      </label>
-                      <div className='mt-1 flex items-center'>
-                        {receiptPreview ? (
-                          <img
-                            src={receiptPreview}
-                            alt='Receipt Preview'
-                            className='w-16 h-16 object-cover rounded'
-                          />
-                        ) : (
-                          <span className='inline-block w-16 h-16 bg-gray-100 rounded' />
-                        )}
-                        <input
-                          id='receipt-upload'
-                          type='file'
-                          className='ml-5'
-                          onChange={handleReceiptImageUpload}
-                        />
-                      </div>
-                    </div>
 
                     <button
                       type='submit'

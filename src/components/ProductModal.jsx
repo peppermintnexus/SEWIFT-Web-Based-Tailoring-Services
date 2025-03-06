@@ -6,14 +6,11 @@ export default function ProductModal({ product, index }) {
   const navigate = useNavigate();
 
   const handleEditClick = () => {
-    navigate(`/EditProduct/${index}`);
+    navigate(`/EditProduct/${product.id}`);
   };
 
   return (
-    <a
-      href='/EditProduct'
-      class='flex flex-col items-center bg-white rounded-lg shadow-sm md:flex-row md:max-w-xl dark:border-gray-700 dark:bg-gray-800'
-    >
+    <div onClick={handleEditClick} className='cursor-pointer'>
       <div className='border bg-[#fefefe] shadow'>
         <div className='text-left grid grid-cols-2'>
           <div>
@@ -36,12 +33,21 @@ export default function ProductModal({ product, index }) {
             <p class='block font-normal text-gray-700 dark:text-gray-400'>
               ₱{product.Price}
             </p>
+            <p
+              className={`block font-normal ${
+                product.Stock > 0 ? "text-green-600" : "text-red-600"
+              }`}
+            >
+              {product.Stock > 0
+                ? `In Stock: ${product.Stock}`
+                : "Out of Stock"}
+            </p>
             <p class='font-normal text-gray-700 dark:text-gray-400'>
               {product.Description}
             </p>
           </div>
         </div>
       </div>
-    </a>
+    </div>
   );
 }

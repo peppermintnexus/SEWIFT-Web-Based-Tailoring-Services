@@ -55,6 +55,7 @@ export default function ClientProfile() {
     Description: "",
     Fabric: "",
     Price: "",
+    Stock: 0,
     Photo_of_Product: "",
     Head_ID: "",
     Product_Measurement: {
@@ -104,7 +105,15 @@ export default function ClientProfile() {
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setNewProduct((prev) => ({ ...prev, [name]: value }));
+    if (name === "Stock") {
+      const numericValue = parseInt(value, 10);
+      setNewProduct((prev) => ({
+        ...prev,
+        [name]: isNaN(numericValue) ? 0 : numericValue,
+      }));
+    } else {
+      setNewProduct((prev) => ({ ...prev, [name]: value }));
+    }
   };
 
   const handleMeasurementChange = (e) => {
@@ -238,10 +247,18 @@ export default function ClientProfile() {
 
               <p>Price</p>
               <input
-                type='number'
-                min='0'
                 name='Price'
                 value={newProduct.Price}
+                onChange={handleInputChange}
+                className='w-full px-1.5 py-1 text-gray-900 bg-gray-50 border border-gray-300 focus:ring-blue-500 focus:border-blue-500'
+              />
+
+              <p>Stock</p>
+              <input
+                type='number'
+                step='1'
+                name='Stock'
+                value={newProduct.Stock}
                 onChange={handleInputChange}
                 className='w-full px-1.5 py-1 text-gray-900 bg-gray-50 border border-gray-300 focus:ring-blue-500 focus:border-blue-500'
               />

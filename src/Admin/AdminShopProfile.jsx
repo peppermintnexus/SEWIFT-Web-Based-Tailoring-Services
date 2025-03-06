@@ -24,7 +24,8 @@ export default function AdminShopProfile() {
   const [openingHours, setOpeningHours] = useState("");
   const [description, setDescription] = useState("");
   const [isEditing, setIsEditing] = useState(false);
-  const [products, setProducts] = useState([]); // Renamed to `products` for clarity
+  const [products, setProducts] = useState([]);
+  const [newPhoto, setNewPhoto] = useState(null); // State for the new photo
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -54,7 +55,7 @@ export default function AdminShopProfile() {
             id: doc.id,
             ...doc.data(),
           }));
-          setProducts(productsList); // Set the fetched products
+          setProducts(productsList);
         }
       } else {
         navigate("/AdminLogin");
@@ -73,8 +74,16 @@ export default function AdminShopProfile() {
     await updateDoc(userDocRef, {
       openingHours: openingHours,
       description: description,
+      // Add logic to upload the new photo to Firebase Storage if needed
     });
     setIsEditing(false);
+  };
+
+  const handlePhotoChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setNewPhoto(URL.createObjectURL(file)); // Update the state with the new photo URL
+    }
   };
 
   if (!user) {
@@ -93,7 +102,9 @@ export default function AdminShopProfile() {
           <div className='grid grid-cols-3'>
             <div className='col-span-2 flex'>
               <img
-                src={selectedProduct.Photo_of_Product || Placeholder}
+                src={
+                  newPhoto || selectedProduct.Photo_of_Product || Placeholder
+                }
                 className='w-48 h-48'
                 alt='Tailor Shop'
               />
@@ -117,6 +128,11 @@ export default function AdminShopProfile() {
                       onChange={(e) => setDescription(e.target.value)}
                       placeholder='Enter your shop description'
                       className='block w-full sm:w-96 font-normal text-gray-700 mb-2 border border-gray-300 rounded p-1 resize-none'
+                    />
+                    <input
+                      type='file'
+                      onChange={handlePhotoChange}
+                      className='block w-full sm:w-96 font-normal text-gray-700 mb-2 border border-gray-300 rounded p-1'
                     />
                   </div>
                 ) : (

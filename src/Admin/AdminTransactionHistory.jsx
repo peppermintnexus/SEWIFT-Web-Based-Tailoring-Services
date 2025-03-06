@@ -2,19 +2,16 @@ import React, { useState, useEffect } from "react";
 import AdminSidebar from "/src/components/AdminSidebar";
 import JobOrderModal from "/src/components/JobOrderModal";
 import { useNavigate } from "react-router";
-import { onAuthStateChanged, getIdToken } from "firebase/auth";
-import { auth } from "../firebase";
+import { onAuthStateChanged } from "firebase/auth";
+import { auth, db } from "../firebase";
 import { getDoc, doc } from "firebase/firestore";
-import { db } from "../firebase";
 
 export default function AdminTransactionHistory() {
   const [user, setUser] = useState(null);
-  const [name, setName] = useState("");
-  const [token, setToken] = useState(null);
   const [Tailor_Shop_Name, setTailorShopName] = useState("");
-  const [selectedCategory, setSelectedCategory] = useState("All");
   const [jobOrders, setJobOrders] = useState([]);
   const [selectedJobOrder, setSelectedJobOrder] = useState(null);
+  const [selectedCategory, setSelectedCategory] = useState("All");
   const [currentPage, setCurrentPage] = useState(1);
   const [ordersPerPage] = useState(10); // Number of orders per page
   const navigate = useNavigate();
@@ -22,14 +19,13 @@ export default function AdminTransactionHistory() {
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
       if (user) {
-        const userToken = await getIdToken(user);
-        setToken(userToken);
+        const adminDocRef = doc(db, "Administrator", user.uid);
+        const adminDoc = await getDoc(adminDocRef);
 
-        const userDoc = await getDoc(doc(db, "Administrator", user.uid));
-        if (userDoc.exists()) {
-          setName(userDoc.data().name);
-          setTailorShopName(userDoc.data().Tailor_Shop_Name);
-          setJobOrders(userDoc.data().Order_List || []);
+        if (adminDoc.exists()) {
+          const adminData = adminDoc.data();
+          setTailorShopName(adminData.Tailor_Shop_Name || "Tailor Shop Name");
+          setJobOrders(adminData.Order_List || []);
         }
 
         setUser(user);
@@ -41,21 +37,33 @@ export default function AdminTransactionHistory() {
     return () => unsubscribe();
   }, [navigate]);
 
+  // Calculate counts for each category
+  const totalTransactions = jobOrders.filter(
+    (order) => order.Status === "Completed" || order.Status === "Canceled"
+  ).length;
+
+  const completedOrders = jobOrders.filter(
+    (order) => order.Status === "Completed"
+  ).length;
+
+  const canceledOrders = jobOrders.filter(
+    (order) => order.Status === "Canceled"
+  ).length;
+
   const handleCategoryClick = (category) => {
     setSelectedCategory(category);
     setCurrentPage(1); // Reset to the first page when category changes
   };
 
-  const filteredJobOrders = (
+  const filteredJobOrders =
     selectedCategory === "All"
-      ? jobOrders
+      ? jobOrders.filter(
+          (order) => order.Status === "Completed" || order.Status === "Canceled"
+        )
       : jobOrders.filter(
           (order) =>
             order.Status?.toLowerCase() === selectedCategory.toLowerCase()
-        )
-  ).filter(
-    (order) => order.Status === "Completed" || order.Status === "Canceled"
-  );
+        );
 
   // Pagination logic
   const indexOfLastOrder = currentPage * ordersPerPage;
@@ -86,76 +94,45 @@ export default function AdminTransactionHistory() {
     setSelectedJobOrder(null);
   };
 
-  if (!user) {
-    return <p>Loading...</p>;
-  }
+  if (!user) return <div>Loading...</div>;
 
   return (
     <div>
       <AdminSidebar Tailor_Shop_Name={Tailor_Shop_Name || "Tailor Shop Name"} />
 
-      <div className='p-4 sm:ml-64 bg-gray-100 dark:bg-gray-800 min-h-screen'>
+      <div className='px-6 py-4 sm:ml-64 bg-gray-100 dark:bg-gray-800 min-h-screen'>
         <h1 className='text-2xl font-semibold mb-2'>Transaction History</h1>
 
-        <div className='flex items-center justify-between'>
-          {/* Display Category-Specific Messages */}
-          {selectedCategory === "All" && (
-            <div className='mb-4'>
-              <p className='text-sm text-gray-700 dark:text-gray-300'>
-                You have a total of <strong>{filteredJobOrders.length}</strong>{" "}
-                transactions.
-              </p>
-            </div>
-          )}
-          {selectedCategory === "Completed" && (
-            <div className='mb-4'>
-              <p className='text-sm text-gray-700 dark:text-gray-300'>
-                You have{" "}
-                <strong>
-                  {
-                    filteredJobOrders.filter(
-                      (order) => order.Status === "Completed"
-                    ).length
-                  }
-                </strong>{" "}
-                Completed transactions.
-              </p>
-            </div>
-          )}
-          {selectedCategory === "Canceled" && (
-            <div className='mb-4'>
-              <p className='text-sm text-gray-700 dark:text-gray-300'>
-                You have{" "}
-                <strong>
-                  {
-                    filteredJobOrders.filter(
-                      (order) => order.Status === "Canceled"
-                    ).length
-                  }
-                </strong>{" "}
-                Canceled transactions.
-              </p>
-            </div>
-          )}
-
-          {/* Dropdown for Category Selection */}
-          <div className='mb-4 flex items-center gap-4'>
-            <select
-              onChange={(e) => handleCategoryClick(e.target.value)}
-              value={selectedCategory}
-              className='py-2 px-4 text-sm font-medium text-gray-900 bg-white rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:focus:ring-blue-500'
-            >
-              {["All", "Completed", "Canceled"].map((status) => (
-                <option key={status} value={status}>
-                  {status}
-                </option>
-              ))}
-            </select>
+        {/* Category Buttons */}
+        <div className='flex gap-4 mb-4'>
+          <div
+            onClick={() => handleCategoryClick("All")}
+            className='flex-1 p-4 bg-white dark:bg-gray-700 rounded-lg shadow cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-600'
+          >
+            <h3 className='text-lg font-semibold'>Total Transactions</h3>
+            <p className='text-2xl'>{totalTransactions}</p>
+          </div>
+          <div
+            onClick={() => handleCategoryClick("Completed")}
+            className='flex-1 p-4 text-green-800 bg-green-200 dark:bg-gray-700 rounded-lg shadow cursor-pointer hover:bg-green-300 dark:hover:bg-gray-600'
+          >
+            <h3 className='text-lg font-semibold'>Completed Orders</h3>
+            <p className='text-2xl'>{completedOrders}</p>
+          </div>
+          <div
+            onClick={() => handleCategoryClick("Canceled")}
+            className='flex-1 p-4 text-red-800 bg-red-200 dark:bg-gray-700 rounded-lg shadow cursor-pointer hover:bg-red-300 dark:hover:bg-gray-600'
+          >
+            <h3 className='text-lg font-semibold'>Canceled Orders</h3>
+            <p className='text-2xl'>{canceledOrders}</p>
           </div>
         </div>
 
         {/* Transactions Table */}
-        <div className='rounded-lg overflow-x-auto'>
+        <div
+          className='rounded-lg overflow-x-auto bg-white'
+          style={{ height: "400px", overflowY: "auto" }}
+        >
           <table className='w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400'>
             <thead className='text-xs text-white uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400'>
               <tr className='bg-[#20262B]'>
@@ -211,10 +188,10 @@ export default function AdminTransactionHistory() {
                       <span
                         className={`text-center px-2 py-1 text-xs font-medium rounded capitalize ${
                           order.Status === "Completed"
-                            ? "bg-green-200 text-green-800"
+                            ? ""
                             : order.Status === "Canceled"
-                            ? "bg-red-200 text-red-800"
-                            : "bg-yellow-200 text-yellow-800"
+                            ? ""
+                            : ""
                         }`}
                       >
                         {order.Status}
