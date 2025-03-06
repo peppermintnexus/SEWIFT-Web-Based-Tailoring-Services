@@ -166,7 +166,7 @@ export default function EmployeeTransactionHistory() {
                 <th className='py-3 text-center'>Quantity</th>
                 <th className='py-3 text-center'>Order Type</th>
                 <th className='py-3 text-center'>Order Date</th>
-                <th className='py-3 text-center'>Price</th>
+                <th className='py-3 text-center'>Product Price</th>
                 <th className='py-3 text-center'>Status</th>
               </tr>
             </thead>

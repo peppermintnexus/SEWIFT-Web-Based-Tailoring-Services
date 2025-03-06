@@ -5,7 +5,6 @@ import { useNavigate } from "react-router";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth, db } from "../firebase";
 import { getDoc, doc } from "firebase/firestore";
-import moment from "moment"; // Import moment for date comparison
 
 export default function AdminOrders() {
   const [user, setUser] = useState(null);
@@ -29,7 +28,25 @@ export default function AdminOrders() {
           const adminData = adminDoc.data();
           setTailorShopName(adminData.Tailor_Shop_Name || "Tailor Shop Name");
           setCompleteAddress(adminData.Complete_Address || "Address Not Set");
-          setJobOrders(adminData.Order_List || []);
+
+          const orders = adminData.Order_List || [];
+          let maxJobOrderNumber = orders.reduce(
+            (max, order) =>
+              order.Job_Order_Number && order.Job_Order_Number > max
+                ? order.Job_Order_Number
+                : max,
+            0
+          );
+
+          const ordersWithNumbers = orders.map((order) => {
+            if (!order.Job_Order_Number) {
+              maxJobOrderNumber += 1;
+              return { ...order, Job_Order_Number: maxJobOrderNumber };
+            }
+            return order;
+          });
+
+          setJobOrders(ordersWithNumbers);
         }
 
         setUser(user);
@@ -79,7 +96,7 @@ export default function AdminOrders() {
     (order) => order.Status !== "Completed" && order.Status !== "Canceled"
   ).length;
   const pendingOrders = jobOrders.filter(
-    (order) => order.Status === "Pending"
+    (order) => order.Status === "pending"
   ).length;
   const inProgressOrders = jobOrders.filter(
     (order) => order.Status === "In Progress"

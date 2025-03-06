@@ -263,7 +263,7 @@ export default function EmployeeJobOrder() {
                 <th className='py-3 text-center'>Quantity</th>
                 <th className='py-3 text-center'>Order Type</th>
                 <th className='py-3 text-center'>Order Date</th>
-                <th className='py-3 text-center'>Product Price</th>
+                <th className='py-3 text-center'>Total Price</th>
                 <th className='py-3 text-center'>Status</th>
               </tr>
             </thead>
@@ -313,7 +313,9 @@ export default function EmployeeJobOrder() {
                     </td>
 
                     {/* Price */}
-                    <td className='px-4 py-2 text-center align-middle'></td>
+                    <td className='px-4 py-2 text-center align-middle'>
+                      ₱{(order.Total_Price || 0).toLocaleString()}
+                    </td>
 
                     {/* Status column */}
                     <td className='text-center py-2 text-center align-middle'>
