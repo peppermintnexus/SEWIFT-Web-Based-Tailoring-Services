@@ -71,6 +71,7 @@ export default function OrderModal() {
   const [receiptImage, setReceiptImage] = useState("");
   const [receiptPreview, setReceiptPreview] = useState(null);
   const [adminEmail, setAdminEmail] = useState("");
+  const [quantity, setQuantity] = useState("");
 
   // Fetch products from Firestore
   useEffect(() => {
@@ -212,6 +213,7 @@ export default function OrderModal() {
     try {
       const formData = new FormData(event.target);
       const quantity = parseInt(formData.get("quantity"), 10);
+      const totalPrice = selectedProduct.Price * quantity;
 
       //Validate quantity
       if (quantity > selectedProduct.Stock) {
@@ -223,6 +225,7 @@ export default function OrderModal() {
         Product_Id: selectedProduct.id,
         Product_Name: selectedProduct.Product_Name,
         Quantity: formData.get("quantity"),
+        Total_Price: totalPrice,
         Order_Type: orderType,
         Size: formData.get("size"),
         Measurements:
@@ -506,6 +509,9 @@ export default function OrderModal() {
                           required
                           placeholder='-'
                           disabled={selectedProduct.Stock <= 0}
+                          onChange={(e) =>
+                            setQuantity(parseInt(e.target.value) || 1)
+                          }
                         ></input>
                       </div>
                       <div>
@@ -571,7 +577,10 @@ export default function OrderModal() {
                       className='block px-1.5 py-1 w-full text-sm text-gray-900 bg-gray-50 border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 resize-none'
                       placeholder='Enter remarks here...'
                     ></textarea>
-
+                    <div className='mt-4 mb-2 font-semibold text-gray-900 dark:text-white'>
+                      Total Price: ₱
+                      {(selectedProduct.Price * quantity).toLocaleString()}
+                    </div>
                     <button
                       type='submit'
                       disabled={isSubmitting}

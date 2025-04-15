@@ -1,93 +1,95 @@
 import React, { useState, useEffect } from "react";
 import ClientHeader from "/src/components/ClientHeader.jsx";
-import Placeholder from "/src/assets/images/Placeholder.jpg";
+import Sample from "/src/assets/images/Sample.jpg";
 import { db } from "/src/firebase";
 import Rating from "/src/components/Rating";
 import { collection, getDocs } from "firebase/firestore";
 
 export default function TailorShops() {
   const [firstName, setFirstName] = useState("");
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedShop, setSelectedShop] = useState(null);
   const [shops, setShops] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-  // Fetch shops from Firebase
+  // Fetch shops and user data from Firebase
   useEffect(() => {
-    const fetchShops = async () => {
-      const querySnapshot = await getDocs(collection(db, "Administrator"));
-      const shopsData = querySnapshot.docs.map((doc) => ({
-        id: doc.id,
-        ...doc.data(),
-      }));
-      setShops(shopsData);
-    };
-
-    fetchShops();
-  }, []);
-
-  useEffect(() => {
-    const fetchUserData = async () => {
+    const fetchData = async () => {
       try {
-        const querySnapshot = await getDocs(collection(db, "Client")); // Adjust collection name if needed
-        if (!querySnapshot.empty) {
-          const userData = querySnapshot.docs[0].data(); // Get first document (modify as needed)
-          console.log("Fetched user data:", userData); // Debugging
-          setFirstName(userData.firstName || ""); // Update state with first name
+        // Fetch shops
+        const shopsSnapshot = await getDocs(collection(db, "Administrator"));
+        const shopsData = shopsSnapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }));
+        setShops(shopsData);
+
+        // Fetch user data
+        const userSnapshot = await getDocs(collection(db, "Client"));
+        if (!userSnapshot.empty) {
+          const userData = userSnapshot.docs[0].data();
+          setFirstName(userData.firstName || "");
         }
       } catch (error) {
-        console.error("Error fetching user data:", error);
+        console.error("Error fetching data:", error);
+        setError("Failed to fetch data. Please try again later.");
+      } finally {
+        setLoading(false);
       }
     };
 
-    fetchUserData();
+    fetchData();
   }, []);
 
-  const openModal = (shop) => {
-    setSelectedShop(shop);
-    setIsModalOpen(true);
-  };
+  if (loading) {
+    return (
+      <div className='min-h-screen bg-[#20262B] flex items-center justify-center text-white'>
+        Loading...
+      </div>
+    );
+  }
 
-  const closeModal = () => {
-    setIsModalOpen(false);
-    setSelectedShop(null);
-  };
+  if (error) {
+    return (
+      <div className='min-h-screen bg-[#20262B] flex items-center justify-center text-red-500'>
+        {error}
+      </div>
+    );
+  }
 
   return (
     <div className='min-h-screen bg-[#20262B]'>
       <ClientHeader username={firstName || "Client"} />
 
-      <div>
-        <p className='font-bold text-center text-white pt-5 pb-9 text-3xl sm:text-4xl'>
+      <div className='py-8'>
+        <h1 className='font-bold text-center text-white text-3xl sm:text-4xl mb-8'>
           Tailor Shops
-        </p>
+        </h1>
 
-        <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 mx-4 sm:mx-10 lg:mx-40 rounded-lg p-3 gap-5'>
+        <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mx-4 sm:mx-10 lg:mx-20'>
           {shops.map((shop) => (
             <div
               key={shop.id}
-              className='shadow-lg hover:scale-105 transform transition duration-300 ease-in-out hover:shadow-lg'
+              className='bg-white rounded-lg shadow-lg overflow-hidden hover:scale-105 transform transition duration-300 ease-in-out'
             >
               <a href={`/ViewShopProfile/${shop.id}`} className='block'>
-                <div className='max-w-sm h-full bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700'>
-                  <img
-                    className='rounded-t-lg object-cover w-full h-48'
-                    src={shop.imageUrl || Placeholder}
-                    alt='Tailor Shop'
-                  />
-                  <div className='p-4'>
-                    <div className='container w-full h-16 overflow-hidden'>
-                      <h5 className='line-clamp-2 text-2xl sm:text-2xl font-bold tracking-tight text-gray-900 dark:text-white'>
-                        {shop.Tailor_Shop_Name}
-                      </h5>
-                      <Rating />
-                    </div>
-                    <p className='font-normal text-gray-700 dark:text-gray-400'>
-                      {shop.Opening_Hours}
-                    </p>
-                    <p className='font-semibold text-gray-700 dark:text-gray-400'>
-                      {shop.Complete_Address}
-                    </p>
+                <img
+                  className='w-full h-48 object-cover'
+                  src={shop.imageUrl || Sample}
+                  alt={shop.Tailor_Shop_Name}
+                />
+                <div className='p-4'>
+                  <h2 className='text-2xl font-bold text-gray-900 dark:text-white line-clamp-2'>
+                    {shop.Tailor_Shop_Name}
+                  </h2>
+                  <div className='my-2'>
+                    <Rating />
                   </div>
+                  <p className='text-gray-700 dark:text-gray-400'>
+                    {shop.Opening_Hours}
+                  </p>
+                  <p className='text-gray-700 dark:text-gray-400 font-semibold'>
+                    {shop.Complete_Address}
+                  </p>
                 </div>
               </a>
             </div>

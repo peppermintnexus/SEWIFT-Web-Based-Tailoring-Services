@@ -188,7 +188,9 @@ export default function ClientHomepage() {
             <div key={product.id} className='p-4 border-b border-gray-200'>
               <h3 className='text-lg font-semibold'>{product.Product_Name}</h3>
               <p className='text-sm text-gray-600'>{product.Description}</p>
-              <p className='text-sm text-gray-600'>Price: ₱{product.Price}</p>
+              <p className='text-sm text-gray-600'>
+                Price: ₱{product.Price}.00
+              </p>
               <p className='text-sm text-gray-600'>
                 Tailor Shop: {product.Tailor_Shop_Name}
               </p>

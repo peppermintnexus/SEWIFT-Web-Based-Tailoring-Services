@@ -77,7 +77,7 @@ export default function ViewShopProfile() {
             <div className='grid grid-cols-2'>
               <div className='col-start-1'>
                 <img
-                  src={shop.imageUrl || "/src/assets/images/Placeholder.jpg"}
+                  src={shop.imageUrl || "/src/assets/images/Sample.jpg"}
                   alt={shop.Tailor_Shop_Name}
                   className='w-full fit h-56 object-cover rounded-lg'
                 />

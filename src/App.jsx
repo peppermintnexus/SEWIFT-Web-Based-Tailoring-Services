@@ -25,6 +25,7 @@ import AdminSettings from "./Admin/AdminSettings";
 import AddProduct from "./Admin/AddProduct";
 import EditProduct from "./Admin/EditProduct";
 import OrderModal from "./components/OrderModal";
+import SuperAdHomepage from "./SuperAdmin/SuperAdHomepage";
 
 function App() {
   return (

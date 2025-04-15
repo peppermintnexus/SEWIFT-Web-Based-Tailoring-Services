@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import AdminSidebar from "../components/AdminSidebar";
 import ProductModal from "../components/ProductModal";
 import Rating from "/src/components/Rating";
-import Placeholder from "/src/assets/images/Placeholder.jpg";
+import Sample from "/src/assets/images/Sample.jpg";
 import { auth } from "../firebase";
 import { useNavigate } from "react-router-dom";
 import {
@@ -102,9 +102,7 @@ export default function AdminShopProfile() {
           <div className='grid grid-cols-3'>
             <div className='col-span-2 flex'>
               <img
-                src={
-                  newPhoto || selectedProduct.Photo_of_Product || Placeholder
-                }
+                src={newPhoto || selectedProduct.Photo_of_Product || Sample}
                 className='w-48 h-48'
                 alt='Tailor Shop'
               />

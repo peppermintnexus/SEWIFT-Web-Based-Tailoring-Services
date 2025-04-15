@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import ClientHeader from "/src/components/ClientHeader.jsx";
-import Placeholder from "/src/assets/images/Placeholder.jpg";
+import Sample from "/src/assets/images/Sample.jpg";
 import { useNavigate } from "react-router";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth, db } from "../firebase";
@@ -121,12 +121,12 @@ export default function ClientOrder() {
           >
             <div className='flex items-center'>
               <img
-                src={order.Photo_of_Product || Placeholder}
+                src={order.Photo_of_Product || Sample}
                 className='object-cover w-40 h-40 cursor-pointer'
                 alt='School Skirt'
                 onClick={(e) => {
                   e.stopPropagation(); // Prevent the parent onClick from firing
-                  openImageModal(order.Photo_of_Product || Placeholder);
+                  openImageModal(order.Photo_of_Product || Sample);
                 }}
               />
               <div className='pl-7'>
@@ -144,7 +144,7 @@ export default function ClientOrder() {
                   {order.Order_Date?.toDate().toLocaleDateString() || "N/A"}
                 </label>
                 <label className='block text-[#7f7f7f]'>
-                  Payment: {order.Price || "N/A"}
+                  Payment: ₱{(order.Total_Price || 0).toLocaleString()}.00
                 </label>
               </div>
             </div>
@@ -174,7 +174,8 @@ export default function ClientOrder() {
                     "N/A"}
                 </p>
                 <p className='text-[#7f7f7f]'>
-                  Total Payment: {selectedOrder.Price || ""}
+                  Total Payment: ₱
+                  {(selectedOrder.Total_Price || 0).toLocaleString()}
                 </p>
               </div>
             </div>
@@ -195,44 +196,30 @@ export default function ClientOrder() {
               </div>
 
               {/* Receipt Upload Section */}
-              <div>
-                <label className='block text-sm font-medium text-gray-900 mb-2'>
+              {/* New: Receipt Image Upload Field */}
+              <div className='mt-3'>
+                <label
+                  htmlFor='receipt-upload'
+                  className='block text-sm font-medium text-gray-900'
+                >
                   Upload Receipt Verification
                 </label>
-                <div className='flex items-center space-x-4'>
-                  {/* Receipt Preview */}
-                  <div className='flex-shrink-0'>
-                    {receiptPreview ? (
-                      <img
-                        src={receiptPreview}
-                        alt='Receipt Preview'
-                        className='w-20 h-20 object-cover rounded-lg border border-gray-200'
-                      />
-                    ) : (
-                      <div className='w-20 h-20 flex items-center justify-center bg-gray-100 rounded-lg border border-gray-200'>
-                        <span className='text-xs text-gray-400'>No Image</span>
-                      </div>
-                    )}
-                  </div>
-
-                  {/* File Upload Input */}
-                  <div className='flex-grow'>
-                    <label
-                      htmlFor='receipt-upload'
-                      className='cursor-pointer bg-white py-2 px-4 border border-gray-300 rounded-lg shadow-sm text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500'
-                    >
-                      Choose File
-                    </label>
-                    <input
-                      id='receipt-upload'
-                      type='file'
-                      className='hidden'
-                      onChange={handleReceiptImageUpload}
+                <div className='mt-1 flex items-center'>
+                  {receiptPreview ? (
+                    <img
+                      src={receiptPreview}
+                      alt='Receipt Preview'
+                      className='w-16 h-16 object-cover rounded'
                     />
-                    <p className='pl-1 mt-3 text-xs text-gray-500'>
-                      Upload a receipt image (JPEG, PNG, etc.)
-                    </p>
-                  </div>
+                  ) : (
+                    <span className='inline-block w-16 h-16 bg-gray-100 rounded' />
+                  )}
+                  <input
+                    id='receipt-upload'
+                    type='file'
+                    className='ml-5'
+                    onChange={handleReceiptImageUpload}
+                  />
                 </div>
               </div>
             </div>

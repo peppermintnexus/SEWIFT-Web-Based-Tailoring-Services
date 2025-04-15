@@ -180,8 +180,10 @@ export default function AdminOrders() {
               <tr className='bg-[#20262B]'>
                 <th className='px-6 py-3 text-left'>Job Order Number</th>
                 <th className='py-3 text-center'>Product</th>
+                <th className='py-3 text-center'>Quantity</th>
                 <th className='py-3 text-center'>Order Type</th>
                 <th className='py-3 text-center'>Order Date</th>
+                <th className='py-3 text-center'>Total Price</th>
                 <th className='py-3 text-center'>Status</th>
               </tr>
             </thead>
@@ -215,6 +217,11 @@ export default function AdminOrders() {
                       {order.Product_Name || "Untitled Order"}
                     </td>
 
+                    {/* Quantity */}
+                    <td className='text-center py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white'>
+                      {order.Quantity || "Untitled Order"}
+                    </td>
+
                     {/* Order Type column */}
                     <td className='px-4 py-2 text-center align-middle capitalize'>
                       {order.Order_Type || "N/A"}
@@ -223,6 +230,11 @@ export default function AdminOrders() {
                     {/* Order Date column */}
                     <td className='text-center py-2 text-center align-middle'>
                       {order.Order_Date?.toDate().toLocaleDateString() || "N/A"}
+                    </td>
+
+                    {/* Price */}
+                    <td className='px-4 py-2 text-center align-middle'>
+                      ₱{(order.Total_Price || 0).toLocaleString()}.00
                     </td>
 
                     {/* Status column */}

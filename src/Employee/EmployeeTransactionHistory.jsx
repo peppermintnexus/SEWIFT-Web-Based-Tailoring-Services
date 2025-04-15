@@ -214,8 +214,9 @@ export default function EmployeeTransactionHistory() {
                       {order.Order_Date?.toDate().toLocaleDateString() || "N/A"}
                     </td>
 
-                    <td className='text-center py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white'>
-                      ₱{totalPrice || "N/A"}
+                    {/* Price */}
+                    <td className='px-4 py-2 text-center align-middle'>
+                      ₱{(order.Total_Price || 0).toLocaleString()}
                     </td>
 
                     {/* Status column */}

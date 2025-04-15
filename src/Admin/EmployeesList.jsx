@@ -86,7 +86,17 @@ export default function EmployeesList() {
       />
 
       <div class='p-4 sm:ml-64 bg-gray-100 dark:bg-gray-800 h-screen'>
-        <h1 className='text-2xl font-semibold mb-2'>Employees</h1>
+        <div className='grid grid-cols-2'>
+          <div>
+            <h1 className='text-2xl font-semibold mb-2'>Employees</h1>
+          </div>
+
+          <div className='flex justify-self-end'>
+            <button className='bg-blue-500 hover:bg-blue-600 text-white font-medium py-2 px-4 rounded'>
+              Add Employee
+            </button>
+          </div>
+        </div>
 
         <div class='mt-6 relative overflow-x-auto'>
           <table class='w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400'>
