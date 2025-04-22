@@ -1,6 +1,7 @@
 import { Route, Routes } from "react-router-dom";
 import SewiftHomepage from "./MainHomepage/SewiftHomepage";
 import About from "./MainHomepage/About";
+import TermsAndConditions from "./MainHomepage/TermsAndConditions";
 import Contact from "./MainHomepage/Contact";
 import SignUp from "./Authentication/SignUp/SignUp";
 import ClientSignUp from "./Authentication/SignUp/ClientSignUp";
@@ -32,6 +33,7 @@ function App() {
     <Routes>
       <Route path='/' element={<SewiftHomepage />} />
       <Route path='/About' element={<About />} />
+      <Route path='/TermsAndConditions' element={<TermsAndConditions />} />
       <Route path='/Contact' element={<Contact />} />
 
       <Route path='/SignUp' element={<SignUp />} />

@@ -19,6 +19,12 @@ export default function MainLogin() {
     password: "",
   });
   const [error, setError] = useState(null);
+  const [showTwoFactor, setShowTwoFactor] = useState(false);
+  const [twoFactorCode, setTwoFactorCode] = useState("");
+  const [storedCredentials, setStoredCredentials] = useState({
+    email: "",
+    password: "",
+  });
   const navigate = useNavigate();
 
   const handleInputChange = (e) => {
@@ -26,7 +32,21 @@ export default function MainLogin() {
     setFormData((prevData) => ({ ...prevData, [name]: value }));
   };
 
+  const handleTwoFactorChange = (e) => {
+    setTwoFactorCode(e.target.value);
+  };
+
   const handleLogin = async (e) => {
+    e.preventDefault();
+    setError(null);
+    setStoredCredentials({
+      email: formData.email,
+      password: formData.password,
+    });
+    setShowTwoFactor(true);
+  };
+
+  const handleTwoFactorSubmit = async (e) => {
     e.preventDefault();
     setError(null);
 
@@ -34,9 +54,10 @@ export default function MainLogin() {
       // Sign in the user using Firebase Auth
       const userCredential = await signInWithEmailAndPassword(
         auth,
-        formData.email,
-        formData.password
+        storedCredentials.email,
+        storedCredentials.password
       );
+
       const user = userCredential.user;
 
       // 1. Check if the user is a Client (assuming you have a "Client" collection)
@@ -88,26 +109,23 @@ export default function MainLogin() {
   return (
     <div className='min-h-screen place-items-center flex justify-center bg-[#20262B]'>
       <div className='w-full max-w-sm p-4 bg-white border border-gray-200 rounded-lg shadow sm:p-6 md:p-8'>
-        <div className='flex grid grid-cols-2 justify-end'>
+        <div className='flex justify-end'>
+          <a href='/'>
+            <button className='flex bg-[#fefefe] rounded-full'>
+              <img
+                src={StickerClose}
+                className='w-10 p-2 rounded-full hover:bg-[#f6f6f6]'
+                alt='Close'
+              />
+            </button>
+          </a>
+        </div>
+        <form className='space-y-5' onSubmit={handleLogin}>
           <div className='flex items-center'>
             <h5 className='text-xl font-medium text-gray-900'>
               Log in to Sewift
             </h5>
           </div>
-          <div className='justify-self-end'>
-            <a href='/'>
-              <button className='flex bg-[#fefefe] rounded-full'>
-                <img
-                  src={StickerClose}
-                  className='w-10 p-2 rounded-full hover:bg-[#f6f6f6]'
-                  alt='Close'
-                />
-              </button>
-            </a>
-          </div>
-        </div>
-        <form className='space-y-5' onSubmit={handleLogin}>
-          <div className='flex items-center'></div>
 
           <div>
             <label
@@ -171,6 +189,45 @@ export default function MainLogin() {
           </div>
         </form>
       </div>
+      {showTwoFactor && (
+        <div className='fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center'>
+          <div className='bg-white p-6 rounded-lg w-80'>
+            <form onSubmit={handleTwoFactorSubmit} className='space-y-4'>
+              <div className='flex justify-between items-center'>
+                <h3 className='text-lg font-semibold'>
+                  Two-Factor Authentication
+                </h3>
+                <button
+                  type='button'
+                  onClick={() => setShowTwoFactor(false)}
+                  className='text-gray-500 hover:text-gray-700'
+                >
+                  ×
+                </button>
+              </div>
+              <p className='text-sm text-gray-600'>
+                Enter the 6-digit code from your email
+              </p>
+              <input
+                type='text'
+                placeholder='123456'
+                value={twoFactorCode}
+                onChange={handleTwoFactorChange}
+                className='w-full p-2 border rounded-lg'
+                pattern='\d{6}'
+                required
+              />
+              {error && <p className='text-red-500 text-sm'>{error}</p>}
+              <button
+                type='submit'
+                className='w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700'
+              >
+                Verify & Login
+              </button>
+            </form>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
