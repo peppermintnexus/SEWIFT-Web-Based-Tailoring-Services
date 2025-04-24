@@ -203,6 +203,18 @@ export default function ClientProfile() {
               <h1 className='text-2xl font-semibold text-gray-900'>
                 Measurements
               </h1>
+              <span className='block mt-2'>
+                Visit{" "}
+                <a
+                  href='https://www.clothingpatterns101.com/body-measurements.html?fbclid=IwY2xjawJ3I0xleHRuA2FlbQIxMABicmlkETF5NjBycTBKa29TS1k3QmtmAR6OdYblF4cYBUceTj-GXtJkGWrPA0hwvlCz2Ru1q_39LrxSLPWYx-QDSbR6qw_aem_bTUz05SdEUoUqxShsCwV9Q'
+                  className='text-blue-600 underline'
+                  target='_blank'
+                  rel='noopener noreferrer'
+                >
+                  this guide
+                </a>{" "}
+                for users who need a measurement guide.
+              </span>
             </div>
 
             <div className='px-9 py-6 space-y-6'>
