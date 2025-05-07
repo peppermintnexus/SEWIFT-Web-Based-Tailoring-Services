@@ -61,7 +61,7 @@ export default function About() {
 
       <div className='max-w-4xl m-auto bg-white rounded-lg shadow-lg p-8 my-8'>
         <h1 className='text-3xl font-bold text-gray-900 border-b-2 border-gray-200 pb-3 mb-8'>
-          Tailor Services Terms & Conditions
+          Terms & Conditions
         </h1>
 
         {sections.map((section, i) => (
